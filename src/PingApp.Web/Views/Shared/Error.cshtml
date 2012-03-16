@@ -1,0 +1,16 @@
+﻿@model HandleErrorInfo
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+</head>
+<body>
+    <h1>出错啦！</h1>
+    <p>请尝试刷新。</p>
+    <pre style="display: none;">@Model.Exception</pre>
+</body>
+</html>

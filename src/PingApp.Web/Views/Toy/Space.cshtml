@@ -1,0 +1,414 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>51Apps</title>
+    <script src="@Url.Content("~/scripts/jquery-1.5.1.js")"></script>
+    <style>
+        body {
+            background-image: url(@Url.Content("~/content/images/space-bg.jpg"));
+            overflow: hidden;
+            margin: 0;
+        }
+    </style>
+    <style>
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+        .app {
+            position: absolute;
+            z-index: 1;
+            background: #666;
+            width: 80px;
+            height: 80px;
+            border-radius: 20px;
+            opacity: .4;
+        }
+        .front {
+            opacity: 1;
+            z-index: 2;
+        }
+        .focused {
+            z-index: 3;
+        }
+        .app:hover {
+            z-index: 4;
+            opacity: 1;
+            -webkit-transform: scale(1.25);
+            -webkit-transition: -webkit-transform 0.3s linear, opacity 0.3s linear;
+        }
+        
+        .app img {
+            display: none;
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+        .front img, .app:hover img {
+            display: block;
+        }
+        
+        #info {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            z-index: 99;
+            width: 640px;
+            padding: 10px;
+            color: #fff;
+            background-color: rgba(6, 40, 85, .6);
+            border: 4px solid #2bc3f4;
+            border-radius: 20px;
+            display: none;
+        }
+        #close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+        h2 {
+            font-size: 28px;
+            line-height: 28px;
+            vertical-align: middle;
+            margin: 0;
+            max-width: 480px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        #info pre {
+            white-space: pre-wrap;
+            overflow: hidden;
+            max-height: 320px;
+        }
+        #info img {
+            height: 240px;
+        }
+        #icon {
+            width: 85px;
+            height: 85px;
+            float: left;
+            margin-right: 10px;
+        }
+        #icon img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: 20px;
+        }
+        #developer, #device {
+            display: block;
+            line-height: 28px;
+        }
+        #info .by-developer, #info .by-category, #info .view-detail {
+            position: absolute;
+            top: 45px;
+            right: 10px;
+            font-size: 14px;
+            font-weight: normal;
+            cursor: default;
+        }
+        #info .by-category {
+            right: 80px;
+        }
+        #info .view-detail {
+            right: 160px;
+        }
+        #info .by-developer:hover, #info .by-category:hover, #info .view-detail:hover {
+            color: #57bad1;
+        }
+        
+        #brief {
+            position: absolute;
+            top: 80px;
+            left: 80px;
+            display: none;
+        }
+        h3 {
+            margin: 0;
+        }
+        #brief .by-category {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            cursor: default;
+        }
+        #brief .by-developer {
+            position: absolute;
+            top: 65px;
+            right: 0;
+            cursor: default;
+        }
+        
+        .dialog {
+            background-color: rgba(6, 40, 85, .6);
+            border: 1px solid #2bc3f4;
+            padding: 8px;
+            color: #fff;
+            z-index: 9;
+        }
+        
+        #menu {
+            position: absolute;
+            right: -4px;
+            bottom: 0;
+            padding: 10px 0;
+        }
+        #menu li {
+            padding: 10px 0;
+        }
+        #menu span {
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            letter-spacing: 1em;
+        }
+        #menu span:hover {
+            background-color: #57bad1;
+        }
+    </style>
+</head>
+<body>
+    <div id="container"></div>
+    <div id="brief" class="dialog">
+        <h3>Salon Magazine</h3>
+        <span>by Salon Communications Inc.</span>
+        <span class="dialog by-category">同类型</span>
+        <span class="dialog by-developer">同作者</span>
+    </div>
+    <div id="info">
+        <div id="icon"></div>
+        <h2></h2>
+        <span id="developer"></span>
+        <span id="device"></span>
+        <span class="by-developer">同作者</span>
+        <span class="by-category">同类型</span>
+        <a class="view-detail" target="_blank">查看详情</a>
+        <span id="close">[关闭]</span>
+        <section id="description">
+            <pre></pre>
+        </section>
+        <section id="screenshot"></section>
+    </div>
+    <ul id="menu" class="dialog">
+        <li><span onclick="nextPage();">往后看看</span></li>
+        <li><span onclick="previousPage();">往前看看</span></li>
+    </ul>
+    <script>
+        function AnimatedIterator(array, handler, interval) {
+            this.array = array;
+            this.handler = handler;
+            this.interval = interval || 50;
+        };
+        AnimatedIterator.prototype.execute = function(handler) {
+            handler = handler || this.handler;
+            if (!handler || !this.array.length) {
+                return;
+            }
+
+            this.executing = true;
+
+            this.process(0, handler);
+        };
+        AnimatedIterator.prototype.process = function(i, handler) {
+            if (!this.executing) {
+                return;
+            }
+
+            var item = this.array[i];
+            handler.call(item, item, i, this.array.length);
+
+            if (i < this.array.length - 1) {
+                var self = this;
+                setTimeout(function() { self.process(i + 1, handler); }, this.interval);
+            }
+        };
+        AnimatedIterator.prototype.stop = function() {
+            this.executing = false;
+        };
+
+        var pageSize = 40;
+        var processor;
+        var query;
+        var xhr;
+        var requesting = false;
+        function loadApps() {
+            $('#brief, #info').hide();
+            var data = query || { pageSize: pageSize };
+            xhr = $.ajax({
+                url: '@Url.Action("List", "Api")',
+                type: 'get',
+                dataType: 'json',
+                data: data,
+                success: function(apps) {
+                    if (processor) {
+                        processor.stop();
+                    }
+                    $('#container>*').fadeOut(function() { $(this).remove(); });
+                    query = apps;
+                    processor = new AnimatedIterator(apps.result, showApp);
+                    processor.execute();
+                }
+            });
+        }
+
+        function showApp(app, i, length) {
+            var width = $(window).width() - 140;
+            var height = $(window).height() - 140;
+
+            var div = $('<div />')
+                .addClass('app')
+                .addClass('front')
+                .css('left', Math.round(Math.random() * width))
+                .css('top', Math.round(Math.random() * height))
+                .css('display', 'none')
+                .data('app', app)
+                .appendTo('#container');
+            var img = $('<img />')
+                .attr('src', app.iconUrl)
+                .appendTo(div);
+
+            if (length > 20 && i % 2) {
+                div.removeClass('front');
+            }
+
+            div.fadeIn();
+        }
+
+        function showInfo() {
+            var src = $(this);
+            var offset = src.offset();
+            var app = src.data('app');
+            xhr = $.ajax({
+                url: '@Url.Action("Get", "Api")',
+                type: 'get',
+                dataType: 'json',
+                data: { id: app.id },
+                success: function(app) {
+                    $('#icon').empty();
+                    $('#screenshot').empty();
+                    $('#info>h2').text(app.brief.name);
+                    $('#developer').text('by ' + app.brief.developer.name);
+                    $('#device').text('for ' + ['unknown', 'unknown', 'iPhone', 'iPad', 'iPhone + iPad'][app.brief.deviceType]);
+                    $('#info>.view-detail').attr('href', 'http://www.pingapp.net/detail/' + app.id);
+                    $('#description>pre').text(app.description);
+
+                    $('<img />')
+                        .attr('src', app.screenshotUrls[0] || app.iPadScreenshotUrls[0])
+                        .appendTo('#screenshot');
+
+                    $('#brief').hide();
+                    $('#info').data('app', app).slideDown();
+
+                    var dest = $('#icon').offset();
+                    $('<img />')
+                        .attr('src', src.children('img').attr('src'))
+                        .css('position', 'absolute')
+                        .css('left', offset.left)
+                        .css('top', offset.top)
+                        .css('width', 80)
+                        .css('height', 80)
+                        .css('z-index', 6)
+                        .css('border-radius', '20px')
+                        .appendTo('body')
+                        .animate(
+                            { left: dest.left, top: dest.top },
+                            function() { $(this).attr('style', '').appendTo('#icon') }
+                        );
+                }
+            });
+        }
+
+        function previousPage() {
+            if (query.hasPreviousPage) {
+                var data = { pageSize: pageSize, page: query.page - 1 };
+                if (query.developer) {
+                    data.developer = query.developer;
+                }
+                if (query.category) {
+                    query.category = query.category;
+                }
+                query = data;
+                loadApps();
+            }
+            return null;
+        }
+
+        function nextPage() {
+            if (query.hasNextPage) {
+                var data = { pageSize: pageSize, page: query.page - 1 };
+                if (query.developer) {
+                    data.developer = query.developer;
+                }
+                if (query.category) {
+                    query.category = query.category;
+                }
+                query = data;
+                loadApps();
+            }
+            return null;
+        }
+
+        loadApps();
+
+        $().ajaxSend(function() {
+            if (requesting) {
+                xhr.abort();
+            }
+            requesting = true;
+        }).ajaxComplete(function() {
+            requesting = false;
+        });
+
+        $('.app').live('mouseenter', function() {
+                var offset = $(this).offset();
+                var app = $(this).data('app');
+                var brief = $('#brief');
+
+                brief.children('h3').text(app.name);
+                brief.children('span:first').text('by ' + app.developer.name);
+
+                brief.show();
+                var width = brief.width();
+                brief.hide();
+
+                /*
+                $('#brief')
+                    .data('app', app)
+                    .css('top', offset.top)
+                    .css('left', offset.left - width - 20)
+                    .fadeIn();
+                    */
+            }
+        );
+        $('.app').live('click', showInfo);
+        $('#close').click(function() {
+            $('#info').hide();
+            return false;
+        });
+        $('.by-developer, .by-category').click(function() {
+            var brief = $('#brief');
+            var info = $('#info');
+            if (!brief.is(':visible') && !info.is(':visible')) {
+                return false;
+            }
+            var app = info.is(':visible') ? info.data('app').brief : brief.data('app');
+            query = { pageSize: pageSize };
+            if ($(this).hasClass('by-developer')) {
+                query.developer = app.developer.id;
+            }
+            else {
+                query.category = app.primaryCategory.alias;
+            }
+            loadApps(query);
+            return false;
+        });
+    </script>
+</body>
+</html>

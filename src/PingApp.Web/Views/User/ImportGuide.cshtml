@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MoreResource {
+<link rel="stylesheet" href="@Url.Content("~/content/plain.css")" />
+}
+<article>
+    <section>
+        <h2>导入消费历史</h2>
+        <p>欢迎使用PingApp，这是你注册后的第一次使用。PingApp是一个应用的<em>关注</em>、<em>跟踪</em>和<em>消息推送</em>，与其他iOS应用站点相比，我们最大的特色是可以<em>主动将应用的更新、降价、免费信息通过邮件等形式第一时间通知到您</em>，而不需要日复一日地关注着列表，不用担心错过任何的特价机会。在PingApp上关注应用，将会有更多的收获。 </p>
+        <p>现在你可以按照我们提供的教程，导入你曾经购买过的应用。请记住<em>你只有一次导入机会</em>。</p>
+        <p>如果你<em>确认不需要导入购买记录</em>，请<span id="cancel" class="clickable">点击此处忽略该步骤</span>。</p>
+        <p>由于itunes在本地保存的文件名并不一定与App Store中的应用名称完全吻合，如<em>高德导航HD Autonavi Navigation</em>在本地保存的文件名为<em>高德导航</em>，因此导入功能<em>并不能保证100%准确</em>，还请谅解。</p>
+    </section>
+    <section>
+        <ol>
+            <li>
+                <p>打开itunes，点击右边的Apps，你可以看到自己拥有的所有应用。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-1.jpg")" alt="指导步骤" width="700" height="441" /></p>
+            </li>
+            <li>
+                <p>右键点击任意一个应用，在菜单中点击"Show in Windows Explorer"。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-2.jpg")" alt="指导步骤" width="728" height="470" /></p>
+            </li>
+            <li>
+                <p>在打开的资源管理器中，复制地址栏中的地址。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-3.jpg")" alt="指导步骤"" width="667" height="436" /></p>
+            </li>
+            <li>
+                <p>点击开始菜单，单击运行（Windows7上请按WIN+R键），输入"cmd"并单击确定按钮，此时会出现命令行窗口。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-4.jpg")" alt="指导步骤"" width="427" height="235" /></p>
+            </li>
+            <li>
+                <p>在命令行窗口中，输入"cd "（注意空格），随后右键点击命令行，选择“粘贴”，此时第3步中的地址会被粘贴到命令行中。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-5.jpg")" alt="指导步骤"" width="606" height="258" /></p>
+            </li>
+            <li>
+                <p>按下回车，你将进入该目录，确认命令行中显示的目录是正确的。随后输入"dir /B > list.txt"，并回车。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-6.jpg")" alt="指导步骤"" width="764" height="162" /></p>
+            </li>
+            <li>
+                <p>随后输入"notepad list.txt"，系统将打开记事本。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-7.jpg")" alt="指导步骤"" width="729" height="512" /></p>
+            </li>
+            <li>
+                <p>复制记事本中的内容，以便下一步使用。随后你可以通过"del list.txt"命令删除该临时生成的文件。</p>
+                <p><img src="@Url.Content("~/content/images/guide/import-app-8.jpg")" alt="指导步骤"" width="755" height="171" /></p>
+            </li>
+            <li>
+                <p>进入下一步，在文本框中粘贴上一步复制的内容，并且单击“导入购买记录”，系统会指导你完成导入过程。</p>
+            </li>
+        </ol>
+    </section>
+    <section class="link-area">
+        <a href="@Url.Action("Import", "User")" id="startImport" class="step">开始导入</a>
+    </section>
+    <script>
+        $('#cancel').click(function() {
+            var src = $(this);
+            if (src.hasClass('disabled')) {
+                return;
+            }
+            src.addClass('disabled');
+
+            $.ajax({
+                url: '@Url.Action("CancelImport", "User")',
+                type: 'post',
+                dataType: 'json',
+                success: function() {
+                    location.href = '@Url.Action("Index", "Home")';
+                },
+                error: function() {
+                    src.removeClass('disabled');
+                }
+            });
+
+            return false;
+        });
+    </script>
+</article>

@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FB328387-9EC4-4E5F-AB16-33F652D32DEE}</ProjectGuid>
+    <ProjectTypeGuids>{E53F8FEA-EAE0-44A6-8774-FFD645390401};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PingApp.Web</RootNamespace>
+    <AssemblyName>PingApp.Web</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Elmah">
+      <HintPath>..\packages\elmah.corelibrary.1.2\lib\Elmah.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.1.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net, Version=2.9.2.2, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lucene.2.9.2.2\lib\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Caching">
+      <HintPath>..\packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Caching.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
+      <HintPath>..\packages\Unity.Interception.2.1.505.0\lib\NET35\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.4.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.1.0.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle">
+      <HintPath>..\packages\NHibernate.Castle.3.1.0.4000\lib\Net35\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleLucene, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleLucene.1.0\lib\4.0\SimpleLucene.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Helpers, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Controllers\AboutController.cs" />
+    <Compile Include="Controllers\ApiController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ToyController.cs" />
+    <Compile Include="Controllers\TrackController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\ValidateController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Infrastructures\BaseController.cs" />
+    <Compile Include="Infrastructures\Default.cs" />
+    <Compile Include="Infrastructures\EnumRouteConstraint.cs" />
+    <Compile Include="Infrastructures\CategoryRouteConstraint.cs" />
+    <Compile Include="Infrastructures\HtmlExtension.cs" />
+    <Compile Include="Infrastructures\LowerCaseRoute.cs" />
+    <Compile Include="Infrastructures\LowercaseRouteExtension.cs" />
+    <Compile Include="Infrastructures\NewtonJsonActionResult.cs" />
+    <Compile Include="Infrastructures\NHibernateSessionModule.cs" />
+    <Compile Include="Infrastructures\RegionAttribute.cs" />
+    <Compile Include="Infrastructures\TransactionAttribute.cs" />
+    <Compile Include="Infrastructures\UrlExtension.cs" />
+    <Compile Include="Models\AppApiQuery.cs" />
+    <Compile Include="Models\DetailModel.cs" />
+    <Compile Include="Models\ImportModel.cs" />
+    <Compile Include="Models\ListQuery.cs" />
+    <Compile Include="Models\Mapping\AppBriefEntityMap.cs" />
+    <Compile Include="Models\Mapping\AppEntityMap.cs" />
+    <Compile Include="Models\Mapping\AppTrackEntityMap.cs" />
+    <Compile Include="Models\Mapping\AppUpdateComponentMap.cs" />
+    <Compile Include="Models\Mapping\AppUpdateEntityMap.cs" />
+    <Compile Include="Models\Mapping\CategoryArrayType.cs" />
+    <Compile Include="Models\Mapping\CategoryType.cs" />
+    <Compile Include="Models\Mapping\DeveloperComponentMap.cs" />
+    <Compile Include="Models\Mapping\SellerComponentMap.cs" />
+    <Compile Include="Models\Mapping\StringArrayType.cs" />
+    <Compile Include="Models\Mapping\UserEntityMap.cs" />
+    <Compile Include="Models\PagedQuery.cs" />
+    <Compile Include="Models\PriceMode.cs" />
+    <Compile Include="Models\SearchQuery.cs" />
+    <Compile Include="Models\TitleBuilder.cs" />
+    <Compile Include="Models\TrackQuery.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UpdateTop100.ashx.cs">
+      <DependentUpon>UpdateTop100.ashx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\hot-decorator.png" />
+    <Content Include="Content\Images\default-icon.png" />
+    <Content Include="Content\Images\Guide\import-app-1.jpg" />
+    <Content Include="Content\Images\Guide\import-app-2.jpg" />
+    <Content Include="Content\Images\Guide\import-app-3.jpg" />
+    <Content Include="Content\Images\Guide\import-app-4.jpg" />
+    <Content Include="Content\Images\Guide\import-app-5.jpg" />
+    <Content Include="Content\Images\Guide\import-app-6.jpg" />
+    <Content Include="Content\Images\Guide\import-app-7.jpg" />
+    <Content Include="Content\Images\Guide\import-app-8.jpg" />
+    <Content Include="Content\Images\Guide\import-app-btn.png" />
+    <Content Include="Content\Images\Guide\usage-1.png" />
+    <Content Include="Content\Images\Guide\usage-2.png" />
+    <Content Include="Content\Images\Guide\usage-3.png" />
+    <Content Include="Content\Images\Guide\usage-4.png" />
+    <Content Include="Content\Images\Guide\usage-5.png" />
+    <Content Include="Content\Images\Guide\usage-6.png" />
+    <Content Include="Content\Images\Guide\usage-7.png" />
+    <Content Include="Content\Images\Guide\usage-8.png" />
+    <Content Include="Content\Images\hot-decorator.png" />
+    <Content Include="Content\Images\share.png" />
+    <Content Include="Content\Images\space-bg.jpg" />
+    <Content Include="Content\Plain.css" />
+    <Content Include="Content\Detail.css" />
+    <Content Include="Content\Images\app-store.png" />
+    <Content Include="Content\Images\Partners\photon-vps.jpg" />
+    <Content Include="Content\Images\sort.png" />
+    <Content Include="Content\Images\spot.png" />
+    <Content Include="Content\List.css" />
+    <Content Include="Content\Images\btn.png" />
+    <Content Include="Dictionaries\ChsDoubleName1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dictionaries\ChsDoubleName2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dictionaries\ChsSingleName.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dictionaries\Stopword.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dictionaries\Synonym.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Dictionaries\Wildcard.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Global.asax" />
+    <Content Include="Content\Site.css" />
+    <Content Include="MailTemplate\PasswordReset.htm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PanGu.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\app.js" />
+    <Content Include="Scripts\jquery-1.5.1.js" />
+    <Content Include="Scripts\jquery-1.5.1.min.js" />
+    <Content Include="Scripts\jquery.validate-1.8.1.js" />
+    <Content Include="Scripts\jquery.validate-1.8.1.min.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\User\Profile.cshtml" />
+    <Content Include="Views\Home\Search.cshtml" />
+    <Content Include="Dictionaries\Dict.dct">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PingApp.Entity\PingApp.Entity.csproj">
+      <Project>{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}</Project>
+      <Name>PingApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingApp.Utility\PingApp.Utility.csproj">
+      <Project>{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}</Project>
+      <Name>PingApp.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Sidebar.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\Register.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\SignIn.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Curvic.eot" />
+    <Content Include="Content\Curvice.svg" />
+    <Content Include="Content\Curvic.ttf" />
+    <Content Include="Content\Curvic.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Detail.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\AppList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Track\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\About\Site.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\ImportGuide.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\Import.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\ConfirmImport.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\ResetPassword.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\User\PasswordResetOk.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Code\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="UpdateTop100.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\PlainList.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\About\Usage.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Toy\Space.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>49701</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/PingApp.Web</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,73 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 11
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Entity", "PingApp.Entity\PingApp.Entity.csproj", "{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Schedule", "PingApp.Schedule\PingApp.Schedule.csproj", "{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Utility", "PingApp.Utility\PingApp.Utility.csproj", "{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Web", "PingApp.Web\PingApp.Web.csproj", "{FB328387-9EC4-4E5F-AB16-33F652D32DEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|Mixed Platforms = Debug|Mixed Platforms
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|Mixed Platforms = Release|Mixed Platforms
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|x86.ActiveCfg = Debug|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|x86.Build.0 = Debug|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Release|Any CPU.ActiveCfg = Release|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Release|Mixed Platforms.Build.0 = Release|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Release|x86.ActiveCfg = Release|x86
+		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Release|x86.Build.0 = Release|x86
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|x86.ActiveCfg = Release|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}.Release|x86.ActiveCfg = Release|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		EnterpriseLibraryConfigurationToolBinariesPath = packages\Unity.2.1.505.0\lib\NET35;packages\Unity.Interception.2.1.505.0\lib\NET35;packages\EnterpriseLibrary.Common.5.0.505.0\lib\NET35;packages\EnterpriseLibrary.Caching.5.0.505.0\lib\NET35
+	EndGlobalSection
+	GlobalSection(SubversionScc) = preSolution
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+		Svn-Managed = True
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,232 @@
+﻿h2 {
+    max-width: 400px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+h3 a {
+    font-size: 12px;
+}
+
+#main, #sidebar {
+    margin-top: 20px;
+}
+#icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 20px;
+    float: left;
+    margin-right: 20px;
+}
+#updateType {
+    position: relative;
+    left: 10px;
+    border-radius: 12px;
+    padding: 6px 8px;
+    font-size: 12px;
+    font-weight: normal;
+    color: #fff;
+}
+
+#action {
+    float: right;
+    background-color: #efefef;
+    border: 2px solid #d0d0d0;
+    border-radius: 10px;
+    padding: 6px 16px;
+    text-align: center;
+    margin-left: 8px;
+    position: relative;
+}
+#buy span {
+    display: block;
+}
+#oldPrice {
+    text-decoration: line-through;
+    height: 12px;
+    overflow:visible;
+    display: block;
+    margin-left: -60px;
+    margin-top: 0px;
+    color: #666;
+    -webkit-transform: rotate(-35deg);
+    -moz-transform: rotate(-35deg);
+    -o-transform: rotate(-35deg);
+    -ms-transform: rotate(-35deg);
+}
+#price {
+    font-size: 18px;
+    color: #000;
+    margin-bottom: 4px;
+}
+#link {
+    font-size: 12px;
+}
+#buy:hover #link {
+    color: #f00;
+}
+#owned, #wish {
+    display: block;
+    cursor: pointer;
+    margin: 2px 0;
+    padding-left: 14px;
+    background: transparent url(images/spot.png) no-repeat 0 -17px;
+}
+#owned {
+    margin-top: 8px;
+}
+#owned:hover, #wish:hover {
+    background-position: 0 -36px;
+}
+#owned.active, #wish.active {
+    background-position: 0 3px;
+}
+
+h3 {
+    padding-top: 20px;
+    color: #666;
+}
+#rating, #version, #size, #device, #share {
+    display: inline-block;
+    margin-right: 20px;
+    line-height: 24px;
+    font-size: 12px;
+}
+#device, #share {
+    display: block;
+}
+#share a {
+    display: inline-block;
+    margin-right: 20px;
+    background-image: url(images/share.png);
+    background-repeat: no-repeat;
+    padding-left: 18px;
+    line-height: 24px;
+}
+#share a:hover {
+    color: #f80;
+}
+#shareToSina {
+    background-position: 0 0;
+}
+#shareToQQ {
+    background-position: 0 -24px;
+}
+#shareToQZone {
+    background-position: 0 -48px;
+}
+
+#description {
+    clear: both;
+}
+pre {
+    white-space: pre-wrap;
+    max-height: 72px;
+    overflow: hidden;
+    line-height: 24px;
+}
+.toggler {
+    float: right;
+    color: #08c;
+    cursor: pointer;
+    display: none;
+}
+.toggler:hover {
+    text-decoration: underline;
+}
+
+#screenshots ul {
+    width: 480px;
+    margin: 0 auto;
+}
+#screenshots img {
+    display: block;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+#switcher {
+    text-align: center;
+    overflow: hidden;
+    margin: 20px 0 5px;
+}
+#switcher span {
+    display: inline-block;
+    margin: 0 5px;
+    cursor: default;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #c0c0c0;
+    text-indent: -500px;
+    overflow: hidden;
+}
+#switcher span.active {
+    background-color: #0385f3;
+}
+#switcher span:hover {
+    background-color: #5f9df6;
+}
+
+/* Update */
+#updates ol {
+    margin-top: 10px;
+}
+#updates li {
+    overflow: hidden;
+    padding: 6px 12px 6px 12px;
+    font-size: 12px;
+}
+#updates li:nth-child(2n) {
+    background-color: #eef7ff;
+}
+.update-time {
+    padding-right: 20px;
+    font-weight: bold;
+}
+.app-update-entry {
+    font-size: 12px;
+    font-weight: normal;
+    font-style: normal;
+    display: inline-block;
+    margin-left: 20px;
+    float: right;
+    padding: 4px 8px;
+    border-radius: 7px;
+    color: #fff;
+}
+
+/* Relative Apps */
+#relativeApps ul {
+    margin-top: 10px;
+}
+#relativeApps li {
+    float: left;
+    margin-right: 20px;
+    padding: 10px 0;
+    width: 300px;
+    height: 75px;
+    overflow: hidden;
+    font-size: 12px;
+}
+#relativeApps img {
+    float: left;
+    border-radius: 12px;
+}
+#relativeApps div {
+    margin-left: 85px;
+    width: 215px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    line-height: 24px;
+}
+#relativeApps span {
+    display: inline-block;
+    margin-right: 10px;
+}
+#relativeApps a {
+    margin-right: 20px;
+#relativeApps a:hover {
+    text-decoration: underline;
+}

@@ -1,0 +1,52 @@
+﻿@model ListQuery
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section MoreResource {
+<link rel="stylesheet" href="@Url.Content("~/content/list.css")" />
+}
+<div id="filter">
+    <div id="filterDeviceType">
+        <ul>
+            <li>@Html.FilterLink(Url.Home(Model.ChangeDeviceType(DeviceType.IPhone)), Model.DeviceType == DeviceType.IPhone, "iPhone")</li>
+            <li>@Html.FilterLink(Url.Home(Model.ChangeDeviceType(DeviceType.IPad)), Model.DeviceType == DeviceType.IPad, "iPad")</li>
+            <li>@Html.FilterLink(Url.Home(Model.ChangeDeviceType(DeviceType.NotProvided)), Model.DeviceType == DeviceType.NotProvided, "全部机型")</li>
+        </ul>
+    </div>
+    <div id="filterCategory">
+        <select onchange="location.href = this.value;">
+            <option value="@Url.Home(Model.ChangeCategory(null))">所有</option>
+            @foreach (Category category in Category.All) {
+            @Html.Option(Url.Home(Model.ChangeCategory(category.Alias)), category.Name, category.Alias == Model.Category)
+            }
+        </select>
+    </div>
+    <div id="filterPriceMode">
+        <ul>
+            <li>@Html.FilterLink(Url.Home(Model.ChangePriceMode(PriceMode.All)), Model.PriceMode == PriceMode.All, "所有")</li>
+            <li>@Html.FilterLink(Url.Home(Model.ChangePriceMode(PriceMode.Free)), Model.PriceMode == PriceMode.Free, "免费")</li>
+            <li>@Html.FilterLink(Url.Home(Model.ChangePriceMode(PriceMode.Paid)), Model.PriceMode == PriceMode.Paid, "收费")</li>
+        </ul>
+    </div>
+    <div id="filterUpdateMode">
+        <ul>
+            <li>@Html.FilterLink(Url.Home(Model.ChangeUpdateType(null)), !Model.UpdateType.HasValue, "所有")</li>
+            <li>@Html.FilterLink(Url.Home(Model.ChangeUpdateType(AppUpdateType.NewRelease)), Model.UpdateType == AppUpdateType.NewRelease, "最近更新")</li>
+            <li>@Html.FilterLink(Url.Home(Model.ChangeUpdateType(AppUpdateType.PriceDecrease)), Model.UpdateType == AppUpdateType.PriceDecrease, "近期特价")</li>
+            <li>@Html.FilterLink(Url.Home(Model.ChangeUpdateType(AppUpdateType.PriceFree)), Model.UpdateType == AppUpdateType.PriceFree, "限时免费")</li>
+        </ul>
+    </div>
+</div>
+<div id="main">
+    <h2>近期所有更新</h2>
+    @Html.Partial("AppList", Model.Result)
+    <aside id="pager">
+        @if (Model.HasNextPage) {
+        <a href="@Url.Home(Model.NextPage())" class="fancy-link">下一页</a>
+        }
+        @if (Model.HasPreviousPage) {
+        <a href="@Url.Home(Model.PreviousePage())" class="fancy-link">上一页</a>
+        }
+    </aside>
+</div>
+@Html.Partial("Sidebar")

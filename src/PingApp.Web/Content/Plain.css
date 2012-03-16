@@ -1,0 +1,50 @@
+﻿section {
+    padding: 10px 0;
+}
+h2 {
+    padding-bottom: 20px;
+}
+article p, article li {
+    line-height: 24px;
+}
+article em {
+    color: #f50;
+}
+article ul {
+    list-style-type: square;
+    margin-left: 25px;
+}
+article ol {
+    list-style-type: decimal;
+    margin-left: 25px;
+}
+article a:hover {
+    text-decoration: underline;
+    color: #f30;
+}
+span.clickable {
+    color: #08f;
+    cursor: pointer;
+}
+span.clickable:hover {
+    color: #f30;
+}
+span.disabled {
+    color: #666;
+}
+
+/* 各按钮 */
+#startImport {
+    margin: 0 auto;
+    display: block;
+    width: 156px;
+    height: 52px;
+    overflow: hidden;
+    text-indent: -500px;
+}
+#startImport {
+    background: transparent url(images/guide/import-app-btn.png) no-repeat;
+}
+#startImport:hover {
+    background-position: 0 -52px;
+}
