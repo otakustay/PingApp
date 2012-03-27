@@ -115,11 +115,11 @@ namespace PingApp.Schedule {
 
             console.Layout = "${time}|${level}|${message}" + (Program.Debug ? "\n${exception:format=tostring}" : String.Empty);
             file.FileName = logRoot + "/log.txt";
-            file.Layout = "${time}|${level}|${message}${exception:format=tostring}";
+            file.Layout = "${time}|${level}|${message}\n${exception:format=tostring}";
             debug.FileName = logRoot + "/debug.txt";
-            debug.Layout = "${time}|${level}|${message}${exception:format=tostring}";
+            debug.Layout = "${time}|${level}|${message}\n${exception:format=tostring}";
             trace.FileName = logRoot + "/verbose.txt";
-            trace.Layout = "${time}|${level}|${message}${exception:format=tostring}";
+            trace.Layout = "${time}|${level}|${message}\n${exception:format=tostring}";
             error.FileName = Directory.GetParent(logRoot).FullName + "/error.txt";
             error.Layout = "${time}|${level}|${message}\n${exception:format=tostring}";
 
