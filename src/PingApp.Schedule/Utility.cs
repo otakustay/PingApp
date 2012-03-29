@@ -89,7 +89,7 @@ namespace PingApp.Schedule {
                 brief.Developer = new Developer(
                     token["artistId"].Value<int>(), 
                     token["artistName"].Value<string>() ?? String.Empty, 
-                    token["artistViewUrl"].Value<string>() ?? String.Empty
+                    token["artistViewUrl"] == null ? String.Empty : token["artistViewUrl"].Value<string>() ?? String.Empty
                 );
 
                 apps.Add(app);
