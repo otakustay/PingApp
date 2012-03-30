@@ -50,12 +50,21 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.3.0.0.4001\lib\net40-client\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="FluentNHibernate">
+      <HintPath>..\packages\FluentNHibernate.1.2.0.712\lib\FluentNHibernate.dll</HintPath>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HtmlAgilityPack.1.4.3\lib\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.3.2.0.4000\lib\Net35\Iesi.Collections.dll</HintPath>
     </Reference>
     <Reference Include="Lucene.Net, Version=2.9.4.1, Culture=neutral, PublicKeyToken=85089178b9ac3181, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -68,6 +77,12 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.4.5.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.1.0.4000\lib\Net35\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle">
+      <HintPath>..\packages\NHibernate.Castle.3.1.0.4000\lib\Net35\NHibernate.ByteCode.Castle.dll</HintPath>
     </Reference>
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
@@ -119,6 +134,14 @@
     <ProjectReference Include="..\PingApp.Entity\PingApp.Entity.csproj">
       <Project>{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}</Project>
       <Name>PingApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingApp.Repository.NHibernate\PingApp.Repository.NHibernate.csproj">
+      <Project>{d7bd5bd3-57d0-4584-ba3c-25f0ee50c134}</Project>
+      <Name>PingApp.Repository.NHibernate</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingApp.Repository\PingApp.Repository.csproj">
+      <Project>{65ce8a86-a790-4e23-8fc6-8d2569e86fcf}</Project>
+      <Name>PingApp.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\PingApp.Utility\PingApp.Utility.csproj">
       <Project>{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}</Project>
