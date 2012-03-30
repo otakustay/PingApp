@@ -111,6 +111,7 @@
     <Compile Include="Task\FullCatalogTask.cs" />
     <Compile Include="Task\IndexTask.cs" />
     <Compile Include="Task\TestSearchTask.cs" />
+    <Compile Include="Task\TestTask.cs" />
     <Compile Include="Task\Top100CheckTask.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>

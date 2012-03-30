@@ -94,6 +94,11 @@ namespace PingApp.Schedule {
                         new Top100CheckTask()
                     };
                     break;
+                case ActionType.Test:
+                    tasks = new TaskNode[] {
+                        new TestTask()
+                    };
+                    break;
                 default:
                     tasks = new TaskNode[0];
                     break;
