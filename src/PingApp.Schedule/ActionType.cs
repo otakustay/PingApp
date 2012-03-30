@@ -5,6 +5,6 @@ using System.Text;
 
 namespace PingApp.Schedule {
     enum ActionType {
-        Initialize, RssCheck, Update, FullCheck, TestSearch, RebuildIndex, Top100Check, AddApp, UpdateApp
+        Initialize, RssCheck, Update, FullCheck, TestSearch, RebuildIndex, Top100Check, AddApp, UpdateApp, Test
     }
 }
