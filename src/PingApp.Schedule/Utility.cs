@@ -91,6 +91,7 @@ namespace PingApp.Schedule {
                     token["artistName"].Value<string>() ?? String.Empty, 
                     token["artistViewUrl"] == null ? String.Empty : token["artistViewUrl"].Value<string>() ?? String.Empty
                 );
+                brief.Hash = Utility.ComputeAppHash(app, 0);
 
                 apps.Add(app);
             }
