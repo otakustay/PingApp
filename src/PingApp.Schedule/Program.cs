@@ -45,7 +45,6 @@ namespace PingApp.Schedule {
                         new SearchApiTask(true),
                         new DbUpdateTask(DbCheckType.CheckForUpdate, true),
                         new IndexTask(true),
-                        //new NullTask()
                         new MailTask()
                     };
                     break;

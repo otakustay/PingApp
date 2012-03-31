@@ -112,12 +112,10 @@
     <Compile Include="IStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Task\ComputeHashTask.cs" />
     <Compile Include="Task\DbCheckType.cs" />
     <Compile Include="Task\GetAppHashTask.cs" />
     <Compile Include="Task\GetFullAppTask.cs" />
     <Compile Include="Task\MailTask.cs" />
-    <Compile Include="Task\NullTask.cs" />
     <Compile Include="Task\RssFeedCheckTask.cs" />
     <Compile Include="Storage\FileSystemStorage.cs" />
     <Compile Include="Storage\MemoryStorage.cs" />
