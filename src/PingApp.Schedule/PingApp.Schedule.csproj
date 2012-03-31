@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffer.cs" />
+    <Compile Include="Dependency\InitializeModule.cs" />
     <Compile Include="FullApp.cs" />
     <Compile Include="IStorage.cs" />
     <Compile Include="Program.cs" />

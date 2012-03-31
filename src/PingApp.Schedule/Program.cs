@@ -10,6 +10,10 @@ using System.Configuration;
 using PingApp.Schedule.Task;
 using System.Net.Mail;
 using PingApp.Schedule.Storage;
+using Ninject;
+using PingApp.Repository.NHibernate.Dependency;
+using System.Collections;
+using PingApp.Schedule.Dependency;
 
 namespace PingApp.Schedule {
     class Program {
@@ -22,14 +26,19 @@ namespace PingApp.Schedule {
             TaskNode[] tasks;
             IStorage input = null;
 
+            IKernel kernel = new StandardKernel();
+            SessionStore sessionStore = new SessionStore();
+            kernel.Bind<IDictionary>().ToConstant(sessionStore).InSingletonScope();
+            kernel.Bind<SessionStore>().ToConstant(sessionStore).InSingletonScope();
+            kernel.Load(new NHibernateRepositoryModule());
+            kernel.Load(new InitializeModule());
+
+            TaskNode[] nodes = kernel.Get<TaskNode[]>();
+            Console.WriteLine(nodes);
+
             switch (action) {
                 case ActionType.Initialize:
-                    tasks = new TaskNode[] {
-                        new FullCatalogTask(),
-                        new SearchApiTask(false),
-                        new DbUpdateTask(DbCheckType.ForceInsert, false),
-                        new IndexTask(false)
-                    };
+                    tasks = kernel.Get<TaskNode[]>(ActionType.Initialize.ToString());
                     break;
                 case ActionType.RssCheck:
                     tasks = new TaskNode[] {
