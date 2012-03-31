@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAppRepository.cs" />
+    <Compile Include="IAppTrackRepository.cs" />
     <Compile Include="IAppUpdateRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
