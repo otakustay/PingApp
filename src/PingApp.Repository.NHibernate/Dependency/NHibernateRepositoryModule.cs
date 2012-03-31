@@ -12,14 +12,11 @@ using Ninject.Modules;
 using PingApp.Repository.NHibernate.Mapping;
 using Ninject;
 
-namespace PingApp.Repository.NHibernate {
+namespace PingApp.Repository.NHibernate.Dependency {
     public sealed class NHibernateRepositoryModule : NinjectModule {
         private const string SESSION_STORE_KEY = "NHIBERNATE_SESSION";
 
-        private readonly IDictionary store;
-
-        public NHibernateRepositoryModule(IDictionary store) {
-            this.store = store;
+        public NHibernateRepositoryModule() {
         }
 
         public override void Load() {
@@ -45,10 +42,10 @@ namespace PingApp.Repository.NHibernate {
         }
 
         private ISession OpenSession(IContext context) {
+            IDictionary store = context.Kernel.Get<IDictionary>();
             if (!store.Contains(SESSION_STORE_KEY)) {
                 ISessionFactory factory = context.Kernel.Get<ISessionFactory>();
                 ISession session = factory.OpenSession();
-                session.BeginTransaction();
                 store[SESSION_STORE_KEY] = session;
             }
             return store[SESSION_STORE_KEY] as ISession;
