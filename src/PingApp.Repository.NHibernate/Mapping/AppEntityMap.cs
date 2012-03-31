@@ -8,7 +8,7 @@ using PingApp.Entity;
 namespace PingApp.Repository.NHibernate.Mapping {
     class AppEntityMap : ClassMap<App> {
         public AppEntityMap() {
-            Id(a => a.Id);
+            Id(a => a.Id).GeneratedBy.Assigned();
             Map(a => a.AverageUserRating);
             Map(a => a.Categories).CustomType<CategoryArrayType>();
             Map(a => a.CensoredName);
@@ -23,7 +23,7 @@ namespace PingApp.Repository.NHibernate.Mapping {
             Component(a => a.Seller).ColumnPrefix("Seller");
             Map(a => a.UserRatingCount);
 
-            HasOne(a => a.Brief).Constrained();
+            HasOne(a => a.Brief).Constrained().Cascade.All();
 
             Not.LazyLoad();
         }

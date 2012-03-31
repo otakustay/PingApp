@@ -12,7 +12,7 @@ using System.Data;
 namespace PingApp.Repository.NHibernate.Mapping {
     class AppBriefEntityMap : ClassMap<AppBrief> {
         public AppBriefEntityMap() {
-            Id(b => b.Id);
+            Id(b => b.Id).GeneratedBy.Assigned();
             Map(b => b.AverageUserRatingForCurrentVersion);
             Map(b => b.Introduction);
             Map(b => b.ReleaseNotes);
@@ -32,6 +32,7 @@ namespace PingApp.Repository.NHibernate.Mapping {
             Map(b => b.ViewUrl);
             Map(b => b.LanguagePriority);
             Map(b => b.IsActive, "IsValid");
+            Map(b => b.Hash);
             Component(b => b.Developer).ColumnPrefix("Developer");
             Component(b => b.LastValidUpdate);
 

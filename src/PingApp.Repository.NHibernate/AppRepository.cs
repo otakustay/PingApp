@@ -15,6 +15,14 @@ namespace PingApp.Repository.NHibernate {
             this.session = session;
         }
 
+        public AppBrief RetrieveBrief(int id) {
+            return session.Get<AppBrief>(id);
+        }
+
+        public void Update(AppBrief brief) {
+            session.Update(brief);
+        }
+
         public ISet<int> FindExists(IEnumerable<int> apps) {
             IList<int> list = session.CreateCriteria<AppBrief>()
                 .Add(Restrictions.InG("Id", apps))

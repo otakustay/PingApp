@@ -21,10 +21,12 @@ namespace PingApp.Repository.NHibernate {
             return tracks;
         }
 
-        public void ResetForApp(int app) {
-            session.CreateSQLQuery("update AppTrack set HasRead = 0 where App = ?App")
+        public int ResetForApp(int app) {
+            int rows = session.CreateSQLQuery("update AppTrack set HasRead = 0 where App = ?App")
                 .SetParameter("?App", app)
                 .ExecuteUpdate();
+
+            return rows;
         }
     }
 }
