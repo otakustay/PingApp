@@ -23,7 +23,7 @@ namespace PingApp.Repository.NHibernate.Mapping {
             Component(a => a.Seller).ColumnPrefix("Seller");
             Map(a => a.UserRatingCount);
 
-            HasOne(a => a.Brief).Constrained().Cascade.All();
+            HasOne(a => a.Brief).Constrained().Cascade.None();
 
             Not.LazyLoad();
         }

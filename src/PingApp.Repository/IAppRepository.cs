@@ -12,9 +12,11 @@ namespace PingApp.Repository {
         // 以下为Schedule使用
         void Save(App app);
 
-        void Update(AppBrief brief);
+        void Save(AppBrief brief);
 
         void Update(App app);
+
+        void Update(AppBrief brief);
 
         ISet<int> FindExists(IEnumerable<int> apps);
 

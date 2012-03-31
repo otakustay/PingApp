@@ -19,6 +19,7 @@ using NHibernate;
 using PingApp.Repository.NHibernate;
 using Ninject.Activation.Blocks;
 using PingApp.Repository;
+using PingApp.Repository.NHibernate.Dependency;
 
 namespace PingApp.Schedule.Task {
     class DbUpdateTask : TaskNode {
@@ -26,27 +27,31 @@ namespace PingApp.Schedule.Task {
 
         private readonly bool checkOffUpdates;
 
+        private readonly IAppRepository appRepository;
+
+        private readonly IAppUpdateRepository appUpdateRepository;
+
+        private readonly IAppTrackRepository appTrackRepository;
+
+        private readonly SessionStore sessionStore;
+
         private readonly List<AppUpdate> validUpdates = new List<AppUpdate>();
 
-        private Dictionary<string, ISession> sessionStore = new Dictionary<string, ISession>();
-
-        private IKernel kernel;
-
-        private IActivationBlock ioc;
-
-        private IAppRepository appRepository;
-
-        private IAppUpdateRepository appUpdateRepository;
-
-        private IAppTrackRepository appTrackRepository;
-
+        // TODO: Remove
         public DbUpdateTask(DbCheckType checkType, bool checkOffUpdates) {
             this.checkType = checkType;
             this.checkOffUpdates = checkOffUpdates;
+        }
 
-            kernel = new StandardKernel(
-                new NHibernateRepositoryModule(sessionStore)
-            );
+        public DbUpdateTask(DbCheckType checkType, bool checkOffUpdates,
+            IAppRepository appRepository, IAppUpdateRepository appUpdateRepository,
+            IAppTrackRepository appTrackRepository, SessionStore sessionStore) {
+            this.checkType = checkType;
+            this.checkOffUpdates = checkOffUpdates;
+            this.appRepository = appRepository;
+            this.appUpdateRepository = appUpdateRepository;
+            this.appTrackRepository = appTrackRepository;
+            this.sessionStore = sessionStore;
         }
 
         protected override IStorage RunTask(IStorage input) {
@@ -88,25 +93,23 @@ namespace PingApp.Schedule.Task {
         }
 
         private void UpdateToDb(App[] list, IStorage output) {
-            using (ioc = BuildActivationBlock()) {
-                try {
-                    // 纯写入
-                    if (checkType == DbCheckType.ForceInsert) {
-                        UpdateWithNoCheck(list, output);
-                    }
-                    // 检查更新项
-                    else {
-                        UpdateWithCheck(list, output);
-                    }
-                    sessionStore.Values.First().Transaction.Commit();
+            sessionStore.BeginTransaction();
+            try {
+                // 纯写入
+                if (checkType == DbCheckType.ForceInsert) {
+                    UpdateWithNoCheck(list, output);
                 }
-                catch (Exception ex) {
-                    Log.ErrorException("Update to db failed with --db-check-type=" + checkType, ex);
-                    sessionStore.Values.First().Transaction.Rollback();
+                // 检查更新项
+                else {
+                    UpdateWithCheck(list, output);
                 }
+                sessionStore.CommitTransaction();
             }
-            sessionStore.Values.First().Dispose();
-            sessionStore.Clear();
+            catch (Exception ex) {
+                Log.ErrorException("Update to db failed with --db-check-type=" + checkType, ex);
+                sessionStore.RollbackTransaction();
+            }
+            sessionStore.DiscardCurrentSession();
         }
 
         private void UpdateWithCheck(App[] list, IStorage output) {
@@ -219,7 +222,9 @@ namespace PingApp.Schedule.Task {
                 NewValue = String.Empty,
                 OldValue = String.Empty
             };
+            // App和AppBrief之间没有Cascade设置
             appRepository.Save(app);
+            appRepository.Save(app.Brief);
             AppUpdate updateForNew = new AppUpdate() {
                 App = app.Id,
                 Time = app.Brief.ReleaseDate.Date,
@@ -250,7 +255,9 @@ namespace PingApp.Schedule.Task {
                 app.Brief.LastValidUpdate = origin.Brief.LastValidUpdate;
             }
 
+            // App和AppBrief之间没有Cascade设置
             appRepository.Update(app);
+            appRepository.Update(app.Brief);
 
             // 更新Track数据
             int rows = appTrackRepository.ResetForApp(app.Id);
@@ -265,50 +272,40 @@ namespace PingApp.Schedule.Task {
             DateTime now = DateTime.Now;
             int count = 0;
 
-            using (ioc = BuildActivationBlock()) {
-                try {
-                    foreach (int id in list) {
-                        AppBrief brief = appRepository.RetrieveBrief(id);
-                        // 先确定是不是已经Off了
-                        if (brief.IsActive) {
-                            AppUpdate update = new AppUpdate() {
-                                App = id,
-                                Time = now,
-                                Type = AppUpdateType.Off,
-                                OldValue = String.Format("{0}, ￥{1}", brief.Version, brief.Price)
-                            };
-                            appUpdateRepository.Save(update);
-                            count++;
+            sessionStore.BeginTransaction();
+            try {
+                foreach (int id in list) {
+                    AppBrief brief = appRepository.RetrieveBrief(id);
+                    // 先确定是不是已经Off了
+                    if (brief.IsActive) {
+                        AppUpdate update = new AppUpdate() {
+                            App = id,
+                            Time = now,
+                            Type = AppUpdateType.Off,
+                            OldValue = String.Format("{0}, ￥{1}", brief.Version, brief.Price)
+                        };
+                        appUpdateRepository.Save(update);
+                        count++;
 
-                            // 更新为IsValid为false
-                            brief.IsActive = false;
-                            appRepository.Update(brief);
-                        }
-                        else {
-                            Log.Trace("Off update for {0} is dismissed because the app is already invalid", id);
-                        }
-                        // Off不作为ValidUpdate更新
-                        sessionStore.Values.First().Transaction.Commit();
+                        // 更新为IsValid为false
+                        brief.IsActive = false;
+                        appRepository.Update(brief);
                     }
-                }
-                catch (Exception ex) {
-                    Log.ErrorException("Add off updates failed", ex);
-                    sessionStore.Values.First().Transaction.Rollback();
+                    else {
+                        Log.Trace("Off update for {0} is dismissed because the app is already invalid", id);
+                    }
+                    // Off不作为ValidUpdate更新
+                    sessionStore.CommitTransaction();
                 }
             }
-            sessionStore.Values.First().Dispose();
-            sessionStore.Clear();
+            catch (Exception ex) {
+                Log.ErrorException("Add off updates failed", ex);
+                sessionStore.RollbackTransaction();
+            }
+            sessionStore.DiscardCurrentSession();
 
             watch.Stop();
             Log.Info("{0} off updates added using {1}ms, {2} dismissed", count, watch.ElapsedMilliseconds, list.Count - count);
-        }
-
-        private IActivationBlock BuildActivationBlock() {
-            IActivationBlock block = kernel.BeginBlock();
-            appRepository = block.Get<IAppRepository>();
-            appUpdateRepository = block.Get<IAppUpdateRepository>();
-            appTrackRepository = block.Get<IAppTrackRepository>();
-            return block;
         }
     }
 }

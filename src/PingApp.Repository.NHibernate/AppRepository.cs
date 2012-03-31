@@ -44,6 +44,10 @@ namespace PingApp.Repository.NHibernate {
             session.Save(app);
         }
 
+        public void Save(AppBrief brief) {
+            session.Save(brief);
+        }
+
         public void Update(App app) {
             session.Update(app);
         }
