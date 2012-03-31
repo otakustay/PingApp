@@ -76,6 +76,8 @@ namespace PingApp.Entity {
 
         public bool IsActive { get; set; }
 
+        public string Hash { get; set; }
+
         public List<AppUpdate> CheckForUpdate(AppBrief newOne) {
             DateTime now = DateTime.Now;
             List<AppUpdate> updates = new List<AppUpdate>();
