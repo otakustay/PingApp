@@ -37,6 +37,7 @@ namespace PingApp.Schedule {
             kernel.Load(new FullCheckModule());
             kernel.Load(new AddAppModule());
             kernel.Load(new TestModule());
+            kernel.Load(new UpdateAppModule());
 
             switch (action) {
                 case ActionType.Initialize:
@@ -57,12 +58,7 @@ namespace PingApp.Schedule {
                     input.Add(new int[] { Convert.ToInt32(args[1]) });
                     break;
                 case ActionType.UpdateApp:
-                    tasks = new TaskNode[] {
-                        new GetAppHashTask(),
-                        new SearchApiTask(true),
-                        new DbUpdateTask(DbCheckType.CheckForUpdate, true),
-                        new IndexTask(true)
-                    };
+                    tasks = kernel.Get<TaskNode[]>(ActionType.UpdateApp.ToString());
                     input = new MemoryStorage();
                     input.Add(args.Skip(1).Select(s => Convert.ToInt32(s)));
                     break;
