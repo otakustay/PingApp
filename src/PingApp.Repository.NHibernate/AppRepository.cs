@@ -41,6 +41,16 @@ namespace PingApp.Repository.NHibernate {
             throw new NotImplementedException();
         }
 
+        public ICollection<int> RetrieveIdentities(int offset, int limit) {
+            IList<int> list = session.CreateCriteria<AppBrief>()
+                .SetFirstResult(offset)
+                .SetMaxResults(limit)
+                .SetProjection(Projections.Property<AppBrief>(b => b.Id))
+                .List<int>();
+
+            return list;
+        }
+
         public ISet<int> FindExists(IEnumerable<int> apps) {
             IList<int> list = session.CreateCriteria<AppBrief>()
                 .Add(Restrictions.InG("Id", apps))

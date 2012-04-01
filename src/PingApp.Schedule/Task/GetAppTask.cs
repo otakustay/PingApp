@@ -7,11 +7,23 @@ using System.Data;
 using System.Configuration;
 using System.Diagnostics;
 using PingApp.Schedule.Storage;
+using Ninject;
+using PingApp.Repository.NHibernate.Dependency;
+using PingApp.Repository;
+using System.Collections;
 
 namespace PingApp.Schedule.Task {
     class GetAppTask : TaskNode {
         private readonly bool computeDiff;
 
+        private readonly IKernel kernel;
+
+        public GetAppTask(bool computeDiff, IKernel kernel) {
+            this.computeDiff = computeDiff;
+            this.kernel = kernel;
+        }
+
+        // TODO: Remove
         public GetAppTask(bool computeDiff) {
             this.computeDiff = computeDiff;
         }
@@ -24,11 +36,21 @@ namespace PingApp.Schedule.Task {
             List<int> list = new List<int>(500000);
             int offset = 0;
             int size = Program.BatchSize * 8;
-            using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["PingApp"].ConnectionString)) {
-                connection.Open();
-                List<int> page;
+
+            using (SessionStore sessionStore = new SessionStore()) {
+                kernel.Rebind<IDictionary>().ToConstant(sessionStore);
+                RepositoryEmitter repository = kernel.Get<RepositoryEmitter>();
+
+                ICollection<int> page;
                 do {
-                    page = GetPartition(connection, offset, size);
+                    Stopwatch regionWatch = new Stopwatch();
+                    regionWatch.Start();
+
+                    page = repository.App.RetrieveIdentities(offset, size);
+
+                    regionWatch.Stop();
+                    Log.Info("Retrieved {0} records from db using {1}ms", page.Count, regionWatch.ElapsedMilliseconds);
+
                     list.AddRange(page);
                     offset += size;
                 }
@@ -39,7 +61,7 @@ namespace PingApp.Schedule.Task {
 
             IStorage output = new MemoryStorage();
             if (computeDiff) {
-                HashSet<int> set = input.Get<HashSet<int>>();
+                ISet<int> set = input.Get<ISet<int>>();
                 set.ExceptWith(list);
                 Log.Info("Diff done, found {0} difference", set.Count);
                 output.Add(set);
@@ -48,7 +70,6 @@ namespace PingApp.Schedule.Task {
                 output.Add(list);
             }
 
-            output.Add(list);
             return output;
         }
 
