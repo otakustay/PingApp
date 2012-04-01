@@ -63,26 +63,13 @@ namespace PingApp.Schedule.Task {
             if (computeDiff && compareBase != null) {
                 List<App> filtered = new List<App>();
                 foreach (App app in apps) {
-                    string hash = compareBase[app.Id];
-                    int changeset = Convert.ToInt32(hash.Substring(0, 2), 16);
-                    try {
-                        if (Utility.ComputeAppHash(app, changeset) != hash.Substring(2)) {
-                            filtered.Add(app);
-                            Log.Debug("{0} differs from origin", app.Id);
-                        }
-                    }
-                    catch (Exception ex) {
-                        Log.ErrorException(
-                            String.Format(
-                                "Failed to compute hash for app: {0}", 
-                                Newtonsoft.Json.JsonConvert.SerializeObject(app, Newtonsoft.Json.Formatting.Indented)
-                            ), 
-                            ex
-                        );
+                    if (app.Brief.Hash != compareBase[app.Id]) {
+                        filtered.Add(app);
+                        Log.Debug("{0} differs from origin", app.Id);
                     }
                 }
-                apps = filtered.ToArray();
                 Log.Info("Diffs {0} entries out of {1} using hash", filtered.Count, apps.Length);
+                apps = filtered.ToArray();
             }
             output.Add(apps);
         }

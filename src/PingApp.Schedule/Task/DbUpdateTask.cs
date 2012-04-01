@@ -162,7 +162,7 @@ namespace PingApp.Schedule.Task {
                                 updated.Add(app);
                             }
                             catch (DbException ex) {
-                                Log.ErrorException("Failed update app " + app.Id + " manually change hash to " + Utility.ComputeAppHash(app, 0), ex);
+                                Log.ErrorException("Failed update app " + app.Id + " manually change hash to " + app.Brief.Hash, ex);
                             }
                         }
                     }

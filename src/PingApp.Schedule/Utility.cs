@@ -68,7 +68,7 @@ namespace PingApp.Schedule {
                 app.ContentRating = token["trackContentRating"].Value<string>() ?? String.Empty;
                 app.Languages = token["languageCodesISO2A"].Values<string>().ToArray();
                 app.Seller = new Seller(
-                    token["sellerName"].Value<string>() ?? String.Empty, 
+                    token["sellerName"].Value<string>() ?? String.Empty,
                     token["sellerUrl"] == null ? String.Empty : token["sellerUrl"].Value<string>() ?? String.Empty
                 );
                 app.Categories = token["genreIds"].Values<int>().Select(i => Category.Get(i)).Where(c => c != null).ToArray();
@@ -87,11 +87,11 @@ namespace PingApp.Schedule {
                 brief.LanguagePriority = GetLanguagePriority(app.Languages);
                 brief.PrimaryCategory = Category.Get(token["primaryGenreId"].Value<int>());
                 brief.Developer = new Developer(
-                    token["artistId"].Value<int>(), 
-                    token["artistName"].Value<string>() ?? String.Empty, 
+                    token["artistId"].Value<int>(),
+                    token["artistName"].Value<string>() ?? String.Empty,
                     token["artistViewUrl"] == null ? String.Empty : token["artistViewUrl"].Value<string>() ?? String.Empty
                 );
-                brief.Hash = Utility.ComputeAppHash(app, 0);
+                brief.Hash = Utility.ComputeAppHash(app);
 
                 apps.Add(app);
             }
@@ -148,14 +148,7 @@ namespace PingApp.Schedule {
             return JsonConvert.DeserializeObject<T>(text, settings);
         }
 
-        public static string ComputeAppHash(App app, int changeset) {
-            /*
-             * changeset
-             *   1 - iconUrl
-             *   2 - largeIconUrl
-             *   4 - screenshotUrls
-             *   5 - ipadScreenshotUrls
-             */
+        public static string ComputeAppHash(App app) {
             // 所有参与app的Equals运算的都加入
             string all = String.Empty;
             all += app.AverageUserRating.ToString();
@@ -165,17 +158,11 @@ namespace PingApp.Schedule {
             all += app.ContentRating;
             all += app.Description;
             all += app.Id.ToString();
-            if ((changeset & 8) != 8) {
-                all += String.Join(",", app.IPadScreenshotUrls.OrderBy(s => s));
-            }
+            all += String.Join(",", app.IPadScreenshotUrls.OrderBy(s => s));
             all += String.Join(",", app.Languages.OrderBy(s => s));
-            if ((changeset & 2) != 2) {
-                all += app.LargeIconUrl;
-            }
+            all += app.LargeIconUrl;
             all += app.ReleaseNotes;
-            if ((changeset & 4) != 4) {
-                all += String.Join(",", app.ScreenshotUrls.OrderBy(s => s));
-            }
+            all += String.Join(",", app.ScreenshotUrls.OrderBy(s => s));
             all += app.Seller.Name;
             all += app.Seller.ViewUrl;
             all += app.UserRatingCount.ToString();
@@ -186,9 +173,7 @@ namespace PingApp.Schedule {
             all += app.Brief.Developer.ViewUrl;
             all += String.Join(",", app.Brief.Features.OrderBy(s => s));
             all += app.Brief.FileSize.ToString();
-            if ((changeset & 1) != 1) {
-                all += app.Brief.IconUrl;
-            }
+            all += app.Brief.IconUrl;
             all += app.Brief.Introduction;
             all += app.Brief.LanguagePriority.ToString();
             all += app.Brief.Name;

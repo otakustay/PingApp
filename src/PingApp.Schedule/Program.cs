@@ -29,12 +29,11 @@ namespace PingApp.Schedule {
 
             IKernel kernel = new StandardKernel();
             SessionStore sessionStore = new SessionStore();
-            //kernel.Bind<IDictionary>().ToConstant(sessionStore).InSingletonScope();
-            //kernel.Bind<SessionStore>().ToConstant(sessionStore).InSingletonScope();
             kernel.Bind<RepositoryEmitter>().ToSelf();
             kernel.Load(new NHibernateRepositoryModule());
             kernel.Load(new InitializeModule());
             kernel.Load(new RssFeedCheckModule());
+            kernel.Load(new UpdateModule());
 
             switch (action) {
                 case ActionType.Initialize:
@@ -44,13 +43,7 @@ namespace PingApp.Schedule {
                     tasks = kernel.Get<TaskNode[]>(ActionType.RssCheck.ToString());
                     break;
                 case ActionType.Update:
-                    tasks = new TaskNode[] {
-                        new GetAppHashTask(),
-                        new SearchApiTask(true),
-                        new DbUpdateTask(DbCheckType.CheckForUpdate, true),
-                        new IndexTask(true),
-                        new MailTask()
-                    };
+                    tasks = kernel.Get<TaskNode[]>(ActionType.Update.ToString());
                     break;
                 case ActionType.FullCheck:
                     tasks = new TaskNode[] {
