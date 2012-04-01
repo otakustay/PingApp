@@ -51,11 +51,6 @@ namespace PingApp.Schedule {
                 case ActionType.FullCheck:
                     tasks = kernel.Get<TaskNode[]>(ActionType.FullCheck.ToString());
                     break;
-                case ActionType.TestSearch:
-                    tasks = new TaskNode[] {
-                        new TestSearchTask(args.Skip(1))
-                    };
-                    break;
                 case ActionType.AddApp:
                     tasks = kernel.Get<TaskNode[]>(ActionType.AddApp.ToString());
                     input = new MemoryStorage();
