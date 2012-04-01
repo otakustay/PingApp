@@ -14,6 +14,7 @@ using Ninject;
 using PingApp.Repository.NHibernate.Dependency;
 using System.Collections;
 using PingApp.Schedule.Dependency;
+using PingApp.Repository;
 
 namespace PingApp.Schedule {
     class Program {
@@ -28,25 +29,19 @@ namespace PingApp.Schedule {
 
             IKernel kernel = new StandardKernel();
             SessionStore sessionStore = new SessionStore();
-            kernel.Bind<IDictionary>().ToConstant(sessionStore).InSingletonScope();
-            kernel.Bind<SessionStore>().ToConstant(sessionStore).InSingletonScope();
+            //kernel.Bind<IDictionary>().ToConstant(sessionStore).InSingletonScope();
+            //kernel.Bind<SessionStore>().ToConstant(sessionStore).InSingletonScope();
+            kernel.Bind<RepositoryEmitter>().ToSelf();
             kernel.Load(new NHibernateRepositoryModule());
             kernel.Load(new InitializeModule());
-
-            TaskNode[] nodes = kernel.Get<TaskNode[]>();
-            Console.WriteLine(nodes);
+            kernel.Load(new RssFeedCheckModule());
 
             switch (action) {
                 case ActionType.Initialize:
                     tasks = kernel.Get<TaskNode[]>(ActionType.Initialize.ToString());
                     break;
                 case ActionType.RssCheck:
-                    tasks = new TaskNode[] {
-                        new RssFeedCheckTask(),
-                        new SearchApiTask(false),
-                        new DbUpdateTask(DbCheckType.DiscardUpdate, false),
-                        new IndexTask(true)
-                    };
+                    tasks = kernel.Get<TaskNode[]>(ActionType.RssCheck.ToString());
                     break;
                 case ActionType.Update:
                     tasks = new TaskNode[] {
