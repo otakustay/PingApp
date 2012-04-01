@@ -22,7 +22,7 @@ namespace PingApp.Repository.NHibernate.Dependency {
         public override void Load() {
             string connectionString = ConfigurationManager.ConnectionStrings["PingApp"].ConnectionString;
             ISessionFactory sessionFactory = Fluently.Configure()
-                .Database(MySQLConfiguration.Standard.ConnectionString(connectionString).ShowSql())
+                .Database(MySQLConfiguration.Standard.ConnectionString(connectionString))
                 .Mappings(m => m.FluentMappings.Add<AppUpdateEntityMap>())
                 .Mappings(m => m.FluentMappings.Add<AppEntityMap>())
                 .Mappings(m => m.FluentMappings.Add<AppBriefEntityMap>())

@@ -13,11 +13,9 @@ namespace PingApp.Repository.NHibernate.Dependency {
         }
 
         public SessionStore() {
-            Console.WriteLine("SessionStore: Session store constructed");
         }
 
         public void Dispose() {
-            Console.WriteLine("SessionStore: Session store disposed");
             DiscardCurrentSession();
         }
 
@@ -27,20 +25,17 @@ namespace PingApp.Repository.NHibernate.Dependency {
 
         public void CommitTransaction() {
             if (Session != null && Session.Transaction != null && Session.Transaction.IsActive) {
-                Console.WriteLine("SessionStore: Commit transaction");
                 Session.Transaction.Commit();
             }
         }
 
         public void RollbackTransaction() {
             if (Session != null && Session.Transaction != null && Session.Transaction.IsActive) {
-                Console.WriteLine("SessionStore: Rollback transaction");
                 Session.Transaction.Rollback();
             }
         }
 
         public void DiscardCurrentSession() {
-            Console.WriteLine("SessionStore: Discard current session");
             if (Session != null) {
                 Session.Flush();
                 Session.Dispose();

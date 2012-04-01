@@ -71,26 +71,29 @@ namespace PingApp.Schedule.Task {
             }
 
             watch.Stop();
-            Log.Info("Work done using {0:00}:{1:00}", watch.Elapsed.Minutes, watch.Elapsed.Seconds);
+            Log.Info("Work done using {0:00}:{1:00}:{2:00}", watch.Elapsed.Hours, watch.Elapsed.Minutes, watch.Elapsed.Seconds);
 
             return output;
         }
 
         private void UpdateToDb(App[] list, IStorage output) {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
             using (SessionStore sessionStore = new SessionStore()) {
                 kernel.Rebind<IDictionary>().ToConstant(sessionStore);
                 RepositoryEmitter repository = kernel.Get<RepositoryEmitter>();
                 sessionStore.BeginTransaction();
                 try {
-                    // 纯写入
-                    if (checkType == DbCheckType.ForceInsert) {
-                        UpdateWithNoCheck(list, output, repository);
-                    }
-                    // 检查更新项
-                    else {
-                        UpdateWithCheck(list, output, repository);
-                    }
+                    int count = checkType == DbCheckType.ForceInsert ?
+                        UpdateWithNoCheck(list, output, repository) : // 纯写入
+                        UpdateWithCheck(list, output, repository); // 检查更新项
+                    
                     sessionStore.CommitTransaction();
+                    watch.Stop();
+                    if (count >= 0) {
+                        Log.Info("{0} out of {1} records commited via type using {2}ms", count, list.Length, watch.ElapsedMilliseconds);
+                    }
                 }
                 catch (Exception ex) {
                     Log.ErrorException("Update to db failed with --db-check-type=" + checkType, ex);
@@ -99,7 +102,7 @@ namespace PingApp.Schedule.Task {
             }
         }
 
-        private void UpdateWithCheck(App[] list, IStorage output, RepositoryEmitter repository) {
+        private int UpdateWithCheck(App[] list, IStorage output, RepositoryEmitter repository) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
@@ -117,12 +120,11 @@ namespace PingApp.Schedule.Task {
                     Log.ErrorException("Error checking apps with db", ex);
                     string filename = Path.Combine(LogRoot, "error-" + list.GetHashCode() + "-" + list.Length + ".txt");
                     File.WriteAllText(filename, Utility.JsonSerialize(list), Encoding.UTF8);
-                    return;
+                    return -1;
                 }
 
                 watch.Stop();
                 Log.Info("{0} records checked with db using {1}ms, {2} new apps assumed", exists.Count, watch.ElapsedMilliseconds, list.Length - exists.Count);
-                watch.Start();
 
                 foreach (App app in list.Where(a => !exists.Contains(a.Id))) {
                     InsertNewApp(app, repository);
@@ -139,12 +141,11 @@ namespace PingApp.Schedule.Task {
                     Log.ErrorException("Error retrieving apps from db", ex);
                     string filename = Path.Combine(LogRoot, "error-" + list.GetHashCode() + "-" + list.Length + ".txt");
                     File.WriteAllText(filename, Utility.JsonSerialize(list), Encoding.UTF8);
-                    return;
+                    return -1;
                 }
 
                 watch.Stop();
                 Log.Info("{0} records retrieved from db using {1}ms, {2} new apps assumed", compareBase.Count, watch.ElapsedMilliseconds, list.Length - compareBase.Count);
-                watch.Start();
 
                 foreach (App app in list) {
                     // 更新
@@ -172,21 +173,18 @@ namespace PingApp.Schedule.Task {
             output.Get<List<App>>("New").AddRange(added);
             output.Get<List<App>>("Updated").AddRange(updated);
 
-            Log.Info("{0} records commited using {1}ms", added.Count + updated.Count, watch.ElapsedMilliseconds);
             Log.Debug("Added: " + String.Join(",", added.Select(a => a.Id).ToArray()));
             Log.Debug("Updated: " + String.Join(",", updated.Select(a => a.Id).ToArray()));
+
+            return added.Count + updated.Count;
         }
 
-        private void UpdateWithNoCheck(App[] list, IStorage output, RepositoryEmitter repository) {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
+        private int UpdateWithNoCheck(App[] list, IStorage output, RepositoryEmitter repository) {
             try {
                 foreach (App app in list) {
                     InsertNewApp(app, repository);
                 }
-                watch.Stop();
-                Log.Info("{0} records commited using {1}ms", list.Length, watch.ElapsedMilliseconds);
+
             }
             catch (Exception ex) {
                 Log.ErrorException("InsertWithNoCheck failed", ex);
@@ -200,6 +198,8 @@ namespace PingApp.Schedule.Task {
             if (Action == ActionType.Initialize) {
                 output.Add(list);
             }
+
+            return list.Length;
         }
 
         private void InsertNewApp(App app, RepositoryEmitter repository) {
