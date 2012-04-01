@@ -20,6 +20,7 @@ using PingApp.Repository.NHibernate;
 using Ninject.Activation.Blocks;
 using PingApp.Repository;
 using PingApp.Repository.NHibernate.Dependency;
+using System.Collections;
 
 namespace PingApp.Schedule.Task {
     class DbUpdateTask : TaskNode {
@@ -27,13 +28,7 @@ namespace PingApp.Schedule.Task {
 
         private readonly bool checkOffUpdates;
 
-        private readonly IAppRepository appRepository;
-
-        private readonly IAppUpdateRepository appUpdateRepository;
-
-        private readonly IAppTrackRepository appTrackRepository;
-
-        private readonly SessionStore sessionStore;
+        private readonly IKernel kernel;
 
         private readonly List<AppUpdate> validUpdates = new List<AppUpdate>();
 
@@ -43,15 +38,10 @@ namespace PingApp.Schedule.Task {
             this.checkOffUpdates = checkOffUpdates;
         }
 
-        public DbUpdateTask(DbCheckType checkType, bool checkOffUpdates,
-            IAppRepository appRepository, IAppUpdateRepository appUpdateRepository,
-            IAppTrackRepository appTrackRepository, SessionStore sessionStore) {
+        public DbUpdateTask(DbCheckType checkType, bool checkOffUpdates, IKernel kernel) {
             this.checkType = checkType;
             this.checkOffUpdates = checkOffUpdates;
-            this.appRepository = appRepository;
-            this.appUpdateRepository = appUpdateRepository;
-            this.appTrackRepository = appTrackRepository;
-            this.sessionStore = sessionStore;
+            this.kernel = kernel;
         }
 
         protected override IStorage RunTask(IStorage input) {
@@ -93,26 +83,29 @@ namespace PingApp.Schedule.Task {
         }
 
         private void UpdateToDb(App[] list, IStorage output) {
-            sessionStore.BeginTransaction();
-            try {
-                // 纯写入
-                if (checkType == DbCheckType.ForceInsert) {
-                    UpdateWithNoCheck(list, output);
+            using (SessionStore sessionStore = new SessionStore()) {
+                kernel.Rebind<IDictionary>().ToConstant(sessionStore);
+                RepositoryEmitter repository = kernel.Get<RepositoryEmitter>();
+                sessionStore.BeginTransaction();
+                try {
+                    // 纯写入
+                    if (checkType == DbCheckType.ForceInsert) {
+                        UpdateWithNoCheck(list, output, repository);
+                    }
+                    // 检查更新项
+                    else {
+                        UpdateWithCheck(list, output, repository);
+                    }
+                    sessionStore.CommitTransaction();
                 }
-                // 检查更新项
-                else {
-                    UpdateWithCheck(list, output);
+                catch (Exception ex) {
+                    Log.ErrorException("Update to db failed with --db-check-type=" + checkType, ex);
+                    sessionStore.RollbackTransaction();
                 }
-                sessionStore.CommitTransaction();
             }
-            catch (Exception ex) {
-                Log.ErrorException("Update to db failed with --db-check-type=" + checkType, ex);
-                sessionStore.RollbackTransaction();
-            }
-            sessionStore.DiscardCurrentSession();
         }
 
-        private void UpdateWithCheck(App[] list, IStorage output) {
+        private void UpdateWithCheck(App[] list, IStorage output, RepositoryEmitter repository) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
@@ -124,7 +117,7 @@ namespace PingApp.Schedule.Task {
                 // 虽然前面RssFeed之类的已经找过，但这里有事务，更安全
                 ISet<int> exists;
                 try {
-                    exists = appRepository.FindExists(list.Select(a => a.Id));
+                    exists = repository.App.FindExists(list.Select(a => a.Id));
                 }
                 catch (Exception ex) {
                     Log.ErrorException("Error checking apps with db", ex);
@@ -138,7 +131,7 @@ namespace PingApp.Schedule.Task {
                 watch.Start();
 
                 foreach (App app in list.Where(a => !exists.Contains(a.Id))) {
-                    InsertNewApp(app);
+                    InsertNewApp(app, repository);
                     added.Add(app);
                 }
             }
@@ -146,7 +139,7 @@ namespace PingApp.Schedule.Task {
                 // 全量更新
                 Dictionary<int, App> compareBase;
                 try {
-                    compareBase = appRepository.Retrieve(list.Select(a => a.Id)).ToDictionary(a => a.Id);
+                    compareBase = repository.App.Retrieve(list.Select(a => a.Id)).ToDictionary(a => a.Id);
                 }
                 catch (Exception ex) {
                     Log.ErrorException("Error retrieving apps from db", ex);
@@ -165,7 +158,7 @@ namespace PingApp.Schedule.Task {
                         App origin = compareBase[app.Id];
                         if (!origin.Equals(app)) {
                             try {
-                                UpdateApp(origin, app);
+                                UpdateApp(origin, app, repository);
                                 updated.Add(app);
                             }
                             catch (DbException ex) {
@@ -176,7 +169,7 @@ namespace PingApp.Schedule.Task {
                     // 新建，理论上不会有这一环节
                     else {
                         Log.Warn("Weired hit at insert branch on --check-type=CheckForUpdate");
-                        InsertNewApp(app);
+                        InsertNewApp(app, repository);
                         added.Add(app);
                     }
                 }
@@ -190,13 +183,13 @@ namespace PingApp.Schedule.Task {
             Log.Debug("Updated: " + String.Join(",", updated.Select(a => a.Id).ToArray()));
         }
 
-        private void UpdateWithNoCheck(App[] list, IStorage output) {
+        private void UpdateWithNoCheck(App[] list, IStorage output, RepositoryEmitter repository) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
             try {
                 foreach (App app in list) {
-                    InsertNewApp(app);
+                    InsertNewApp(app, repository);
                 }
                 watch.Stop();
                 Log.Info("{0} records commited using {1}ms", list.Length, watch.ElapsedMilliseconds);
@@ -215,7 +208,7 @@ namespace PingApp.Schedule.Task {
             }
         }
 
-        private void InsertNewApp(App app) {
+        private void InsertNewApp(App app, RepositoryEmitter repository) {
             app.Brief.LastValidUpdate = new AppUpdate() {
                 Time = DateTime.Now,
                 Type = AppUpdateType.New,
@@ -223,30 +216,30 @@ namespace PingApp.Schedule.Task {
                 OldValue = String.Empty
             };
             // App和AppBrief之间没有Cascade设置
-            appRepository.Save(app);
-            appRepository.Save(app.Brief);
+            repository.App.Save(app);
+            repository.App.Save(app.Brief);
             AppUpdate updateForNew = new AppUpdate() {
                 App = app.Id,
                 Time = app.Brief.ReleaseDate.Date,
                 Type = AppUpdateType.New,
                 OldValue = app.Brief.Version + ", $" + app.Brief.Price
             };
-            appUpdateRepository.Save(updateForNew);
+            repository.AppUpdate.Save(updateForNew);
             AppUpdate updateForAdd = new AppUpdate() {
                 App = app.Id,
                 Time = app.Brief.LastValidUpdate.Time,
                 Type = AppUpdateType.AddToNote,
                 OldValue = app.Brief.Version + ", $" + app.Brief.Price
             };
-            appUpdateRepository.Save(updateForAdd);
+            repository.AppUpdate.Save(updateForAdd);
         }
 
-        private void UpdateApp(App origin, App app) {
+        private void UpdateApp(App origin, App app, RepositoryEmitter repository) {
             List<AppUpdate> updates = origin.Brief.CheckForUpdate(app.Brief);
             validUpdates.AddRange(updates.Where(u => AppUpdate.IsValidUpdate(u.Type)));
             // 添加更新信息
             foreach (AppUpdate update in updates) {
-                appUpdateRepository.Save(update);
+                repository.AppUpdate.Save(update);
                 if (AppUpdate.IsValidUpdate(update.Type)) {
                     app.Brief.LastValidUpdate = update;
                 }
@@ -256,11 +249,11 @@ namespace PingApp.Schedule.Task {
             }
 
             // App和AppBrief之间没有Cascade设置
-            appRepository.Update(app);
-            appRepository.Update(app.Brief);
+            repository.App.Update(app);
+            repository.App.Update(app.Brief);
 
             // 更新Track数据
-            int rows = appTrackRepository.ResetForApp(app.Id);
+            int rows = repository.AppTrack.ResetForApp(app.Id);
             Log.Debug("{0} track infos updated for app {1} - {2}", rows, app.Id, app.Brief.Name);
         }
 
@@ -272,37 +265,40 @@ namespace PingApp.Schedule.Task {
             DateTime now = DateTime.Now;
             int count = 0;
 
-            sessionStore.BeginTransaction();
-            try {
-                foreach (int id in list) {
-                    AppBrief brief = appRepository.RetrieveBrief(id);
-                    // 先确定是不是已经Off了
-                    if (brief.IsActive) {
-                        AppUpdate update = new AppUpdate() {
-                            App = id,
-                            Time = now,
-                            Type = AppUpdateType.Off,
-                            OldValue = String.Format("{0}, ￥{1}", brief.Version, brief.Price)
-                        };
-                        appUpdateRepository.Save(update);
-                        count++;
+            using (SessionStore sessionStore = new SessionStore()) {
+                kernel.Rebind<IDictionary>().ToConstant(sessionStore);
+                RepositoryEmitter repository = kernel.Get<RepositoryEmitter>();
+                sessionStore.BeginTransaction();
+                try {
+                    foreach (int id in list) {
+                        AppBrief brief = repository.App.RetrieveBrief(id);
+                        // 先确定是不是已经Off了
+                        if (brief.IsActive) {
+                            AppUpdate update = new AppUpdate() {
+                                App = id,
+                                Time = now,
+                                Type = AppUpdateType.Off,
+                                OldValue = String.Format("{0}, ￥{1}", brief.Version, brief.Price)
+                            };
+                            repository.AppUpdate.Save(update);
+                            count++;
 
-                        // 更新为IsValid为false
-                        brief.IsActive = false;
-                        appRepository.Update(brief);
+                            // 更新为IsValid为false
+                            brief.IsActive = false;
+                            repository.App.Update(brief);
+                        }
+                        else {
+                            Log.Trace("Off update for {0} is dismissed because the app is already invalid", id);
+                        }
+                        // Off不作为ValidUpdate更新
+                        sessionStore.CommitTransaction();
                     }
-                    else {
-                        Log.Trace("Off update for {0} is dismissed because the app is already invalid", id);
-                    }
-                    // Off不作为ValidUpdate更新
-                    sessionStore.CommitTransaction();
+                }
+                catch (Exception ex) {
+                    Log.ErrorException("Add off updates failed", ex);
+                    sessionStore.RollbackTransaction();
                 }
             }
-            catch (Exception ex) {
-                Log.ErrorException("Add off updates failed", ex);
-                sessionStore.RollbackTransaction();
-            }
-            sessionStore.DiscardCurrentSession();
 
             watch.Stop();
             Log.Info("{0} off updates added using {1}ms, {2} dismissed", count, watch.ElapsedMilliseconds, list.Count - count);
