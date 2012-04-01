@@ -23,11 +23,6 @@ namespace PingApp.Schedule.Task {
             this.kernel = kernel;
         }
 
-        // TODO: Remove
-        public GetAppTask(bool computeDiff) {
-            this.computeDiff = computeDiff;
-        }
-
         protected override IStorage RunTask(IStorage input) {
             Log.Info("Start retrieving all records from db using --compute-diff={0}", computeDiff);
             Stopwatch watch = new Stopwatch();

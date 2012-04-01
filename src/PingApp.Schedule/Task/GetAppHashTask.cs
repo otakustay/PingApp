@@ -16,12 +16,6 @@ namespace PingApp.Schedule.Task {
     class GetAppHashTask : TaskNode {
         private readonly IKernel kernel;
 
-
-        // TODO: Remove
-        public GetAppHashTask() {
-
-        }
-
         public GetAppHashTask(IKernel kernel) {
             this.kernel = kernel;
         }
@@ -45,7 +39,9 @@ namespace PingApp.Schedule.Task {
                     do {
                         Stopwatch regionWatch = new Stopwatch();
                         regionWatch.Start();
+
                         page = repository.App.RetrieveHash(offset, size);
+
                         regionWatch.Stop();
                         Log.Info("Retrieved {0} records from db using {1}ms", page.Count, regionWatch.ElapsedMilliseconds);
 

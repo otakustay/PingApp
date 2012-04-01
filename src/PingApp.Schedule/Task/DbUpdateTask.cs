@@ -32,12 +32,6 @@ namespace PingApp.Schedule.Task {
 
         private readonly List<AppUpdate> validUpdates = new List<AppUpdate>();
 
-        // TODO: Remove
-        public DbUpdateTask(DbCheckType checkType, bool checkOffUpdates) {
-            this.checkType = checkType;
-            this.checkOffUpdates = checkOffUpdates;
-        }
-
         public DbUpdateTask(DbCheckType checkType, bool checkOffUpdates, IKernel kernel) {
             this.checkType = checkType;
             this.checkOffUpdates = checkOffUpdates;
