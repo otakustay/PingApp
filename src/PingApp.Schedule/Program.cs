@@ -35,6 +35,7 @@ namespace PingApp.Schedule {
             kernel.Load(new RssFeedCheckModule());
             kernel.Load(new UpdateModule());
             kernel.Load(new FullCheckModule());
+            kernel.Load(new AddAppModule());
 
             switch (action) {
                 case ActionType.Initialize:
@@ -55,11 +56,7 @@ namespace PingApp.Schedule {
                     };
                     break;
                 case ActionType.AddApp:
-                    tasks = new TaskNode[] {
-                        new SearchApiTask(false),
-                        new DbUpdateTask(DbCheckType.ForceInsert, false),
-                        new IndexTask(true)
-                    };
+                    tasks = kernel.Get<TaskNode[]>(ActionType.AddApp.ToString());
                     input = new MemoryStorage();
                     input.Add(new int[] { Convert.ToInt32(args[1]) });
                     break;

@@ -108,6 +108,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Buffer.cs" />
+    <Compile Include="Dependency\AddAppModule.cs" />
+    <Compile Include="Dependency\FullCheckModule.cs" />
     <Compile Include="Dependency\InitializeModule.cs" />
     <Compile Include="Dependency\RssFeedCheckModule.cs" />
     <Compile Include="Dependency\UpdateModule.cs" />
