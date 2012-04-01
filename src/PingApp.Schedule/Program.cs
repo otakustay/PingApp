@@ -36,6 +36,7 @@ namespace PingApp.Schedule {
             kernel.Load(new UpdateModule());
             kernel.Load(new FullCheckModule());
             kernel.Load(new AddAppModule());
+            kernel.Load(new TestModule());
 
             switch (action) {
                 case ActionType.Initialize:
@@ -83,9 +84,7 @@ namespace PingApp.Schedule {
                     };
                     break;
                 case ActionType.Test:
-                    tasks = new TaskNode[] {
-                        new TestTask()
-                    };
+                    tasks = kernel.Get<TaskNode[]>(ActionType.Test.ToString());
                     break;
                 default:
                     tasks = new TaskNode[0];
