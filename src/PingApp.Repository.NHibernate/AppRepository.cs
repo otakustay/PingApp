@@ -19,8 +19,26 @@ namespace PingApp.Repository.NHibernate {
             return session.Get<AppBrief>(id);
         }
 
-        public void Update(AppBrief brief) {
-            session.Update(brief);
+        public ICollection<App> Retrieve(IEnumerable<int> required) {
+            ICollection<App> result = session.QueryOver<App>()
+                .Where(Restrictions.InG("Id", required))
+                .List();
+
+            return result;
+        }
+
+        public IDictionary<int, string> RetrieveHash(int offset, int limit) {
+            ICollection<object[]> result = session.CreateCriteria<AppBrief>()
+                .SetFirstResult(offset)
+                .SetMaxResults(limit)
+                .SetProjection(Projections.Property<AppBrief>(b => b.Id), Projections.Property<AppBrief>(b => b.Hash))
+                .List<object[]>();
+
+            return result.ToDictionary(o => (int)o[0], o => (string)o[1]);
+        }
+
+        public IDictionary<int, string> RetrieveHash(IEnumerable<int> apps) {
+            throw new NotImplementedException();
         }
 
         public ISet<int> FindExists(IEnumerable<int> apps) {
@@ -32,14 +50,6 @@ namespace PingApp.Repository.NHibernate {
             return new HashSet<int>(list);
         }
 
-        public ICollection<App> Retrieve(IEnumerable<int> required) {
-            ICollection<App> result = session.QueryOver<App>()
-                .Where(Restrictions.InG("Id", required))
-                .List();
-
-            return result;
-        }
-
         public void Save(App app) {
             session.Save(app);
         }
@@ -49,7 +59,11 @@ namespace PingApp.Repository.NHibernate {
         }
 
         public void Update(App app) {
-            session.Update(app);
+            session.Merge(app);
+        }
+
+        public void Update(AppBrief brief) {
+            session.Merge(brief);
         }
     }
 }

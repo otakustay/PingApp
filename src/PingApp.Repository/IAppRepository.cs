@@ -21,5 +21,9 @@ namespace PingApp.Repository {
         ISet<int> FindExists(IEnumerable<int> apps);
 
         ICollection<App> Retrieve(IEnumerable<int> required);
+
+        IDictionary<int, string> RetrieveHash(int offset, int limit);
+
+        IDictionary<int, string> RetrieveHash(IEnumerable<int> apps);
     }
 }
