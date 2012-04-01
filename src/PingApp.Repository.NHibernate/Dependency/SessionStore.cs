@@ -42,9 +42,9 @@ namespace PingApp.Repository.NHibernate.Dependency {
         public void DiscardCurrentSession() {
             Console.WriteLine("SessionStore: Discard current session");
             if (Session != null) {
-                CommitTransaction();
                 Session.Flush();
                 Session.Dispose();
+                Clear();
             }
         }
     }
