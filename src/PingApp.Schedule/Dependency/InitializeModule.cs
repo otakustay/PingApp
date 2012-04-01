@@ -13,6 +13,7 @@ namespace PingApp.Schedule.Dependency {
                 return ActionType.Initialize.ToString();
             }
         }
+
         public override void Load() {
             Bind<FullCatalogTask>().ToSelf().Named(Name);
             Bind<SearchApiTask>().ToSelf().Named(Name)
