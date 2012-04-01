@@ -48,7 +48,7 @@ namespace PingApp.Schedule.Task {
                 "http://itunes.apple.com/cn/genre/id6007?mt=8", "http://itunes.apple.com/cn/genre/id6006?mt=8",
                 "http://itunes.apple.com/cn/genre/id6005?mt=8", "http://itunes.apple.com/cn/genre/id6004?mt=8",
                 "http://itunes.apple.com/cn/genre/id6003?mt=8", "http://itunes.apple.com/cn/genre/id6002?mt=8",
-                "http://itunes.apple.com/cn/genre/id6001?mt=8"
+                "http://itunes.apple.com/cn/genre/id6001?mt=8", "http://itunes.apple.com/cn/genre/id6022?mt=8"
             };
             extraUrls.AsParallel().ForAll(u => ParsePage(u, false));
 
