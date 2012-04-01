@@ -138,6 +138,7 @@ namespace PingApp.Schedule {
         public static string JsonSerialize(object value) {
             JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
             string text = JsonConvert.SerializeObject(value, Formatting.None, settings);
             return text;
         }
@@ -145,6 +146,7 @@ namespace PingApp.Schedule {
         public static T JsonDeserialize<T>(string text) {
             JsonSerializerSettings settings = new JsonSerializerSettings();
             settings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            settings.DateTimeZoneHandling = DateTimeZoneHandling.Local;
             return JsonConvert.DeserializeObject<T>(text, settings);
         }
 
