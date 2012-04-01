@@ -111,6 +111,7 @@
     <Compile Include="Dependency\AddAppModule.cs" />
     <Compile Include="Dependency\FullCheckModule.cs" />
     <Compile Include="Dependency\InitializeModule.cs" />
+    <Compile Include="Dependency\RebuildIndexModule.cs" />
     <Compile Include="Dependency\RssFeedCheckModule.cs" />
     <Compile Include="Dependency\TestModule.cs" />
     <Compile Include="Dependency\UpdateAppModule.cs" />

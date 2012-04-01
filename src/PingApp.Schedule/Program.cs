@@ -38,6 +38,7 @@ namespace PingApp.Schedule {
             kernel.Load(new AddAppModule());
             kernel.Load(new TestModule());
             kernel.Load(new UpdateAppModule());
+            kernel.Load(new RebuildIndexModule());
 
             switch (action) {
                 case ActionType.Initialize:
@@ -63,11 +64,7 @@ namespace PingApp.Schedule {
                     input.Add(args.Skip(1).Select(s => Convert.ToInt32(s)));
                     break;
                 case ActionType.RebuildIndex:
-                    tasks = new TaskNode[] {
-                        new GetAppTask(false),
-                        new GetFullAppTask(),
-                        new IndexTask(false)
-                    };
+                    tasks = kernel.Get<TaskNode[]>(ActionType.RebuildIndex.ToString());
                     break;
                 case ActionType.Top100Check:
                     tasks = new TaskNode[] {
