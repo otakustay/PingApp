@@ -114,6 +114,7 @@
     <Compile Include="Dependency\RebuildIndexModule.cs" />
     <Compile Include="Dependency\RssFeedCheckModule.cs" />
     <Compile Include="Dependency\TestModule.cs" />
+    <Compile Include="Dependency\Top100CheckModule.cs" />
     <Compile Include="Dependency\UpdateAppModule.cs" />
     <Compile Include="Dependency\UpdateModule.cs" />
     <Compile Include="FullApp.cs" />
