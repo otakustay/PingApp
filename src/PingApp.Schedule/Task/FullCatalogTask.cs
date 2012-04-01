@@ -14,7 +14,7 @@ using System.Configuration;
 
 namespace PingApp.Schedule.Task {
     class FullCatalogTask : TaskNode {
-        private readonly HashSet<int> set = new HashSet<int>();
+        private readonly ISet<int> set = new SortedSet<int>();
 
         private readonly List<string> error = new List<string>();
 
