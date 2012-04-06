@@ -51,6 +51,8 @@ namespace PingApp.Entity {
 
         private static readonly Dictionary<int, Category> all;
 
+        private static readonly Dictionary<int, Category> games;
+
         private static readonly Dictionary<string, Category> byAlias;
 
         private static readonly Dictionary<int, Category> translator;
@@ -90,6 +92,12 @@ namespace PingApp.Entity {
             }
         }
 
+        public static IEnumerable<Category> Games {
+            get {
+                return games.Values;
+            }
+        }
+
         static Category() {
             all = new Dictionary<int, Category>() {
                 { 6018, new Category(6018, "图书", "books") },
@@ -113,6 +121,27 @@ namespace PingApp.Entity {
                 { 6003, new Category(6003, "旅行", "travel") },
                 { 6002, new Category(6002, "工具", "utilities") },
                 { 6001, new Category(6001, "天气", "weather") }
+            };
+            games = new Dictionary<int, Category>() {
+                { 7001, new Category(7001, "动作游戏", "action") },
+                { 7002, new Category(7002, "探险游戏", "adventure") },
+                { 7003, new Category(7003, "街机游戏", "arcade") },
+                { 7004, new Category(7004, "桌面游戏", "board") },
+                { 7005, new Category(7005, "扑克牌游戏", "card") },
+                { 7006, new Category(7006, "娱乐场游戏", "casino") },
+                { 7007, new Category(7007, "骰子游戏", "dice") },
+                { 7008, new Category(7008, "教育游戏", "educational") },
+                { 7009, new Category(7009, "家庭游戏", "family") },
+                { 7010, new Category(7010, "儿童游戏", "kids") },
+                { 7011, new Category(7011, "音乐", "music") },
+                { 7012, new Category(7012, "智力游戏", "puzzle") },
+                { 7013, new Category(7013, "赛车游戏", "racing") },
+                { 7014, new Category(7014, "角色扮演游戏", "role Playing") },
+                { 7015, new Category(7015, "模拟游戏", "simulation") },
+                { 7016, new Category(7016, "体育", "sports") },
+                { 7017, new Category(7017, "策略游戏", "strategy") },
+                { 7018, new Category(7018, "小游戏", "trivia") },
+                { 7019, new Category(7019, "文字游戏", "word") }
             };
             translator = new Dictionary<int, Category>() {
                 { 12001, all[6000] },
