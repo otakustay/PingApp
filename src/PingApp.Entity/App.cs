@@ -1,20 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace PingApp.Entity {
     public class App {
         private int id;
 
-        public int Id {
-            get {
-                return id;
-            }
-            set {
-                id = value;
-            }
-        }
+        public int Id { get; set; }
 
         public string Description { get; set; }
 
@@ -101,6 +95,51 @@ namespace PingApp.Entity {
 
         public override string ToString() {
             return "App: " + Id;
+        }
+
+        public static string ComputeHash(App app) {
+
+            // 所有参与app的Equals运算的都加入
+            string all = String.Empty;
+            all += app.AverageUserRating.ToString();
+            all += String.Join(",", app.Categories.Select(c => c.Id).OrderBy(i => i));
+            all += app.CensoredName;
+            all += app.ContentAdvisoryRating;
+            all += app.ContentRating;
+            all += app.Description;
+            all += app.Id.ToString();
+            all += String.Join(",", app.IPadScreenshotUrls.OrderBy(s => s));
+            all += String.Join(",", app.Languages.OrderBy(s => s));
+            all += app.LargeIconUrl;
+            all += app.ReleaseNotes;
+            all += String.Join(",", app.ScreenshotUrls.OrderBy(s => s));
+            all += app.Seller.Name;
+            all += app.Seller.ViewUrl;
+            all += app.UserRatingCount.ToString();
+            all += app.Brief.AverageUserRatingForCurrentVersion.ToString();
+            all += app.Brief.Currency;
+            all += app.Brief.Developer.Id.ToString();
+            all += app.Brief.Developer.Name;
+            all += app.Brief.Developer.ViewUrl;
+            all += String.Join(",", app.Brief.Features.OrderBy(s => s));
+            all += app.Brief.FileSize.ToString();
+            all += app.Brief.IconUrl;
+            all += app.Brief.Introduction;
+            all += app.Brief.LanguagePriority.ToString();
+            all += app.Brief.Name;
+            all += app.Brief.Price.ToString();
+            all += app.Brief.PrimaryCategory.Id.ToString();
+            all += app.Brief.ReleaseDate.ToString("yyyyMMddHHmmss");
+            all += app.Brief.ReleaseNotes;
+            all += String.Join(",", app.Brief.SupportedDevices.OrderBy(s => s));
+            all += app.Brief.UserRatingCountForCurrentVersion.ToString();
+            all += app.Brief.Version;
+            all += app.Brief.ViewUrl;
+
+            // String的Hashcode在各版本的.net和各系统的.net下都不同，还是用md5吧
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(all));
+            return BitConverter.ToString(bytes).Replace("-", String.Empty);
         }
     }
 }
