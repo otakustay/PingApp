@@ -10,6 +10,6 @@ namespace PingApp.Repository {
         // 以下为Schedule使用
         ICollection<AppTrack> RetrieveByApp(int app);
 
-        int ResetForApp(int app);
+        int ResetReadStatusByApp(int app);
     }
 }

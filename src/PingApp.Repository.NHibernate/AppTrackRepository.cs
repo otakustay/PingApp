@@ -21,7 +21,7 @@ namespace PingApp.Repository.NHibernate {
             return tracks;
         }
 
-        public int ResetForApp(int app) {
+        public int ResetReadStatusByApp(int app) {
             int rows = session.CreateSQLQuery("update AppTrack set HasRead = 0 where App = :app")
                 .SetParameter("app", app)
                 .ExecuteUpdate();
