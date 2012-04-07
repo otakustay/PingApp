@@ -5,6 +5,11 @@ using System.Text;
 
 namespace PingApp.Entity {
     public class AppBrief {
+        private static readonly Dictionary<string, string> currencySymbolMapping = new Dictionary<string, string>() {
+            { "USD", "$" },
+            { "CNY", "￥" }
+        };
+
         public int Id { get; set; }
 
         public string Name { get; set; }
@@ -38,37 +43,6 @@ namespace PingApp.Entity {
         public string[] Features { get; set; }
 
         public string[] SupportedDevices { get; set; }
-
-        public DeviceType DeviceType {
-            get {
-                if (Features == null || SupportedDevices == null) {
-                    return Entity.DeviceType.NotProvided;
-                }
-
-                bool universal = Features.Contains("iosUniversal");
-                bool all = SupportedDevices.Contains("all");
-                bool iPhone = SupportedDevices.Any(d => d.StartsWith("iPhone"));
-                bool iPad = SupportedDevices.Any(d => d.StartsWith("iPad"));
-                if (universal) {
-                    return DeviceType.Universal;
-                }
-                else if (iPhone || all) {
-                    return DeviceType.IPhone;
-                }
-                else if (iPad) {
-                    return DeviceType.IPad;
-                }
-                else {
-                    return DeviceType.None;
-                }
-            }
-        }
-
-        public bool IsGameCenterEnabled {
-            get {
-                return Features != null && Features.Contains("gameCenter");
-            }
-        }
 
         public AppUpdate LastValidUpdate { get; set; }
 
@@ -147,6 +121,44 @@ namespace PingApp.Entity {
 
         public override int GetHashCode() {
             return Id;
+        }
+
+        public DeviceType DeviceType {
+            get {
+                if (Features == null || SupportedDevices == null) {
+                    return Entity.DeviceType.NotProvided;
+                }
+
+                bool universal = Features.Contains("iosUniversal");
+                bool all = SupportedDevices.Contains("all");
+                bool iPhone = SupportedDevices.Any(d => d.StartsWith("iPhone"));
+                bool iPad = SupportedDevices.Any(d => d.StartsWith("iPad"));
+                if (universal) {
+                    return DeviceType.Universal;
+                }
+                else if (iPhone || all) {
+                    return DeviceType.IPhone;
+                }
+                else if (iPad) {
+                    return DeviceType.IPad;
+                }
+                else {
+                    return DeviceType.None;
+                }
+            }
+        }
+
+        public bool IsGameCenterEnabled {
+            get {
+                return Features != null && Features.Contains("gameCenter");
+            }
+        }
+
+        public string PriceWithSymbol {
+            get {
+                string symbol = currencySymbolMapping.ContainsKey(Currency) ? currencySymbolMapping[Currency] : "￥";
+                return symbol + Price;
+            }
         }
     }
 }
