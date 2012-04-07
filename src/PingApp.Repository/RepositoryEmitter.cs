@@ -11,12 +11,16 @@ namespace PingApp.Repository {
 
         public IAppTrackRepository AppTrack { get; private set; }
 
+        public IUserRepository User { get; private set; }
+
         public RepositoryEmitter(IAppRepository app, 
             IAppUpdateRepository appUpdate,
-            IAppTrackRepository appTrack) {
+            IAppTrackRepository appTrack,
+            IUserRepository user) {
                 App = app;
                 AppUpdate = appUpdate;
                 AppTrack = appTrack;
+                User = user;
         }
     }
 }

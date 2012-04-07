@@ -43,6 +43,7 @@
     <Compile Include="IAppRepository.cs" />
     <Compile Include="IAppTrackRepository.cs" />
     <Compile Include="IAppUpdateRepository.cs" />
+    <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RepositoryEmitter.cs" />
   </ItemGroup>
