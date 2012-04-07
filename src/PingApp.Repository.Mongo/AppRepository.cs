@@ -3,20 +3,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MongoDB.Driver;
 using PingApp.Entity;
+using FluentMongo.Linq;
 
 namespace PingApp.Repository.Mongo {
     public sealed class AppRepository : IAppRepository {
+        private readonly MongoCollection<App> apps;
+
+        public AppRepository(MongoCollection<App> apps) {
+            this.apps = apps;
+        }
+
         public App Retrieve(int id) {
-            throw new NotImplementedException();
+            App app = apps.AsQueryable().First(a => a.Id == id);
+            return app;
         }
 
         public void Save(App app) {
-            throw new NotImplementedException();
+            apps.Save(app);
         }
 
         public void Update(App app) {
-            throw new NotImplementedException();
+            apps.Save(app);
         }
 
         public ISet<int> FindExists(IEnumerable<int> apps) {
