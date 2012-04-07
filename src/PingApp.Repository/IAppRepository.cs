@@ -7,16 +7,12 @@ using PingApp.Entity;
 
 namespace PingApp.Repository {
     public interface IAppRepository {
-        AppBrief RetrieveBrief(int id);
+        App Retrieve(int app);
 
         // 以下为Schedule使用
         void Save(App app);
 
-        void Save(AppBrief brief);
-
         void Update(App app);
-
-        void Update(AppBrief brief);
 
         ISet<int> FindExists(IEnumerable<int> apps);
 

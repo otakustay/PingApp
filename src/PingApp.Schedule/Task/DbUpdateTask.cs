@@ -211,7 +211,6 @@ namespace PingApp.Schedule.Task {
             };
             // App和AppBrief之间没有Cascade设置
             repository.App.Save(app);
-            repository.App.Save(app.Brief);
             AppUpdate updateForNew = new AppUpdate() {
                 App = app.Id,
                 Time = app.Brief.ReleaseDate.Date,
@@ -244,10 +243,9 @@ namespace PingApp.Schedule.Task {
 
             // App和AppBrief之间没有Cascade设置
             repository.App.Update(app);
-            repository.App.Update(app.Brief);
 
             // 更新Track数据
-            int rows = repository.AppTrack.ResetForApp(app.Id);
+            int rows = repository.AppTrack.ResetReadStatusByApp(app.Id);
             Log.Debug("{0} track infos updated for app {1} - {2}", rows, app.Id, app.Brief.Name);
         }
 
@@ -265,21 +263,21 @@ namespace PingApp.Schedule.Task {
                 sessionStore.BeginTransaction();
                 try {
                     foreach (int id in list) {
-                        AppBrief brief = repository.App.RetrieveBrief(id);
+                        App app = repository.App.Retrieve(id);
                         // 先确定是不是已经Off了
-                        if (brief.IsActive) {
+                        if (app.Brief.IsActive) {
                             AppUpdate update = new AppUpdate() {
                                 App = id,
                                 Time = now,
                                 Type = AppUpdateType.Off,
-                                OldValue = String.Format("{0}, ￥{1}", brief.Version, brief.Price)
+                                OldValue = String.Format("{0}, ￥{1}", app.Brief.Version, app.Brief.Price)
                             };
                             repository.AppUpdate.Save(update);
                             count++;
 
                             // 更新为IsValid为false
-                            brief.IsActive = false;
-                            repository.App.Update(brief);
+                            app.Brief.IsActive = false;
+                            repository.App.Update(app);
                         }
                         else {
                             Log.Trace("Off update for {0} is dismissed because the app is already invalid", id);

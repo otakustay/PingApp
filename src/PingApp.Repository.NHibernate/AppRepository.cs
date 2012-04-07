@@ -15,8 +15,8 @@ namespace PingApp.Repository.NHibernate {
             this.session = session;
         }
 
-        public AppBrief RetrieveBrief(int id) {
-            return session.Get<AppBrief>(id);
+        public App Retrieve(int id) {
+            return session.Get<App>(id);
         }
 
         public ICollection<App> Retrieve(IEnumerable<int> required) {
@@ -62,18 +62,12 @@ namespace PingApp.Repository.NHibernate {
 
         public void Save(App app) {
             session.Save(app);
-        }
-
-        public void Save(AppBrief brief) {
-            session.Save(brief);
+            session.Save(app.Brief);
         }
 
         public void Update(App app) {
             session.Merge(app);
-        }
-
-        public void Update(AppBrief brief) {
-            session.Merge(brief);
+            session.Merge(app.Brief);
         }
     }
 }
