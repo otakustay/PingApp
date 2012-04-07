@@ -118,6 +118,12 @@
     <Compile Include="Dependency\UpdateAppModule.cs" />
     <Compile Include="Dependency\UpdateModule.cs" />
     <Compile Include="FullApp.cs" />
+    <Compile Include="Infrastructure\AppParser.cs" />
+    <Compile Include="Infrastructure\CatalogParser.cs" />
+    <Compile Include="Infrastructure\LuceneIndexer.cs" />
+    <Compile Include="Infrastructure\ProgramSettings.cs" />
+    <Compile Include="Infrastructure\UpdateNotifier.cs" />
+    <Compile Include="Infrastructure\WebDownload.cs" />
     <Compile Include="IStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -143,6 +149,10 @@
     <ProjectReference Include="..\PingApp.Entity\PingApp.Entity.csproj">
       <Project>{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}</Project>
       <Name>PingApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingApp.Repository.Mongo\PingApp.Repository.Mongo.csproj">
+      <Project>{4bee7099-e9ef-4b8e-a6c4-f787949c7170}</Project>
+      <Name>PingApp.Repository.Mongo</Name>
     </ProjectReference>
     <ProjectReference Include="..\PingApp.Repository.NHibernate\PingApp.Repository.NHibernate.csproj">
       <Project>{d7bd5bd3-57d0-4584-ba3c-25f0ee50c134}</Project>
