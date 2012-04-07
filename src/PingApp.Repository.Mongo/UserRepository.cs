@@ -7,7 +7,7 @@ using PingApp.Entity;
 
 namespace PingApp.Repository.Mongo {
     public sealed class UserRepository : IUserRepository {
-        public User Retrieve(int id) {
+        public User Retrieve(Guid id) {
             throw new NotImplementedException();
         }
     }

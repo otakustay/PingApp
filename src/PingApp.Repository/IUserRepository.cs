@@ -6,6 +6,6 @@ using PingApp.Entity;
 
 namespace PingApp.Repository {
     public interface IUserRepository {
-        User Retrieve(int id);
+        User Retrieve(Guid id);
     }
 }

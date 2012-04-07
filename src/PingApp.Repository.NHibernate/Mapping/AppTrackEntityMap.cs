@@ -8,7 +8,7 @@ using FluentNHibernate.Mapping;
 namespace PingApp.Repository.NHibernate.Mapping {
     public class AppTrackEntityMap : ClassMap<AppTrack> {
         public AppTrackEntityMap() {
-            Id(t => t.Id);
+            Id(t => t.Id).GeneratedBy.GuidComb();
             Map(t => t.User);
             Map(t => t.Status).CustomType<AppTrackStatus>();
             Map(t => t.Rate);

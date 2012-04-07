@@ -24,7 +24,7 @@ namespace PingApp.Schedule.Task {
             { AppUpdateType.PriceFree, "\"{0}\"免费了" }
         };
 
-        private static readonly Dictionary<int, User> users = GetAllUsers();
+        private static readonly Dictionary<Guid, User> users = GetAllUsers();
 
         static MailTask() {
             // 初始化模板
@@ -144,9 +144,9 @@ namespace PingApp.Schedule.Task {
                 using (IDataReader reader = cmd.ExecuteReader()) {
                     while (reader.Read()) {
                         AppTrack track = new AppTrack() {
-                            Id = reader.Get<int>("Id"),
+                            Id = reader.Get<Guid>("Id"),
                             App = new AppBrief() { Id = reader.Get<int>("App") },
-                            User = reader.Get<int>("User"),
+                            User = reader.Get<Guid>("User"),
                             Status = reader.Get<AppTrackStatus>("Status")
                         };
                         tracks.Add(track);
@@ -216,8 +216,8 @@ namespace PingApp.Schedule.Task {
             return apps;
         }
 
-        private static Dictionary<int, User> GetAllUsers() {
-            Dictionary<int, User> users = new Dictionary<int, User>();
+        private static Dictionary<Guid, User> GetAllUsers() {
+            Dictionary<Guid, User> users = new Dictionary<Guid, User>();
             using (MySqlConnection connection = new MySqlConnection(
                 ConfigurationManager.ConnectionStrings["PingApp"].ConnectionString)) {
                 connection.Open();
@@ -226,7 +226,7 @@ namespace PingApp.Schedule.Task {
                 using (IDataReader reader = cmd.ExecuteReader()) {
                     while (reader.Read()) {
                         User user = new User() {
-                            Id = reader.Get<int>("Id"),
+                            Id = reader.Get<Guid>("Id"),
                             Username = reader.Get<string>("Username"),
                             Email = reader.Get<string>("Email"),
                             NotifyOnOwnedUpdate = reader.Get<bool>("NotifyOnOwnedUpdate"),

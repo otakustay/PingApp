@@ -8,7 +8,7 @@ using PingApp.Entity;
 namespace PingApp.Repository.NHibernate.Mapping {
     public class AppUpdateEntityMap : ClassMap<AppUpdate> {
         public AppUpdateEntityMap() {
-            Id(u => u.Id).GeneratedBy.Increment();
+            Id(u => u.Id).GeneratedBy.GuidComb();
             Map(u => u.App);
             Map(u => u.NewValue);
             Map(u => u.OldValue);
