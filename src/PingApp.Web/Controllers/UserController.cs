@@ -41,7 +41,7 @@ namespace PingApp.Web.Controllers {
                 return View(user);
             }
             else {
-                user.Id = (int)DbSession.Save(user);
+                DbSession.Save(user);
                 SetAsAuthenticated(user, false);
                 return RedirectToAction("ImportGuide", "User");
             }
