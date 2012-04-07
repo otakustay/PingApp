@@ -6,8 +6,6 @@ using System.Text;
 
 namespace PingApp.Entity {
     public class App {
-        private int id;
-
         public int Id { get; set; }
 
         public string Description { get; set; }
