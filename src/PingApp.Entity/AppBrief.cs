@@ -187,7 +187,6 @@ namespace PingApp.Entity {
                 LastValidUpdate = newOne.LastValidUpdate;
             }
             LanguagePriority = newOne.LanguagePriority;
-            IsActive = newOne.IsActive;
             Hash = newOne.Hash;
         }
     }
