@@ -55,6 +55,7 @@
     <Compile Include="Developer.cs" />
     <Compile Include="DeviceType.cs" />
     <Compile Include="EqualsBuilder.cs" />
+    <Compile Include="IUpdateTarget.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Seller.cs" />
     <Compile Include="User.cs" />
