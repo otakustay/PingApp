@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using Ninject;
 using Ninject.Modules;
+using PingApp.Schedule.Infrastructure;
 using PingApp.Schedule.Task;
 
 namespace PingApp.Schedule.Dependency {
-    class InitializeModule : NinjectModule {
+    sealed class InitializeModule : NinjectModule {
         public override void Load() {
-            Bind<InitializeTask>().ToSelf();
+            Bind<InitializeTask>().ToSelf()
+                .WithConstructorArgument("indexer", ctx => ctx.Kernel.Get<LuceneIndexer>("Rebuild"));
         }
     }
 }

@@ -43,13 +43,18 @@ namespace PingApp.Schedule.Dependency {
             Bind<CatalogParser>().ToSelf();
             Bind<AppParser>().ToSelf()
                 .WithConstructorArgument("truncateLimit", 200);
-            Bind<LuceneIndexer>().ToSelf()
+            Bind<LuceneIndexer>().ToSelf().Named("Rebuild")
                 .WithConstructorArgument("rebuild", true);
+            Bind<LuceneIndexer>().ToSelf().Named("Update")
+                .WithConstructorArgument("rebuild", false);
         }
 
         private Logger GetLogger(IContext context) {
             string logRoot = Path.Combine(
-                AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "Log", this.action.ToString());
+                AppDomain.CurrentDomain.SetupInformation.ApplicationBase, 
+                "Log", 
+                DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + this.action
+            );
             ProgramSettings settings = context.Kernel.Get<ProgramSettings>();
             string layout = "${time}|${level}|${message}${onexception:inner=\n}${exception:format=tostring}";
 
@@ -68,12 +73,16 @@ namespace PingApp.Schedule.Dependency {
 
             console.Layout = settings.Debug ? "${time}|${level}|${message}" : layout;
             file.FileName = logRoot + "/log.txt";
+            file.Encoding = Encoding.UTF8;
             file.Layout = layout;
             debug.FileName = logRoot + "/debug.txt";
+            debug.Encoding = Encoding.UTF8;
             debug.Layout = layout;
             trace.FileName = logRoot + "/verbose.txt";
+            trace.Encoding = Encoding.UTF8;
             trace.Layout = layout;
             error.FileName = logRoot + "/error.txt";
+            error.Encoding = Encoding.UTF8;
             error.Layout = layout;
 
             config.LoggingRules.Add(new LoggingRule("*", LogLevel.Debug, console));
