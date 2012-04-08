@@ -18,6 +18,8 @@ namespace PingApp.Schedule.Infrastructure {
 
         private const string PAGE_URL_TEMPLATE = ALPHA_URL_TEMPLATE + "&page={2}";
 
+        private static readonly Regex idFromUrl = new Regex(@"\/id(\d+)", RegexOptions.Compiled);
+
         private static readonly IEnumerable<char> alphas =
             Enumerable.Range((int)'A', 26).Concat(new int[] { (int)'*' }).Select(i => (char)i);
 
@@ -53,7 +55,7 @@ namespace PingApp.Schedule.Infrastructure {
              * 3. 每页有若干个应用，每个应用是一个<a>元素
              */
 
-            IEnumerable<Category> categories = Program.Debug ? categoriesForDebug : Category.All;
+            IEnumerable<Category> categories = settings.Debug ? categoriesForDebug : Category.All;
             categories.AsParallel().ForAll(c => FromCategory(c));
 
             IEnumerable<Category> extrayCategories = Category.All.Concat(Category.Games);
@@ -112,7 +114,8 @@ namespace PingApp.Schedule.Infrastructure {
                     foreach (HtmlNode node in nodes) {
                         string name = node.InnerHtml.Trim();
                         string href = node.GetAttributeValue("href", String.Empty);
-                        int id = Utility.ExtractIdFromUrl(href);
+                        Match match = idFromUrl.Match(href);
+                        int id = (match != null && match.Groups.Count >= 2) ? Convert.ToInt32(match.Groups[1].Value) : -1;
                         output.Add(id);
                         logger.Trace("Found app {0}-{1}", id, name);
                     }

@@ -9,124 +9,46 @@ using System.Security.Cryptography;
 using System.Configuration;
 using PingApp.Schedule.Task;
 using System.Net.Mail;
-using PingApp.Schedule.Storage;
 using Ninject;
 using PingApp.Repository.NHibernate.Dependency;
 using System.Collections;
 using PingApp.Schedule.Dependency;
 using PingApp.Repository;
+using PingApp.Schedule.Infrastructure;
+using NLog;
+using PingApp.Repository.Mongo.Dependency;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using PanGu.Match;
+using System.Diagnostics;
 
 namespace PingApp.Schedule {
     class Program {
-        public static int BatchSize { get; private set; }
-
-        public static bool Debug { get; private set; }
-
         static void Main(string[] args) {
-            ActionType action = (ActionType)Enum.Parse(typeof(ActionType), Utility.Capitalize(args[0]));
-            TaskNode[] tasks;
-            IStorage input = null;
-
+            ActionType action = (ActionType)Enum.Parse(typeof(ActionType), Capatalize(args[0]));
             IKernel kernel = new StandardKernel();
-            SessionStore sessionStore = new SessionStore();
-            kernel.Bind<RepositoryEmitter>().ToSelf();
-            kernel.Load(new NHibernateRepositoryModule());
+            kernel.Load(new MongoRepositoryModule());
+            kernel.Load(new SharedModule(action));
             kernel.Load(new InitializeModule());
-            kernel.Load(new RssFeedCheckModule());
-            kernel.Load(new UpdateModule());
-            kernel.Load(new FullCheckModule());
-            kernel.Load(new AddAppModule());
-            kernel.Load(new TestModule());
-            kernel.Load(new UpdateAppModule());
-            kernel.Load(new RebuildIndexModule());
-            kernel.Load(new Top100CheckModule());
 
-            switch (action) {
-                case ActionType.Initialize:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.Initialize.ToString());
-                    break;
-                case ActionType.RssCheck:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.RssCheck.ToString());
-                    break;
-                case ActionType.Update:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.Update.ToString());
-                    break;
-                case ActionType.FullCheck:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.FullCheck.ToString());
-                    break;
-                case ActionType.AddApp:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.AddApp.ToString());
-                    input = new MemoryStorage();
-                    input.Add(new int[] { Convert.ToInt32(args[1]) });
-                    break;
-                case ActionType.UpdateApp:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.UpdateApp.ToString());
-                    input = new MemoryStorage();
-                    input.Add(args.Skip(1).Select(s => Convert.ToInt32(s)));
-                    break;
-                case ActionType.RebuildIndex:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.RebuildIndex.ToString());
-                    break;
-                case ActionType.Top100Check:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.Top100Check.ToString());
-                    break;
-                case ActionType.Test:
-                    tasks = kernel.Get<TaskNode[]>(ActionType.Test.ToString());
-                    break;
-                default:
-                    tasks = new TaskNode[0];
-                    break;
+            Type taskType = Type.GetType("PingApp.Schedule.Task." + action + "Task");
+            TaskBase task = kernel.Get(taskType) as TaskBase;
+
+            if (task == null) {
+                Console.WriteLine("No task for action {0} defined", args[0]);
+                return;
             }
 
-
-            if ((action == ActionType.Initialize || action == ActionType.RebuildIndex) && !Program.Debug) {
-                Console.Write("To ensure this initialization, enter password: ");
-                string password = Console.ReadLine();
-                MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-                byte[] bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(password + "PingApp"));
-                password = BitConverter.ToString(bytes);
-                if (password != "98-A5-F6-16-2A-A0-BE-71-AD-87-55-29-24-EF-FD-08") {
-                    Console.WriteLine("Wrong password!");
-                    return;
-                }
+            using (task) {
+                task.Run(args);
             }
 
-            string jobId = DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + action;
-            string logRoot = Path.Combine(AppDomain.CurrentDomain.SetupInformation.ApplicationBase, "Log", jobId);
-            TaskNode.Chain(action, logRoot, tasks);
-
-            tasks[0].Run(input);
-
-            // 发送错误
-            if (File.Exists(Path.Combine(logRoot, "error.txt"))) {
-                string error = File.ReadAllText(Path.Combine(logRoot, "error.txt"), Encoding.UTF8);
-                using (SmtpClient client = new SmtpClient("localhost", 25)) {
-                    MailMessage message = new MailMessage(
-                        new MailAddress("administrator@pingapp.net", "PingApp.net Administrator"),
-                        new MailAddress("pingapp.net@gmail.com")
-                    );
-                    message.SubjectEncoding = Encoding.UTF8;
-                    message.Subject = String.Format("Schedule task failed {0:yyyy-MM-dd HH:mm}", DateTime.Now);
-                    message.BodyEncoding = Encoding.UTF8;
-                    message.Body = error + Environment.NewLine + "See " + logRoot + " for details";
-                    try {
-                        client.Send(message);
-                    }
-                    catch (Exception ex) {
-                        using (StreamWriter writer = new StreamWriter(Path.Combine(logRoot, "error.txt"), false, Encoding.UTF8)) {
-                            writer.WriteLine();
-                            writer.WriteLine();
-                            writer.WriteLine();
-                            writer.Write(ex.ToString());
-                        }
-                    }
-                }
-            }
         }
 
-        static Program() {
-            BatchSize = Convert.ToInt32(ConfigurationManager.AppSettings["BatchSize"]);
-            Debug = Convert.ToBoolean(ConfigurationManager.AppSettings["Debug"]);
+        private static string Capatalize(string str) {
+            IEnumerable<string> parts = str.Split('-').Select(s => Char.ToUpper(s[0]) + s.Substring(1));
+            return String.Join(String.Empty, parts);
         }
     }
 }

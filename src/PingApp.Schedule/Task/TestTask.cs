@@ -3,18 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Ninject;
+using NLog;
+using PingApp.Schedule.Infrastructure;
 
 namespace PingApp.Schedule.Task {
-    class TestTask : TaskNode {
+    class TestTask : TaskBase {
         private readonly IKernel kernel;
 
-        public TestTask(IKernel kernel) {
+        public TestTask(IKernel kernel, Logger logger) : base(logger) {
             this.kernel = kernel;
         }
 
-        protected override IStorage RunTask(IStorage input) {
+        public override void Run(string[] args) {
             Console.WriteLine("Test Complete");
-            return null;
         }
     }
 }

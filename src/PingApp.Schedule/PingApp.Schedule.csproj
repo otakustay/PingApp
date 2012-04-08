@@ -107,43 +107,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Buffer.cs" />
-    <Compile Include="Dependency\AddAppModule.cs" />
-    <Compile Include="Dependency\FullCheckModule.cs" />
     <Compile Include="Dependency\InitializeModule.cs" />
-    <Compile Include="Dependency\RebuildIndexModule.cs" />
-    <Compile Include="Dependency\RssFeedCheckModule.cs" />
-    <Compile Include="Dependency\TestModule.cs" />
-    <Compile Include="Dependency\Top100CheckModule.cs" />
-    <Compile Include="Dependency\UpdateAppModule.cs" />
-    <Compile Include="Dependency\UpdateModule.cs" />
-    <Compile Include="FullApp.cs" />
+    <Compile Include="Dependency\SharedModule.cs" />
     <Compile Include="Infrastructure\AppParser.cs" />
     <Compile Include="Infrastructure\CatalogParser.cs" />
     <Compile Include="Infrastructure\LuceneIndexer.cs" />
+    <Compile Include="Infrastructure\NewLinedExcecptionLayoutRenderer.cs" />
     <Compile Include="Infrastructure\ProgramSettings.cs" />
     <Compile Include="Infrastructure\UpdateNotifier.cs" />
     <Compile Include="Infrastructure\WebDownload.cs" />
-    <Compile Include="IStorage.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Task\DbCheckType.cs" />
-    <Compile Include="Task\GetAppHashTask.cs" />
-    <Compile Include="Task\GetFullAppTask.cs" />
-    <Compile Include="Task\MailTask.cs" />
-    <Compile Include="Task\RssFeedCheckTask.cs" />
-    <Compile Include="Storage\FileSystemStorage.cs" />
-    <Compile Include="Storage\MemoryStorage.cs" />
-    <Compile Include="TaskNode.cs" />
+    <Compile Include="Task\InitializeTask.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="TaskBase.cs" />
     <Compile Include="ActionType.cs" />
-    <Compile Include="Task\DbUpdateTask.cs" />
-    <Compile Include="Task\GetAppTask.cs" />
-    <Compile Include="Task\SearchApiTask.cs" />
-    <Compile Include="Task\FullCatalogTask.cs" />
-    <Compile Include="Task\IndexTask.cs" />
     <Compile Include="Task\TestTask.cs" />
-    <Compile Include="Task\Top100CheckTask.cs" />
-    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PingApp.Entity\PingApp.Entity.csproj">
