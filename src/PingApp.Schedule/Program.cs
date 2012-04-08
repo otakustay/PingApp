@@ -31,6 +31,7 @@ namespace PingApp.Schedule {
             kernel.Load(new MongoRepositoryModule());
             kernel.Load(new SharedModule(action));
             kernel.Load(new InitializeModule());
+            kernel.Load(new UpdateModule());
 
             Type taskType = Type.GetType("PingApp.Schedule.Task." + action + "Task");
             TaskBase task = kernel.Get(taskType) as TaskBase;
@@ -41,7 +42,9 @@ namespace PingApp.Schedule {
             }
 
             using (task) {
-                task.Run(args);
+                string[] taskArguments = new string[args.Length - 1];
+                Array.Copy(args, 1, taskArguments, 0, taskArguments.Length);
+                task.Run(taskArguments);
             }
 
         }
