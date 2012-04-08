@@ -46,7 +46,7 @@ namespace PingApp.Schedule.Infrastructure {
                 ICollection<App> apps = results.Select(ParseApp).ToArray();
 
                 watch.Stop();
-                logger.Debug("Retrieved {0} apps using {1}", apps.Count, watch.ElapsedMilliseconds);
+                logger.Debug("Retrieved {0} apps using {1}ms", apps.Count, watch.ElapsedMilliseconds);
                 int notFound = required.Count() - apps.Count;
                 if (notFound > 0) {
                     logger.Debug("There are {0} required but not found in search api", notFound);

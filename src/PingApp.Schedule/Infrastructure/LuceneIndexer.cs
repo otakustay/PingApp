@@ -74,7 +74,15 @@ namespace PingApp.Schedule.Infrastructure {
         public void Dispose() {
             try {
                 Flush();
+
+                logger.Info("Start optimize index");
+                Stopwatch watch = new Stopwatch();
+                watch.Start();
+
                 writer.Optimize();
+
+                watch.Stop();
+                logger.Info("Optimized index using {0}ms", watch.ElapsedMilliseconds);
             }
             finally {
                 writer.Dispose();

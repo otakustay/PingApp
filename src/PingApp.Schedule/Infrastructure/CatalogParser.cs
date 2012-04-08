@@ -76,7 +76,7 @@ namespace PingApp.Schedule.Infrastructure {
                 int pageCount = GetPageCount(category, alpha);
 
                 logger.Debug(
-                    "There is {0} pages in category {1}-{2}, alpha {3}",
+                    "There are {0} pages in category {1}-{2}, alpha {3}",
                     pageCount, category.Id, category.Name, alpha
                 );
 
