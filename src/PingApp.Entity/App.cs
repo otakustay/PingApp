@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 
 namespace PingApp.Entity {
-    public class App {
+    public class App : IUpdateTarget {
         public int Id { get; set; }
 
         public string Description { get; set; }
@@ -138,6 +138,28 @@ namespace PingApp.Entity {
             MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
             byte[] bytes = md5.ComputeHash(Encoding.UTF8.GetBytes(all));
             return BitConverter.ToString(bytes).Replace("-", String.Empty);
+        }
+
+        public void UpdateFrom(object obj) {
+            App newOne = obj as App;
+            if (newOne == null || newOne == this || newOne.Id != Id) {
+                return;
+            }
+
+            Description = newOne.Description;
+            LargeIconUrl = newOne.LargeIconUrl;
+            Seller = newOne.Seller;
+            ReleaseNotes = newOne.ReleaseNotes;
+            CensoredName = newOne.CensoredName;
+            ContentAdvisoryRating = newOne.ContentAdvisoryRating;
+            ContentAdvisoryRating = newOne.ContentAdvisoryRating;
+            AverageUserRating = newOne.AverageUserRating;
+            UserRatingCount = newOne.UserRatingCount;
+            Languages = newOne.Languages;
+            Categories = newOne.Categories;
+            ScreenshotUrls = newOne.ScreenshotUrls;
+            IPadScreenshotUrls = newOne.IPadScreenshotUrls;
+            Brief.UpdateFrom(newOne.Brief);
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace PingApp.Entity {
-    public class AppBrief {
+    public class AppBrief : IUpdateTarget {
         private static readonly Dictionary<string, string> currencySymbolMapping = new Dictionary<string, string>() {
             { "USD", "$" },
             { "CNY", "￥" }
@@ -52,7 +52,7 @@ namespace PingApp.Entity {
 
         public string Hash { get; set; }
 
-        public List<AppUpdate> CheckForUpdate(AppBrief newOne) {
+        public ICollection<AppUpdate> CheckForUpdate(AppBrief newOne) {
             DateTime now = DateTime.Now;
             List<AppUpdate> updates = new List<AppUpdate>();
             // 检查版本
@@ -159,6 +159,36 @@ namespace PingApp.Entity {
                 string symbol = currencySymbolMapping.ContainsKey(Currency) ? currencySymbolMapping[Currency] : "￥";
                 return symbol + Price;
             }
+        }
+
+        public void UpdateFrom(object obj) {
+            AppBrief newOne = obj as AppBrief;
+            if (newOne == null || newOne == this || newOne.Id != Id) {
+                return;
+            }
+
+            Name = newOne.Name;
+            Version = newOne.Version;
+            ReleaseDate = newOne.ReleaseDate;
+            Price = newOne.Price;
+            Currency = newOne.Currency;
+            FileSize = newOne.FileSize;
+            ViewUrl = newOne.ViewUrl;
+            IconUrl = newOne.IconUrl;
+            Introduction = newOne.Introduction;
+            ReleaseNotes = newOne.ReleaseNotes;
+            PrimaryCategory = newOne.PrimaryCategory;
+            Developer = newOne.Developer;
+            AverageUserRatingForCurrentVersion = newOne.AverageUserRatingForCurrentVersion;
+            UserRatingCountForCurrentVersion = newOne.UserRatingCountForCurrentVersion;
+            Features = newOne.Features;
+            SupportedDevices = newOne.SupportedDevices;
+            if (newOne.LastValidUpdate != null) {
+                LastValidUpdate = newOne.LastValidUpdate;
+            }
+            LanguagePriority = newOne.LanguagePriority;
+            IsActive = newOne.IsActive;
+            Hash = newOne.Hash;
         }
     }
 }
