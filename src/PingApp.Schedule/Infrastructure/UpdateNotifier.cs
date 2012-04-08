@@ -119,7 +119,11 @@ namespace PingApp.Schedule.Infrastructure {
         }
 
         public void Dispose() {
-            smtp.Dispose();
+            try {
+                smtp.Dispose();
+            }
+            catch (InvalidOperationException) {
+            }
         }
     }
 }
