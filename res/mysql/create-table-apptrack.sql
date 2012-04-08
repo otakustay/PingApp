@@ -1,5 +1,5 @@
 create table `AppTrack` (
-  `Id` int(11) not null auto_increment,
+  `Id` char(36) not null,
   `User` int(11) not null,
   `App` int(11) not null,
   `Status` int(11) not null,

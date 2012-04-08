@@ -1,5 +1,5 @@
 create table `AppUpdate` (
-  `Id` int(11) not null auto_increment,
+  `Id` char(36) not null,
   `App` int(11) not null,
   `Time` datetime not null,
   `Type` int(11) not null,
