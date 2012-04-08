@@ -116,6 +116,8 @@ namespace PingApp.Schedule.Infrastructure {
                 token["artistViewUrl"] == null ? String.Empty : token["artistViewUrl"].Value<string>() ?? String.Empty
             );
             brief.Hash = App.ComputeHash(app);
+            // 能在Search API上找的都是有效的
+            brief.IsActive = true;
 
             return app;
         }
