@@ -107,10 +107,10 @@ namespace PingApp.Schedule.Task {
 
                     if (apps.Count < limit) {
                         offset = -1;
-                        return;
                     }
-
-                    offset += limit;
+                    else {
+                        offset += limit;
+                    }
 
                     stepWatch.Stop();
                     logger.Debug("Retrieved {0} apps from database using {1}ms", apps.Count, stepWatch.ElapsedMilliseconds);
