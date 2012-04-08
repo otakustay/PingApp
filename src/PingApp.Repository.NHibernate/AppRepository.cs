@@ -27,6 +27,11 @@ namespace PingApp.Repository.NHibernate {
             return result;
         }
 
+        public ICollection<App> Retrieve(int offset, int limit) {
+            ICollection<int> identities = RetrieveIdentities(offset, limit);
+            return Retrieve(identities);
+        }
+
         public IDictionary<int, string> RetrieveHash(int offset, int limit) {
             ICollection<object[]> result = session.CreateCriteria<AppBrief>()
                 .SetFirstResult(offset)

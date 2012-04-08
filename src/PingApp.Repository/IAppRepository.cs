@@ -18,6 +18,8 @@ namespace PingApp.Repository {
 
         ICollection<App> Retrieve(IEnumerable<int> required);
 
+        ICollection<App> Retrieve(int offset, int limit);
+
         ICollection<int> RetrieveIdentities(int offset, int limit);
 
         IDictionary<int, string> RetrieveHash(int offset, int limit);

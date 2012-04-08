@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using PingApp.Entity;
-using FluentMongo.Linq;
 
 namespace PingApp.Repository.Mongo {
     public sealed class AppRepository : IAppRepository {
@@ -16,7 +16,7 @@ namespace PingApp.Repository.Mongo {
         }
 
         public App Retrieve(int id) {
-            App app = apps.AsQueryable().First(a => a.Id == id);
+            App app = apps.AsQueryable<App>().First(a => a.Id == id);
             return app;
         }
 
@@ -34,6 +34,11 @@ namespace PingApp.Repository.Mongo {
 
         public ICollection<App> Retrieve(IEnumerable<int> required) {
             throw new NotImplementedException();
+        }
+
+        public ICollection<App> Retrieve(int offset, int limit) {
+            ICollection<App> result = apps.AsQueryable<App>().Skip(offset).Take(limit).ToArray();
+            return result;
         }
 
         public ICollection<int> RetrieveIdentities(int offset, int limit) {
