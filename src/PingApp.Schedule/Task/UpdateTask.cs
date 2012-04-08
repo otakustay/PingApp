@@ -149,10 +149,14 @@ namespace PingApp.Schedule.Task {
 
         public override void Dispose() {
             try {
+                logger.Info("Disposing lucene indexer");
                 indexer.Dispose();
+                logger.Info("Disposed lucene indexer");
             }
             finally {
+                logger.Info("Disposing update notifier");
                 notifier.Dispose();
+                logger.Info("Disposed update notifier");
             }
         }
 
