@@ -32,7 +32,7 @@ namespace PingApp.Schedule.Dependency {
 
             Bind<JsonSerializerSettings>().ToSelf()
                 .WithPropertyValue("ContractResolver", new CamelCasePropertyNamesContractResolver())
-                .WithPropertyValue("DateTimeZoneHandling", DateTimeZoneHandling.Local);
+                .WithPropertyValue("DateTimeZoneHandling", DateTimeZoneHandling.Utc);
             // Ninject无法注入Field，只能手动生成
             MatchOptions matchOptions = new MatchOptions();
             matchOptions.ChineseNameIdentify = true;
