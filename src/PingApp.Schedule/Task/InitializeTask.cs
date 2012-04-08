@@ -19,7 +19,8 @@ namespace PingApp.Schedule.Task {
         private readonly RepositoryEmitter repository;
 
         public InitializeTask(CatalogParser catalogParser, AppParser appParser,
-            LuceneIndexer indexer, RepositoryEmitter repository, Logger logger) : base(logger) {
+            LuceneIndexer indexer, RepositoryEmitter repository, Logger logger)
+            : base(logger) {
             this.catalogParser = catalogParser;
             this.appParser = appParser;
             this.indexer = indexer;
