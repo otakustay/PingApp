@@ -45,7 +45,7 @@ namespace PingApp.Schedule.Task {
 
             logger.Info("Start find and save apps");
             // Search API一次最多能传200个id，所以设定以200为一个区块
-            int appCount = Partition(identities, 200).AsParallel().Sum(p => FindAndSaveApps(p));
+            int appCount = identities.Partition(200).AsParallel().Sum(p => FindAndSaveApps(p));
             logger.Info("Saved {0} apps", appCount);
 
             watch.Stop();
@@ -92,22 +92,6 @@ namespace PingApp.Schedule.Task {
             logger.Debug("Indexed {0} apps using {1}ms", apps.Count, watch.ElapsedMilliseconds);
 
             return apps.Count();
-        }
-
-
-
-        private static IEnumerable<IEnumerable<T>> Partition<T>(IEnumerable<T> list, int size) {
-            List<T> output = new List<T>(size);
-            foreach (T item in list) {
-                output.Add(item);
-                if (output.Count % size == 0) {
-                    yield return output;
-                    output = new List<T>(size);
-                }
-            }
-            if (output.Count > 0) {
-                yield return output;
-            }
         }
 
         public override void Dispose() {

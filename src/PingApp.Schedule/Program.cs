@@ -26,7 +26,7 @@ using System.Diagnostics;
 namespace PingApp.Schedule {
     class Program {
         static void Main(string[] args) {
-            ActionType action = (ActionType)Enum.Parse(typeof(ActionType), Capatalize(args[0]));
+            ActionType action = (ActionType)Enum.Parse(typeof(ActionType), args[0].Captalize());
             IKernel kernel = new StandardKernel();
             kernel.Load(new MongoRepositoryModule());
             kernel.Load(new SharedModule(action));
@@ -44,11 +44,6 @@ namespace PingApp.Schedule {
                 task.Run(args);
             }
 
-        }
-
-        private static string Capatalize(string str) {
-            IEnumerable<string> parts = str.Split('-').Select(s => Char.ToUpper(s[0]) + s.Substring(1));
-            return String.Join(String.Empty, parts);
         }
     }
 }

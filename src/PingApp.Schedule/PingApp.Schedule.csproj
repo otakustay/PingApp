@@ -124,6 +124,7 @@
     <Compile Include="TaskBase.cs" />
     <Compile Include="ActionType.cs" />
     <Compile Include="Task\TestTask.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PingApp.Entity\PingApp.Entity.csproj">
