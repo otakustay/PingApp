@@ -75,7 +75,6 @@ namespace PingApp.Schedule.Infrastructure {
             try {
                 Flush();
 
-                logger.Info("Start optimize index");
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
 

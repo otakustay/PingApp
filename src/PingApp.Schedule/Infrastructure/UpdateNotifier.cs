@@ -39,7 +39,8 @@ namespace PingApp.Schedule.Infrastructure {
              * 2. 发送邮件通知用户
              */
 
-            repository.AppTrack.ResetReadStatusByApp(update.App);
+            int trackCount = repository.AppTrack.ResetReadStatusByApp(update.App);
+            logger.Trace("Set {0} tracks to unread for app {1}-{2}", trackCount, app.Id, app.Brief.Name);
 
             SendMail(app, update);
         }

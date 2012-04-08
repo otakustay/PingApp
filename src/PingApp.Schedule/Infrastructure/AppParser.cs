@@ -23,18 +23,21 @@ namespace PingApp.Schedule.Infrastructure {
 
         private readonly MatchOptions segmentMatchOptions;
 
+        private readonly ProgramSettings settings;
+
         private readonly Logger logger;
 
         public AppParser(WebDownload download, JsonSerializerSettings serializerSettings, 
-            int truncateLimit, MatchOptions segmentMatchOptions, Logger logger) {
+            int truncateLimit, MatchOptions segmentMatchOptions, ProgramSettings settings, Logger logger) {
             this.download = download;
             this.serializerSettings = serializerSettings;
             this.truncateLimit = truncateLimit;
             this.segmentMatchOptions = segmentMatchOptions;
+            this.settings = settings;
             this.logger = logger;
         }
 
-        public ICollection<App> RetrieveApps(IEnumerable<int> required) {
+        public ICollection<App> RetrieveApps(IEnumerable<int> required, int attempts = 0) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
@@ -55,13 +58,20 @@ namespace PingApp.Schedule.Infrastructure {
                 return apps;
             }
             catch (WebException ex) {
-                logger.ErrorException(String.Format("Failed to download these apps from search api: {0}", idx), ex);
+                string logMessage = String.Format("Failed to download these apps from search api: {0}", idx);
+                if (attempts < settings.RetryAttemptCount) {
+                    logger.Warn(logMessage, ex);
+                    return RetrieveApps(required, attempts + 1);
+                }
+                else {
+                    logger.ErrorException(logMessage, ex);
+                    return null;
+                }
             }
             catch (JsonSerializationException ex) {
                 logger.ErrorException(String.Format("Failed to parse these apps: {0}", idx), ex);
+                return null;
             }
-
-            return new App[0];
         }
 
         private App ParseApp(JToken token) {
