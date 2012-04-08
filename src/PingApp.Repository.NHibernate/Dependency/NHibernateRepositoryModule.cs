@@ -39,6 +39,7 @@ namespace PingApp.Repository.NHibernate.Dependency {
             Bind<IAppRepository>().To<AppRepository>();
             Bind<IAppUpdateRepository>().To<AppUpdateRepository>();
             Bind<IAppTrackRepository>().To<AppTrackRepository>();
+            Bind<IUserRepository>().To<UserRepository>();
         }
 
         private ISession OpenSession(IContext context) {
