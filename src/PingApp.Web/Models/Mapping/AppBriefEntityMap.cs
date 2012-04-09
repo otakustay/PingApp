@@ -31,7 +31,6 @@ namespace PingApp.Web.Models.Mapping {
             Map(b => b.Version);
             Map(b => b.ViewUrl);
             Map(b => b.LanguagePriority);
-            Map(b => b.IsActive, "IsValid");
             Component(b => b.Developer).ColumnPrefix("Developer");
             Component(b => b.LastValidUpdate);
 

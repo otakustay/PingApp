@@ -32,7 +32,6 @@ namespace PingApp.Web.Controllers {
             int languagePriority = User.Identity.IsAuthenticated ?
                 CurrentUser.PreferredLanguagePriority : Default.LanguagePriority;
             search = search.Where(a => a.LanguagePriority >= languagePriority);
-            search = search.Where(a => a.IsActive);
 
             if (query.DeviceType != DeviceType.NotProvided) {
                 search = search.Where(a => a.DeviceType == query.DeviceType || a.DeviceType == DeviceType.Universal);

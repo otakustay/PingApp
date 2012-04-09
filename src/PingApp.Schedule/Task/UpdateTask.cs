@@ -194,10 +194,7 @@ namespace PingApp.Schedule.Task {
         }
 
         private void CheckOffSellForApp(App app) {
-            // 原本已经是下架状态，不作额外更新
-            if (!app.Brief.IsActive) {
-                return;
-            }
+            // 由于有了RevokedApp，能在这里出现的肯定是原来正常的，现在下架的应用
 
             // 添加下架信息
             AppUpdate offUpdate = new AppUpdate() {
@@ -213,11 +210,9 @@ namespace PingApp.Schedule.Task {
                 offUpdate.Type, app.Id, app.Brief.Name
             );
 
-            // 更新应用
-            app.Brief.IsActive = false;
-            repository.App.Update(app);
+            // TODO: repository.App.Revoke(app);
 
-            logger.Trace("Set app {0}-{1} to be off sold", app.Id, app.Brief.Name);
+            logger.Trace("Set app {0}-{1} to be revoked", app.Id, app.Brief.Name);
 
             // 下架的应用不需要删除索引，也不需要更新索引
         }

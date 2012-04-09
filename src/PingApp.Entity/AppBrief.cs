@@ -48,8 +48,6 @@ namespace PingApp.Entity {
 
         public int LanguagePriority { get; set; }
 
-        public bool IsActive { get; set; }
-
         public string Hash { get; set; }
 
         public ICollection<AppUpdate> CheckForUpdate(AppBrief newOne) {

@@ -31,7 +31,6 @@ namespace PingApp.Repository.NHibernate.Mapping {
             Map(b => b.Version);
             Map(b => b.ViewUrl);
             Map(b => b.LanguagePriority);
-            Map(b => b.IsActive, "IsValid");
             Map(b => b.Hash);
             Component(b => b.Developer).ColumnPrefix("Developer");
             Component(b => b.LastValidUpdate);
