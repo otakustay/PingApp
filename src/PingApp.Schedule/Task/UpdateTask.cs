@@ -210,7 +210,7 @@ namespace PingApp.Schedule.Task {
                 offUpdate.Type, app.Id, app.Brief.Name
             );
 
-            // TODO: repository.App.Revoke(app);
+            repository.App.Revoke(app);
 
             logger.Trace("Set app {0}-{1} to be revoked", app.Id, app.Brief.Name);
 

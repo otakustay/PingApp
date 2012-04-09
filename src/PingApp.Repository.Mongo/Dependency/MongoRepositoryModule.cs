@@ -32,6 +32,7 @@ namespace PingApp.Repository.Mongo.Dependency {
             Bind<MongoDatabase>().ToMethod(c => c.Kernel.Get<MongoServer>().GetDatabase(databaseName));
 
             Bind<MongoCollection<App>>().ToMethod(c => GetCollection<App>(c, "apps"));
+            Bind<MongoCollection<RevokedApp>>().ToMethod(c => GetCollection<RevokedApp>(c, "revokedApps"));
             Bind<MongoCollection<AppTrack>>().ToMethod(c => GetCollection<AppTrack>(c, "appTracks"));
             Bind<MongoCollection<AppUpdate>>().ToMethod(c => GetCollection<AppUpdate>(c, "appUpdates"));
             Bind<MongoCollection<User>>().ToMethod(c => GetCollection<User>(c, "users"));

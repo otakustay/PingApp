@@ -17,5 +17,7 @@ namespace PingApp.Repository {
         void Update(App app);
 
         ICollection<App> Retrieve(int offset, int limit);
+
+        RevokedApp Revoke(App app);
     }
 }
