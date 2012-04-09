@@ -18,8 +18,6 @@ namespace PingApp.Schedule.Infrastructure {
 
         private const string PAGE_URL_TEMPLATE = ALPHA_URL_TEMPLATE + "&page={2}";
 
-        private static readonly Regex idFromUrl = new Regex(@"\/id(\d+)", RegexOptions.Compiled);
-
         private static readonly IEnumerable<char> alphas =
             Enumerable.Range((int)'A', 26).Concat(new int[] { (int)'*' }).Select(i => (char)i);
 
@@ -114,8 +112,7 @@ namespace PingApp.Schedule.Infrastructure {
                     foreach (HtmlNode node in nodes) {
                         string name = node.InnerHtml.Trim();
                         string href = node.GetAttributeValue("href", String.Empty);
-                        Match match = idFromUrl.Match(href);
-                        int id = (match != null && match.Groups.Count >= 2) ? Convert.ToInt32(match.Groups[1].Value) : -1;
+                        int id = Utility.FindIdFromUrl(href);
                         output.Add(id);
                         logger.Trace("Found app {0}-{1}", id, name);
                     }
