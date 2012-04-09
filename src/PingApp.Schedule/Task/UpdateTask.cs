@@ -140,7 +140,7 @@ namespace PingApp.Schedule.Task {
                 }
                 else {
                     // 数据库中有，但Search API上没有，定义为下架
-                    CheckOffSellForApp(app);
+                    RevokeApp(app);
                 }
             }
 
@@ -149,14 +149,10 @@ namespace PingApp.Schedule.Task {
 
         public override void Dispose() {
             try {
-                logger.Info("Disposing lucene indexer");
                 indexer.Dispose();
-                logger.Info("Disposed lucene indexer");
             }
             finally {
-                logger.Info("Disposing update notifier");
                 notifier.Dispose();
-                logger.Info("Disposed update notifier");
             }
         }
 
@@ -193,7 +189,7 @@ namespace PingApp.Schedule.Task {
             logger.Trace("Updated app {0}-{1}", original.Id, original.Brief.Name);
         }
 
-        private void CheckOffSellForApp(App app) {
+        private void RevokeApp(App app) {
             // 由于有了RevokedApp，能在这里出现的肯定是原来正常的，现在下架的应用
 
             // 添加下架信息
