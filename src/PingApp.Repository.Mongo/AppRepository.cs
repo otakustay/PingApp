@@ -20,6 +20,10 @@ namespace PingApp.Repository.Mongo {
             return app;
         }
 
+        public ICollection<App> Retrieve(IEnumerable<int> required) {
+            throw new NotImplementedException();
+        }
+
         public void Save(App app) {
             apps.Save(app);
         }
@@ -28,29 +32,9 @@ namespace PingApp.Repository.Mongo {
             apps.Save(app);
         }
 
-        public ISet<int> FindExists(IEnumerable<int> apps) {
-            throw new NotImplementedException();
-        }
-
-        public ICollection<App> Retrieve(IEnumerable<int> required) {
-            throw new NotImplementedException();
-        }
-
         public ICollection<App> Retrieve(int offset, int limit) {
             ICollection<App> result = apps.AsQueryable<App>().Skip(offset).Take(limit).ToArray();
             return result;
-        }
-
-        public ICollection<int> RetrieveIdentities(int offset, int limit) {
-            throw new NotImplementedException();
-        }
-
-        public IDictionary<int, string> RetrieveHash(int offset, int limit) {
-            throw new NotImplementedException();
-        }
-
-        public IDictionary<int, string> RetrieveHash(IEnumerable<int> apps) {
-            throw new NotImplementedException();
         }
     }
 }
