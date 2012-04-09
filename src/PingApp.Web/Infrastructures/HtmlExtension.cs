@@ -212,7 +212,7 @@ namespace PingApp.Web.Infrastructures {
                     text = "新近上架";
                     className = "new-added";
                     break;
-                case AppUpdateType.AddToNote:
+                case AppUpdateType.AddToPing:
                     text = "加入系统";
                     className = "new-added";
                     break;
@@ -232,7 +232,7 @@ namespace PingApp.Web.Infrastructures {
                     text = "版本更新";
                     className = "new-release";
                     break;
-                case AppUpdateType.Off:
+                case AppUpdateType.Revoke:
                     text = "应用下架";
                     className = "off-sale";
                     break;
@@ -245,7 +245,7 @@ namespace PingApp.Web.Infrastructures {
         }
 
         public static IHtmlString UpdateDescrioption(this HtmlHelper helper, AppUpdate update) {
-            if (update.Type == AppUpdateType.New || update.Type == AppUpdateType.AddToNote || update.Type == AppUpdateType.Off) {
+            if (update.Type == AppUpdateType.New || update.Type == AppUpdateType.AddToPing || update.Type == AppUpdateType.Revoke) {
                 return helper.Raw(update.OldValue);
             }
             else if (update.Type == AppUpdateType.NewRelease) {

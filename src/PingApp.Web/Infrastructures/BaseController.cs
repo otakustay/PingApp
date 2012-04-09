@@ -95,7 +95,7 @@ namespace PingApp.Web.Infrastructures {
 
             ViewBag.NewAppCount = updates.ContainsKey(AppUpdateType.New) ? updates[AppUpdateType.New] : 0;
             ViewBag.UpdatedAppCount = updates.ContainsKey(AppUpdateType.NewRelease) ? updates[AppUpdateType.NewRelease] : 0;
-            ViewBag.OffAppCount = updates.ContainsKey(AppUpdateType.Off) ? updates[AppUpdateType.Off] : 0;
+            ViewBag.OffAppCount = updates.ContainsKey(AppUpdateType.Revoke) ? updates[AppUpdateType.Revoke] : 0;
             ViewBag.AppCount = appCount;
             ViewBag.Top100 = cache.GetData("Top100Apps") ?? new HashSet<int>();
             ViewBag.IsDebug = HttpContext.IsDebuggingEnabled;

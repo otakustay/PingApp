@@ -202,7 +202,7 @@ namespace PingApp.Schedule.Task {
             // 添加下架信息
             AppUpdate offUpdate = new AppUpdate() {
                 App = app.Id,
-                Type = AppUpdateType.Off,
+                Type = AppUpdateType.Revoke,
                 OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol,
                 Time = DateTime.Now
             };

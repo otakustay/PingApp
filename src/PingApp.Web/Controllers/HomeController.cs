@@ -208,7 +208,7 @@ namespace PingApp.Web.Controllers {
             // 所有更新
             IEnumerable<AppUpdate> updates = DbSession.QueryOver<AppUpdate>()
                 .Where(u => u.App == app.Id)
-                .Where(u => u.Type != AppUpdateType.AddToNote)
+                .Where(u => u.Type != AppUpdateType.AddToPing)
                 .OrderBy(u => u.Time).Desc
                 .List();
             model.Updates = updates;

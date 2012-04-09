@@ -70,7 +70,7 @@ namespace PingApp.Schedule.Task {
                 AppUpdate updateForAdd = new AppUpdate() {
                     App = app.Id,
                     Time = DateTime.Now,
-                    Type = AppUpdateType.AddToNote,
+                    Type = AppUpdateType.AddToPing,
                     OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
                 };
                 repository.AppUpdate.Save(updateForAdd);
