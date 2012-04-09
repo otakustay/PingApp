@@ -37,7 +37,7 @@ namespace PingApp.Schedule.Infrastructure {
             this.logger = logger;
         }
 
-        public ICollection<App> RetrieveApps(IEnumerable<int> required, int attempts = 0) {
+        public ICollection<App> RetrieveApps(ICollection<int> required, int attempts = 0) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
 

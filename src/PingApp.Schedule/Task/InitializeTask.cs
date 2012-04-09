@@ -53,7 +53,7 @@ namespace PingApp.Schedule.Task {
             logger.Info("Finished task using {0}", watch.Elapsed);
         }
 
-        private int FindAndSaveApps(IEnumerable<int> partition) {
+        private int FindAndSaveApps(ICollection<int> partition) {
             ICollection<App> apps = appParser.RetrieveApps(partition);
 
             Stopwatch watch = new Stopwatch();

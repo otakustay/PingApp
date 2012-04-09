@@ -124,7 +124,7 @@ namespace PingApp.Schedule.Task {
 
         private void CheckUpdates(object input) {
             IEnumerable<App> apps = input as IEnumerable<App>;
-            IEnumerable<int> identities = apps.Select(a => a.Id);
+            int[] identities = apps.Select(a => a.Id).ToArray();
             ICollection<App> retrievedApps = appParser.RetrieveApps(identities);
 
             if (retrievedApps == null) {
