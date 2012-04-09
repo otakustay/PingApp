@@ -60,22 +60,6 @@ namespace PingApp.Schedule.Task {
             watch.Start();
 
             foreach (App app in apps) {
-                AppUpdate updateForNew = new AppUpdate() {
-                    App = app.Id,
-                    Time = app.Brief.ReleaseDate.Date,
-                    Type = AppUpdateType.New,
-                    OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
-                };
-                repository.AppUpdate.Save(updateForNew);
-                AppUpdate updateForAdd = new AppUpdate() {
-                    App = app.Id,
-                    Time = DateTime.Now,
-                    Type = AppUpdateType.AddToNote,
-                    OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
-                };
-                repository.AppUpdate.Save(updateForAdd);
-
-                app.Brief.LastValidUpdate = updateForAdd;
                 repository.App.Save(app);
 
                 indexer.AddApp(app);
