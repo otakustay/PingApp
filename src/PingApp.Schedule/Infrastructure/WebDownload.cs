@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Xml.Linq;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 
@@ -37,6 +38,11 @@ namespace PingApp.Schedule.Infrastructure {
         public JObject AsJson(string uri) {
             string str = AsString(uri);
             return JObject.Parse(str);
+        }
+
+        public XDocument AsXml(string uri) {
+            XDocument document = XDocument.Load(uri);
+            return document;
         }
     }
 }
