@@ -10,7 +10,6 @@ using System.Configuration;
 using PingApp.Schedule.Task;
 using System.Net.Mail;
 using Ninject;
-using PingApp.Repository.NHibernate.Dependency;
 using System.Collections;
 using PingApp.Schedule.Dependency;
 using PingApp.Repository;
