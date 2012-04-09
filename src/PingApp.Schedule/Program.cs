@@ -32,6 +32,7 @@ namespace PingApp.Schedule {
             kernel.Load(new SharedModule(action));
             kernel.Load(new InitializeModule());
             kernel.Load(new UpdateModule());
+            kernel.Load(new RssCheckModule());
 
             Type taskType = Type.GetType("PingApp.Schedule.Task." + action + "Task");
             TaskBase task = kernel.Get(taskType) as TaskBase;

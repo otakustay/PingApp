@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependency\InitializeModule.cs" />
+    <Compile Include="Dependency\RssCheckModule.cs" />
     <Compile Include="Dependency\SharedModule.cs" />
     <Compile Include="Dependency\UpdateModule.cs" />
     <Compile Include="Infrastructure\AppParser.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Task\InitializeTask.cs" />
     <Compile Include="TaskBase.cs" />
     <Compile Include="ActionType.cs" />
+    <Compile Include="Task\RssCheckTask.cs" />
     <Compile Include="Task\TestTask.cs" />
     <Compile Include="Task\UpdateTask.cs" />
     <Compile Include="Utility.cs" />
