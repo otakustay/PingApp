@@ -20,8 +20,6 @@ namespace PingApp.Schedule.Task {
 
         private readonly RepositoryEmitter repository;
 
-        private readonly ProgramSettings settings;
-
         private int offset = 0;
 
         private readonly int limit;
@@ -33,7 +31,6 @@ namespace PingApp.Schedule.Task {
             this.indexer = indexer;
             this.notifier = notifier;
             this.repository = repository;
-            this.settings = settings;
 
             limit = settings.BatchSize / 200 * 200; // 因为Search API是200一批，找个最接近的200的倍数，以免浪费
         }
@@ -142,7 +139,13 @@ namespace PingApp.Schedule.Task {
                 }
             }
 
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
             indexer.Flush();
+
+            watch.Stop();
+            logger.Debug("Indexed {0} apps using {1}ms", retrievedApps.Count, watch.ElapsedMilliseconds);
         }
 
         public override void Dispose() {
