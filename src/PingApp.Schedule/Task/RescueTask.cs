@@ -40,6 +40,8 @@ namespace PingApp.Schedule.Task {
              *    3.1. 添加一条Resurrect类型的更新信息
              *    3.2. 从RevokeApp中移除
              *    3.3. 新增到App中
+             *    
+             * XXX: 一次Rescue任务不会复活太多的应用，从详细日志里能看到数量，不实现计数功能了
              */
             Stopwatch watch = new Stopwatch();
 
