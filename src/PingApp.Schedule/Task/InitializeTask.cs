@@ -56,6 +56,10 @@ namespace PingApp.Schedule.Task {
         private int FindAndSaveApps(ICollection<int> partition) {
             ICollection<App> apps = appParser.RetrieveApps(partition);
 
+            if (apps == null) {
+                return 0;
+            }
+
             Stopwatch watch = new Stopwatch();
             watch.Start();
 

@@ -47,6 +47,12 @@ namespace PingApp.Schedule.Task {
 
             ICollection<int> identities = RetrieveFromFeed();
             ICollection<App> exists = repository.App.Retrieve(identities);
+
+            if (exists == null) {
+                logger.Info("Failed to run task due to network problem");
+                return;
+            }
+
             int[] required = identities.Except(exists.Select(a => a.Id)).ToArray();
 
             logger.Trace("These apps are new: {0}", String.Join(",", required));
