@@ -13,16 +13,26 @@ namespace PingApp.Repository.Mongo {
     public sealed class AppRepository : IAppRepository {
         private readonly MongoCollection<App> apps;
 
+        private readonly MongoCollection<RevokedApp> revokedApps;
+
         private readonly MongoCollection<AppUpdate> appUpdates;
 
-        public AppRepository(MongoCollection<App> apps, MongoCollection<AppUpdate> appUpdates) {
+
+        public AppRepository(MongoCollection<App> apps,
+            MongoCollection<RevokedApp> revokedApps, MongoCollection<AppUpdate> appUpdates) {
             this.apps = apps;
+            this.revokedApps = revokedApps;
             this.appUpdates = appUpdates;
         }
 
         public App Retrieve(int id) {
             App app = apps.AsQueryable<App>().First(a => a.Id == id);
             return app;
+        }
+
+        public ICollection<App> Retrieve(IEnumerable<int> required) {
+            ICollection<App> result = apps.Find(Query.In("_id", BsonArray.Create(required))).ToArray();
+            return result;
         }
 
         public void Save(App app) {
@@ -36,7 +46,7 @@ namespace PingApp.Repository.Mongo {
             AppUpdate updateForAdd = new AppUpdate() {
                 App = app.Id,
                 Time = DateTime.Now,
-                Type = AppUpdateType.AddToNote,
+                Type = AppUpdateType.AddToPing,
                 OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
             };
             appUpdates.Save(updateForAdd);
@@ -50,30 +60,18 @@ namespace PingApp.Repository.Mongo {
             apps.Save(app);
         }
 
-        public ISet<int> FindExists(IEnumerable<int> apps) {
-            throw new NotImplementedException();
-        }
-
-        public ICollection<App> Retrieve(IEnumerable<int> required) {
-            ICollection<App> result = apps.Find(Query.In("_id", BsonArray.Create(required))).ToArray();
-            return result;
-        }
-
         public ICollection<App> Retrieve(int offset, int limit) {
             ICollection<App> result = apps.AsQueryable<App>().Skip(offset).Take(limit).ToArray();
             return result;
         }
 
-        public ICollection<int> RetrieveIdentities(int offset, int limit) {
-            throw new NotImplementedException();
-        }
+        public RevokedApp Revoke(App app) {
+            apps.Remove(Query.EQ("_id", app.Id), RemoveFlags.Single);
 
-        public IDictionary<int, string> RetrieveHash(int offset, int limit) {
-            throw new NotImplementedException();
-        }
+            RevokedApp revoked = new RevokedApp(app);
+            revokedApps.Save(revoked);
 
-        public IDictionary<int, string> RetrieveHash(IEnumerable<int> apps) {
-            throw new NotImplementedException();
+            return revoked;
         }
     }
 }

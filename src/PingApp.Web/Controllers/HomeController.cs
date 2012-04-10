@@ -32,7 +32,6 @@ namespace PingApp.Web.Controllers {
             int languagePriority = User.Identity.IsAuthenticated ?
                 CurrentUser.PreferredLanguagePriority : Default.LanguagePriority;
             search = search.Where(a => a.LanguagePriority >= languagePriority);
-            search = search.Where(a => a.IsActive);
 
             if (query.DeviceType != DeviceType.NotProvided) {
                 search = search.Where(a => a.DeviceType == query.DeviceType || a.DeviceType == DeviceType.Universal);
@@ -208,7 +207,7 @@ namespace PingApp.Web.Controllers {
             // 所有更新
             IEnumerable<AppUpdate> updates = DbSession.QueryOver<AppUpdate>()
                 .Where(u => u.App == app.Id)
-                .Where(u => u.Type != AppUpdateType.AddToNote)
+                .Where(u => u.Type != AppUpdateType.AddToPing)
                 .OrderBy(u => u.Time).Desc
                 .List();
             model.Updates = updates;

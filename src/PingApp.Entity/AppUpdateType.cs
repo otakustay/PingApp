@@ -13,7 +13,7 @@ namespace PingApp.Entity {
         /// <summary>
         /// 添加到站点
         /// </summary>
-        AddToNote,
+        AddToPing,
         
         /// <summary>
         /// 价格提升
@@ -38,6 +38,6 @@ namespace PingApp.Entity {
         /// <summary>
         /// 应用下架
         /// </summary>
-        Off
+        Revoke
     }
 }

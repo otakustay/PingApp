@@ -124,6 +124,8 @@ namespace PingApp.Schedule.Infrastructure {
             }
             catch (InvalidOperationException) {
             }
+
+            logger.Info("Disposed update notifier");
         }
     }
 }

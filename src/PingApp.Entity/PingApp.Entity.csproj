@@ -52,6 +52,7 @@
     <Compile Include="AppUpdate.cs" />
     <Compile Include="AppUpdateType.cs" />
     <Compile Include="Category.cs" />
+    <Compile Include="RevokedApp.cs" />
     <Compile Include="Developer.cs" />
     <Compile Include="DeviceType.cs" />
     <Compile Include="EqualsBuilder.cs" />

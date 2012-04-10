@@ -86,6 +86,8 @@ namespace PingApp.Schedule.Infrastructure {
             finally {
                 writer.Dispose();
             }
+
+            logger.Info("Disposed lucene indexer");
         }
 
         private IndexWriter CreateIndexWriter(bool rebuild) {

@@ -140,7 +140,7 @@ namespace PingApp.Schedule.Task {
                 }
                 else {
                     // 数据库中有，但Search API上没有，定义为下架
-                    CheckOffSellForApp(app);
+                    RevokeApp(app);
                 }
             }
 
@@ -149,14 +149,10 @@ namespace PingApp.Schedule.Task {
 
         public override void Dispose() {
             try {
-                logger.Info("Disposing lucene indexer");
                 indexer.Dispose();
-                logger.Info("Disposed lucene indexer");
             }
             finally {
-                logger.Info("Disposing update notifier");
                 notifier.Dispose();
-                logger.Info("Disposed update notifier");
             }
         }
 
@@ -193,16 +189,13 @@ namespace PingApp.Schedule.Task {
             logger.Trace("Updated app {0}-{1}", original.Id, original.Brief.Name);
         }
 
-        private void CheckOffSellForApp(App app) {
-            // 原本已经是下架状态，不作额外更新
-            if (!app.Brief.IsActive) {
-                return;
-            }
+        private void RevokeApp(App app) {
+            // 由于有了RevokedApp，能在这里出现的肯定是原来正常的，现在下架的应用
 
             // 添加下架信息
             AppUpdate offUpdate = new AppUpdate() {
                 App = app.Id,
-                Type = AppUpdateType.Off,
+                Type = AppUpdateType.Revoke,
                 OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol,
                 Time = DateTime.Now
             };
@@ -213,11 +206,9 @@ namespace PingApp.Schedule.Task {
                 offUpdate.Type, app.Id, app.Brief.Name
             );
 
-            // 更新应用
-            app.Brief.IsActive = false;
-            repository.App.Update(app);
+            repository.App.Revoke(app);
 
-            logger.Trace("Set app {0}-{1} to be off sold", app.Id, app.Brief.Name);
+            logger.Trace("Set app {0}-{1} to be revoked", app.Id, app.Brief.Name);
 
             // 下架的应用不需要删除索引，也不需要更新索引
         }
