@@ -50,7 +50,7 @@ namespace PingApp.Repository.Mongo {
                 OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
             };
             appUpdates.Save(updateForAdd);
-            apps.Save(app);
+            appUpdates.Save(app);
 
             app.Brief.LastValidUpdate = updateForAdd;
             apps.Save(app);
