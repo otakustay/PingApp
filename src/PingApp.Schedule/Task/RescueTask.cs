@@ -41,6 +41,11 @@ namespace PingApp.Schedule.Task {
              *    3.2. 从RevokeApp中移除
              *    3.3. 新增到App中
              */
+            Stopwatch watch = new Stopwatch();
+
+            logger.Info("Start rescue task");
+            watch.Start();
+
             // 从数据库分批取
             TaskFactory factory = new TaskFactory();
             List<Tasks.Task> tasks = new List<Tasks.Task>();
@@ -48,6 +53,10 @@ namespace PingApp.Schedule.Task {
                 Tasks.Task task = factory.StartNew(RetrieveAndRescue);
                 tasks.Add(task);
             }
+            Tasks.Task.WaitAll(tasks.ToArray());
+
+            watch.Stop();
+            logger.Info("Finished task using {0}", watch.Elapsed);
         }
 
         private void RetrieveAndRescue() {
