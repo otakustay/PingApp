@@ -108,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dependency\InitializeModule.cs" />
+    <Compile Include="Dependency\RescueModule.cs" />
     <Compile Include="Dependency\RssCheckModule.cs" />
     <Compile Include="Dependency\SharedModule.cs" />
     <Compile Include="Dependency\UpdateModule.cs" />
