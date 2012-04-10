@@ -138,10 +138,6 @@
       <Project>{4bee7099-e9ef-4b8e-a6c4-f787949c7170}</Project>
       <Name>PingApp.Repository.Mongo</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PingApp.Repository.NHibernate\PingApp.Repository.NHibernate.csproj">
-      <Project>{d7bd5bd3-57d0-4584-ba3c-25f0ee50c134}</Project>
-      <Name>PingApp.Repository.NHibernate</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PingApp.Repository\PingApp.Repository.csproj">
       <Project>{65ce8a86-a790-4e23-8fc6-8d2569e86fcf}</Project>
       <Name>PingApp.Repository</Name>
