@@ -69,8 +69,19 @@ namespace PingApp.Repository.Mongo {
         }
 
         public RevokedApp Revoke(App app) {
+            // 添加下架信息
+            AppUpdate offUpdate = new AppUpdate() {
+                App = app.Id,
+                Type = AppUpdateType.Revoke,
+                OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol,
+                Time = DateTime.Now
+            };
+            appUpdates.Save(offUpdate);
+
+            // 从在售应用中移除
             apps.Remove(Query.EQ("_id", app.Id), RemoveFlags.Single);
 
+            // 添加到下架应用中
             RevokedApp revoked = new RevokedApp(app);
             revokedApps.Save(revoked);
 

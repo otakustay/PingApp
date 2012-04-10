@@ -24,6 +24,8 @@ namespace PingApp.Schedule.Task {
 
         private readonly int limit;
 
+        private readonly List<App> revokedApps = new List<App>();
+
         public UpdateTask(AppParser appParser, LuceneIndexer indexer, UpdateNotifier notifier,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(logger) {
@@ -46,8 +48,9 @@ namespace PingApp.Schedule.Task {
              *                3.1.2.1. 插入更新数据，设定应用最后更新信息
              *                3.1.2.2. 通知用户相关更新
              *         3.1.3. 更新应用信息
-             *    3.2. 如果Search API上没信息，视为下架，添加下架的更新信息，放入下架应用中
+             *    3.2. 如果Search API上没信息，视为下架，添加到下架应用的集合中，等待后续处理
              *    3.3. 更新Lucene索引
+             * 4. 处理下架的应用，添加下架的更新信息，放入下架应用中，并删除其Lucene索引
              */
             Stopwatch watch = new Stopwatch();
 
@@ -80,6 +83,13 @@ namespace PingApp.Schedule.Task {
                 }
             }
             Tasks.Task.WaitAll(tasks.ToArray());
+
+            /* 
+             * 全部数据更新完毕后，统一处理下架的应用
+             * 此时是单线程环境，不需要处理并发
+             * （理论上）也没有其他的进程在读取库，因此可以任意删除数据
+             */
+            RevokeApps();
 
             watch.Stop();
             logger.Info("Finished task using {0}", watch.Elapsed);
@@ -134,8 +144,15 @@ namespace PingApp.Schedule.Task {
                     CheckUpdateForApp(app, updated[app.Id]);
                 }
                 else {
-                    // 数据库中有，但Search API上没有，定义为下架
-                    RevokeApp(app);
+                    /*
+                     * 数据库中有，但Search API上没有，定义为下架
+                     * 由于正在不断获取数据，此时移除Collection中的内容，会导致数据获取的不准确性，遗漏数据
+                     * 因此先将下架的应用放入集合中，等待后续统一处理
+                     * NOTICE: 由于这个逻辑的存在，Update任务不能和其他任务一起跑，会引起并发冲突（基本所有任务都不能和其他的并行）
+                     */
+                    lock (revokedApps) {
+                        revokedApps.Add(app);
+                    }
                 }
             }
 
@@ -190,27 +207,27 @@ namespace PingApp.Schedule.Task {
             logger.Trace("Updated app {0}-{1}", original.Id, original.Brief.Name);
         }
 
-        private void RevokeApp(App app) {
-            // 由于有了RevokedApp，能在这里出现的肯定是原来正常的，现在下架的应用
+        private void RevokeApps() {
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
 
-            // 添加下架信息
-            AppUpdate offUpdate = new AppUpdate() {
-                App = app.Id,
-                Type = AppUpdateType.Revoke,
-                OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol,
-                Time = DateTime.Now
-            };
-            repository.AppUpdate.Save(offUpdate);
+            foreach (App app in revokedApps) {
+                repository.App.Revoke(app);
+                indexer.DeleteApp(app);
 
-            logger.Trace(
-                "Added update of type {0} for app {1}-{2}",
-                offUpdate.Type, app.Id, app.Brief.Name
-            );
+                logger.Trace("Set app {0}-{1} to be revoked", app.Id, app.Brief.Name);
+            }
 
-            repository.App.Revoke(app);
-            indexer.DeleteApp(app);
+            watch.Stop();
+            logger.Info("Revoked {0} apps using {1}ms", revokedApps.Count, watch.ElapsedMilliseconds);
 
-            logger.Trace("Set app {0}-{1} to be revoked", app.Id, app.Brief.Name);
+            watch.Reset();
+            watch.Stop();
+
+            indexer.Flush();
+
+            watch.Stop();
+            logger.Info("Deleted index for {0} apps using {1}ms", revokedApps.Count, watch.ElapsedMilliseconds);
         }
     }
 }
