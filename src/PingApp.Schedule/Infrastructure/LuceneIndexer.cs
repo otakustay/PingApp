@@ -27,6 +27,8 @@ namespace PingApp.Schedule.Infrastructure {
 
         private Queue<App> updateQueue = new Queue<App>();
 
+        private Queue<App> deleteQueue = new Queue<App>();
+
         public LuceneIndexer(bool rebuild, ProgramSettings settings, Logger logger) {
             this.settings = settings;
             this.logger = logger;
@@ -43,6 +45,12 @@ namespace PingApp.Schedule.Infrastructure {
         public void UpdateApp(App app) {
             lock (updateQueue) {
                 updateQueue.Enqueue(app);
+            }
+        }
+
+        public void DeleteApp(App app) {
+            lock (deleteQueue) {
+                deleteQueue.Enqueue(app);
             }
         }
 
@@ -67,6 +75,17 @@ namespace PingApp.Schedule.Infrastructure {
                     writer.UpdateDocument(term, document);
 
                     logger.Trace("Updated index for app {0}-{1}", app.Id, app.Brief.Name);
+                }
+            }
+
+            lock (updateQueue) {
+                while (updateQueue.Count > 0) {
+                    App app = updateQueue.Dequeue();
+                    Term term = CreateTerm(app);
+
+                    writer.DeleteDocuments(term);
+
+                    logger.Trace("Deleted index for app {0}-{1}", app.Id, app.Brief.Name);
                 }
             }
         }

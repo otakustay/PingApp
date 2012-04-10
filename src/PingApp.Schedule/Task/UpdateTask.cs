@@ -49,9 +49,7 @@ namespace PingApp.Schedule.Task {
              *                3.1.2.1. 插入更新数据，设定应用最后更新信息
              *                3.1.2.2. 通知用户相关更新
              *         3.1.3. 更新应用信息
-             *    3.2. 如果Search API上没信息，视为下架：
-             *         3.2.1. 如果应用已经下架，不做处理
-             *         3.2.2. 添加下架的更新信息，设定应用最后更新为下架
+             *    3.2. 如果Search API上没信息，视为下架，添加下架的更新信息，放入下架应用中
              *    3.3. 更新Lucene索引
              */
             Stopwatch watch = new Stopwatch();
@@ -207,10 +205,9 @@ namespace PingApp.Schedule.Task {
             );
 
             repository.App.Revoke(app);
+            indexer.DeleteApp(app);
 
             logger.Trace("Set app {0}-{1} to be revoked", app.Id, app.Brief.Name);
-
-            // 下架的应用不需要删除索引，也不需要更新索引
         }
     }
 }
