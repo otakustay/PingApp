@@ -58,7 +58,7 @@ namespace PingApp.Schedule.Task {
             watch.Start();
 
             TaskFactory factory = new TaskFactory();
-            List<Tasks.Task> tasks = new List<Tasks.Task>();
+            List<Tasks.Task<int>> tasks = new List<Tasks.Task<int>>();
 
             if (args.Length > 0) {
                 // 按200一组取数据库的数据判定更新
@@ -71,18 +71,20 @@ namespace PingApp.Schedule.Task {
                     stepWatch.Stop();
                     logger.Trace("Retrieved {0} apps from database using {1}ms", apps.Count, stepWatch.ElapsedMilliseconds);
 
-                    Tasks.Task task = factory.StartNew(CheckUpdates, apps);
+                    Tasks.Task<int> task = factory.StartNew<int>(CheckUpdates, apps);
                     tasks.Add(task);
                 }
             }
             else {
                 // 从数据库分批取
                 for (int i = 0; i < Environment.ProcessorCount; i++) {
-                    Tasks.Task task = factory.StartNew(RetrieveAndUpdate);
+                    Tasks.Task<int> task = factory.StartNew<int>(RetrieveAndUpdate);
                     tasks.Add(task);
                 }
             }
             Tasks.Task.WaitAll(tasks.ToArray());
+
+            logger.Info("Updated {0} apps", tasks.Sum(t => t.Result));
 
             /* 
              * 全部数据更新完毕后，统一处理下架的应用
@@ -95,13 +97,13 @@ namespace PingApp.Schedule.Task {
             logger.Info("Finished task using {0}", watch.Elapsed);
         }
 
-        private void RetrieveAndUpdate() {
+        private int RetrieveAndUpdate() {
             while (true) {
                 ICollection<App> apps;
 
                 lock (repository) {
                     if (offset < 0) {
-                        return;
+                        return 0;
                     }
 
                     logger.Trace("Retrieve apps in range {0}-{1}", offset, offset + limit);
@@ -127,21 +129,25 @@ namespace PingApp.Schedule.Task {
             }
         }
 
-        private void CheckUpdates(object input) {
+        private int CheckUpdates(object input) {
             IEnumerable<App> apps = input as IEnumerable<App>;
             int[] identities = apps.Select(a => a.Id).ToArray();
             ICollection<App> retrievedApps = appParser.RetrieveApps(identities);
 
             if (retrievedApps == null) {
-                return;
+                return 0;
             }
 
             Dictionary<int, App> updated = retrievedApps.ToDictionary(a => a.Id);
+            int count = 0;
 
             foreach (App app in apps) {
                 if (updated.ContainsKey(app.Id)) {
                     // 检查是否有更新
-                    CheckUpdateForApp(app, updated[app.Id]);
+                    bool changed = CheckUpdateForApp(app, updated[app.Id]);
+                    if (changed) {
+                        count++;
+                    }
                 }
                 else {
                     /*
@@ -163,6 +169,8 @@ namespace PingApp.Schedule.Task {
 
             watch.Stop();
             logger.Debug("Indexed {0} apps using {1}ms", retrievedApps.Count, watch.ElapsedMilliseconds);
+
+            return count;
         }
 
         public override void Dispose() {
@@ -174,9 +182,9 @@ namespace PingApp.Schedule.Task {
             }
         }
 
-        private void CheckUpdateForApp(App original, App updated) {
+        private bool CheckUpdateForApp(App original, App updated) {
             if (original.Equals(updated)) {
-                return;
+                return false;
             }
 
             // 检查/添加更新信息
@@ -205,6 +213,8 @@ namespace PingApp.Schedule.Task {
             indexer.UpdateApp(original);
 
             logger.Trace("Updated app {0}-{1}", original.Id, original.Brief.Name);
+
+            return true;
         }
 
         private void RevokeApps() {
