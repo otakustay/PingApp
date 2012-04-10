@@ -61,7 +61,10 @@ namespace PingApp.Repository.Mongo {
         }
 
         public ICollection<App> Retrieve(int offset, int limit) {
-            ICollection<App> result = apps.AsQueryable<App>().Skip(offset).Take(limit).ToArray();
+            ICollection<App> result = apps.FindAll()
+                .SetSkip(offset)
+                .SetLimit(limit)
+                .ToArray();
             return result;
         }
 
@@ -72,6 +75,29 @@ namespace PingApp.Repository.Mongo {
             revokedApps.Save(revoked);
 
             return revoked;
+        }
+
+        public ICollection<RevokedApp> RetrieveRevoked(int offset, int limit) {
+            ICollection<RevokedApp> result = revokedApps.FindAll()
+                .SetSkip(offset)
+                .SetLimit(limit)
+                .ToArray();
+            return result;
+        }
+
+        public void Resurrect(App app) {
+            AppUpdate update = new AppUpdate() {
+                App = app.Id,
+                NewValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol,
+                Time = DateTime.Now,
+                Type = AppUpdateType.Resurrect
+            };
+            appUpdates.Save(update);
+
+            revokedApps.Remove(Query.EQ("_id", app.Id));
+
+            app.Brief.LastValidUpdate = update;
+            apps.Save(app);
         }
     }
 }

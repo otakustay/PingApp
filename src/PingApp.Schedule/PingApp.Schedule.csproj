@@ -122,6 +122,7 @@
     <Compile Include="Task\InitializeTask.cs" />
     <Compile Include="TaskBase.cs" />
     <Compile Include="ActionType.cs" />
+    <Compile Include="Task\RescueTask.cs" />
     <Compile Include="Task\RssCheckTask.cs" />
     <Compile Include="Task\TestTask.cs" />
     <Compile Include="Task\UpdateTask.cs" />

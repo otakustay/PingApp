@@ -38,6 +38,11 @@ namespace PingApp.Entity {
         /// <summary>
         /// 应用下架
         /// </summary>
-        Revoke
+        Revoke,
+
+        /// <summary>
+        /// 重新上架
+        /// </summary>
+        Resurrect
     }
 }
