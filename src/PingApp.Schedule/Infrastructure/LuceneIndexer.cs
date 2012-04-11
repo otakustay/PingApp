@@ -10,13 +10,9 @@ using Lucene.Net.Store;
 using NLog;
 using PingApp.Entity;
 using PingApp.Utility.Lucene;
-using SimpleLucene;
-using SimpleLucene.Impl;
 
 namespace PingApp.Schedule.Infrastructure {
     sealed class LuceneIndexer : IDisposable {
-        private static readonly AppIndexDefinition definition = new AppIndexDefinition();
-
         private readonly ProgramSettings settings;
 
         private readonly Logger logger;
@@ -132,13 +128,13 @@ namespace PingApp.Schedule.Infrastructure {
             NumericField languagePriority = new NumericField("LanguagePriority", Field.Store.NO, true);
             languagePriority.SetIntValue(app.Brief.LanguagePriority);
 
-            doc.AddField(id);
-            doc.AddField(name);
-            doc.AddField(description);
-            doc.AddField(developerName);
-            doc.AddField(category);
-            doc.AddField(deviceType);
-            doc.AddField(languagePriority);
+            doc.Add(id);
+            doc.Add(name);
+            doc.Add(description);
+            doc.Add(developerName);
+            doc.Add(category);
+            doc.Add(deviceType);
+            doc.Add(languagePriority);
 
             // 排序字段
             Field nameForSort = new Field("NameForSort", app.Brief.Name, Field.Store.NO, Field.Index.NOT_ANALYZED);
@@ -149,10 +145,10 @@ namespace PingApp.Schedule.Infrastructure {
             NumericField ratingCount = new NumericField("Rating", Field.Store.NO, true);
             ratingCount.SetIntValue(app.Brief.AverageUserRatingForCurrentVersion.HasValue ? (int)app.Brief.AverageUserRatingForCurrentVersion : 0);
 
-            doc.AddField(nameForSort);
-            doc.AddField(lastValidUpdateTimee);
-            doc.AddField(price);
-            doc.AddField(ratingCount);
+            doc.Add(nameForSort);
+            doc.Add(lastValidUpdateTimee);
+            doc.Add(price);
+            doc.Add(ratingCount);
 
             return doc;
         }
