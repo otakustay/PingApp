@@ -84,9 +84,7 @@ namespace PingApp.Schedule.Task {
         }
 
         public override void Dispose() {
-            logger.Info("Disposing lucene indexer");
             indexer.Dispose();
-            logger.Info("Disposed lucene indexer");
         }
     }
 }

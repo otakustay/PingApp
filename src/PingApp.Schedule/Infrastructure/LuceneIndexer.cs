@@ -100,7 +100,7 @@ namespace PingApp.Schedule.Infrastructure {
                 writer.Optimize();
 
                 watch.Stop();
-                logger.Info("Optimized index using {0}ms", watch.ElapsedMilliseconds);
+                logger.Info("Optimized index using {0}", watch.Elapsed);
             }
             finally {
                 writer.Dispose();
