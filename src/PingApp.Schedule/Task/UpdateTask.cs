@@ -97,6 +97,16 @@ namespace PingApp.Schedule.Task {
             logger.Info("Finished task using {0}", watch.Elapsed);
         }
 
+        public override void Dispose() {
+            base.Dispose();
+            try {
+                indexer.Dispose();
+            }
+            finally {
+                notifier.Dispose();
+            }
+        }
+
         private int RetrieveAndUpdate() {
             while (true) {
                 ICollection<App> apps;
@@ -171,15 +181,6 @@ namespace PingApp.Schedule.Task {
             logger.Debug("Indexed {0} apps using {1}ms", retrievedApps.Count, watch.ElapsedMilliseconds);
 
             return count;
-        }
-
-        public override void Dispose() {
-            try {
-                indexer.Dispose();
-            }
-            finally {
-                notifier.Dispose();
-            }
         }
 
         private bool CheckUpdateForApp(App original, App updated) {

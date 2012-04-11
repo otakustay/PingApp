@@ -53,6 +53,11 @@ namespace PingApp.Schedule.Task {
             logger.Info("Finished task using {0}", watch.Elapsed);
         }
 
+        public override void Dispose() {
+            base.Dispose();
+            indexer.Dispose();
+        }
+
         private int FindAndSaveApps(ICollection<int> partition) {
             ICollection<App> apps = appParser.RetrieveApps(partition);
 
@@ -81,10 +86,6 @@ namespace PingApp.Schedule.Task {
             logger.Debug("Indexed {0} apps using {1}ms", apps.Count, watch.ElapsedMilliseconds);
 
             return apps.Count();
-        }
-
-        public override void Dispose() {
-            indexer.Dispose();
         }
     }
 }

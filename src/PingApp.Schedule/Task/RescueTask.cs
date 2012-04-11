@@ -61,6 +61,11 @@ namespace PingApp.Schedule.Task {
             logger.Info("Finished task using {0}", watch.Elapsed);
         }
 
+        public override void Dispose() {
+            base.Dispose();
+            indexer.Dispose();
+        }
+
         private void RetrieveAndRescue() {
             while (true) {
                 ICollection<RevokedApp> apps;

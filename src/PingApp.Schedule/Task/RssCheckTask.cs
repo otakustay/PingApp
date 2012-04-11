@@ -67,6 +67,11 @@ namespace PingApp.Schedule.Task {
             logger.Info("Finished task using {0}", watch.Elapsed);
         }
 
+        public override void Dispose() {
+            base.Dispose();
+            indexer.Dispose();
+        }
+
         private void SaveApps(ICollection<App> apps) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
