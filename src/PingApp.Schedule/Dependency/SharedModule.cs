@@ -56,7 +56,7 @@ namespace PingApp.Schedule.Dependency {
                 DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + this.action
             );
             ProgramSettings settings = context.Kernel.Get<ProgramSettings>();
-            string layout = "${time}|${level}|${message}${onexception:inner=\n}${exception:format=tostring}";
+            string layout = "${time}|${level}|${message}${onexception:inner=${newline}}${exception:format=tostring}";
 
             LoggingConfiguration config = new LoggingConfiguration();
 
