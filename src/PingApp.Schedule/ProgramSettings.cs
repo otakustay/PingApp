@@ -30,6 +30,7 @@ namespace PingApp.Schedule {
             Debug = debug;
             BatchSize = batchSize;
             RetryAttemptCount = retryAttemptCount;
+            ParallelDegree = parallelDegree;
             LucentDirectory = luceneDirectory;
 
             MailAddress = mailAddress;
