@@ -83,7 +83,7 @@ namespace PingApp.Schedule.Task {
             watch.Stop();
             logger.Debug("Indexed {0} apps using {1}ms", apps.Count, watch.ElapsedMilliseconds);
 
-            return apps.Count();
+            return apps.Count;
         }
     }
 }
