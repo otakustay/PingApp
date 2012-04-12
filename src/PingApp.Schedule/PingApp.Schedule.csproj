@@ -86,6 +86,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dependency\CheckNewModule.cs" />
     <Compile Include="Dependency\InitializeModule.cs" />
     <Compile Include="Dependency\RescueModule.cs" />
     <Compile Include="Dependency\RssCheckModule.cs" />

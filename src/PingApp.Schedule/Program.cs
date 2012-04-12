@@ -30,8 +30,9 @@ namespace PingApp.Schedule {
             kernel.Load(new MongoRepositoryModule());
             kernel.Load(new SharedModule(action));
             kernel.Load(new InitializeModule());
-            kernel.Load(new UpdateModule());
             kernel.Load(new RssCheckModule());
+            kernel.Load(new UpdateModule());
+            kernel.Load(new CheckNewModule());
             kernel.Load(new RescueModule());
 
             Type taskType = Type.GetType("PingApp.Schedule.Task." + action + "Task");
