@@ -49,6 +49,8 @@ namespace PingApp.Schedule {
                 task.Run(taskArguments);
             }
 
+            // NLog在mono平台上有BUG，会导致程序无法退出，始终等待Logger进行Flush，这行代码强制完成Flush
+            LogManager.Configuration = null;
         }
     }
 }
