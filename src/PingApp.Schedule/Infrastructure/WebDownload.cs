@@ -11,16 +11,18 @@ namespace PingApp.Schedule.Infrastructure {
     sealed class WebDownload {
         private static readonly Encoding encoding = Encoding.UTF8;
 
-        private readonly IWebProxy proxy;
+        private readonly WebProxy proxy;
 
-        public WebDownload(IWebProxy proxy) {
-            this.proxy = proxy;
+        public WebDownload(ProgramSettings settings) {
+            if (!String.IsNullOrEmpty(settings.ProxyAddress)) {
+                proxy = new WebProxy(settings.ProxyAddress);
+            }
         }
 
         public string AsString(string uri) {
             using (WebClient client = new WebClient()) {
                 client.Encoding = encoding;
-                if (proxy.Credentials != null) {
+                if (proxy != null) {
                     client.Proxy = proxy;
                 }
 

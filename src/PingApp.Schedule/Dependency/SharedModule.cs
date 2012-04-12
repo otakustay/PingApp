@@ -27,7 +27,6 @@ namespace PingApp.Schedule.Dependency {
             Bind<ProgramSettings>().ToConstant(ProgramSettings.Current).InSingletonScope();
             Bind<Logger>().ToMethod(GetLogger).InSingletonScope();
 
-            Bind<IWebProxy>().To<WebProxy>().InSingletonScope();
             Bind<WebDownload>().ToSelf().InSingletonScope();
 
             Bind<JsonSerializerSettings>().ToSelf()
