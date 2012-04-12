@@ -42,7 +42,7 @@ namespace PingApp.Schedule.Task {
 
             ISet<int> identities = catalogParser.CollectApps();
             int newAppCount = identities.Partition(200).AsParallel().Sum(p => FindAndSaveNewApps(p));
-            logger.Info("Saved {0} enw apps", newAppCount);
+            logger.Info("Saved {0} new apps", newAppCount);
 
             watch.Stop();
             logger.Info("Finished task using {0}", watch.Elapsed);
