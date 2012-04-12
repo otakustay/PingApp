@@ -99,6 +99,7 @@
     <Compile Include="Infrastructure\WebDownload.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Task\CheckNewTask.cs" />
     <Compile Include="Task\InitializeTask.cs" />
     <Compile Include="TaskBase.cs" />
     <Compile Include="ActionType.cs" />
