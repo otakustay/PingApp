@@ -28,7 +28,7 @@ namespace PingApp.Schedule.Task {
 
         public UpdateTask(AppParser appParser, LuceneIndexer indexer, UpdateNotifier notifier,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
-            : base(logger) {
+            : base(settings, logger) {
             this.appParser = appParser;
             this.indexer = indexer;
             this.notifier = notifier;
@@ -77,7 +77,7 @@ namespace PingApp.Schedule.Task {
             }
             else {
                 // 从数据库分批取
-                for (int i = 0; i < Environment.ProcessorCount; i++) {
+                for (int i = 0; i < settings.ParallelDegree; i++) {
                     Tasks.Task<int> task = factory.StartNew<int>(RetrieveAndUpdate);
                     tasks.Add(task);
                 }

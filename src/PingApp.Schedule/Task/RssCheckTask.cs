@@ -25,12 +25,11 @@ namespace PingApp.Schedule.Task {
 
         public RssCheckTask(WebDownload download, AppParser appParser, LuceneIndexer indexer,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
-            : base(logger) {
+            : base(settings, logger) {
             this.download = download;
             this.appParser = appParser;
             this.indexer = indexer;
             this.repository = repository;
-            this.settings = settings;
         }
 
         public override void Run(string[] args) {

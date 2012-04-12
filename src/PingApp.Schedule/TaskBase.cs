@@ -5,12 +5,16 @@ using System.Text;
 using NLog;
 using System.IO;
 using Ninject;
+using PingApp.Schedule.Infrastructure;
 
 namespace PingApp.Schedule {
     abstract class TaskBase : IDisposable {
+        protected readonly ProgramSettings settings;
+
         protected readonly Logger logger;
 
-        protected TaskBase(Logger logger) {
+        protected TaskBase(ProgramSettings settings, Logger logger) {
+            this.settings = settings;
             this.logger = logger;
         }
 

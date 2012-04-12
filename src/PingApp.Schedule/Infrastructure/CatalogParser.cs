@@ -56,10 +56,14 @@ namespace PingApp.Schedule.Infrastructure {
              */
 
             IEnumerable<Category> categories = settings.Debug ? categoriesForDebug : Category.All;
-            categories.AsParallel().ForAll(c => FromCategory(c));
+            categories.AsParallel()
+                .WithDegreeOfParallelism(settings.ParallelDegree)
+                .ForAll(c => FromCategory(c));
 
             IEnumerable<Category> extrayCategories = Category.All.Concat(Category.Games);
-            extrayCategories.AsParallel().ForAll(c => FromPage(c, Char.MinValue, 0));
+            extrayCategories.AsParallel()
+                .WithDegreeOfParallelism(settings.ParallelDegree)
+                .ForAll(c => FromPage(c, Char.MinValue, 0));
 
             watch.Stop();
             logger.Info("Collected {0} apps using {1}", output.Count, watch.Elapsed);
@@ -68,7 +72,9 @@ namespace PingApp.Schedule.Infrastructure {
         }
 
         private void FromCategory(Category category) {
-            alphas.AsParallel().ForAll(a => FromAlpha(category, a));
+            alphas.AsParallel()
+                .WithDegreeOfParallelism(settings.ParallelDegree)
+                .ForAll(a => FromAlpha(category, a));
         }
 
         private void FromAlpha(Category category, char alpha, int attempts = 0) {
@@ -82,7 +88,9 @@ namespace PingApp.Schedule.Infrastructure {
                     pageCount, category.Id, category.Name, alpha
                 );
 
-                Enumerable.Range(1, pageCount).AsParallel().ForAll(i => FromPage(category, alpha, i));
+                Enumerable.Range(1, pageCount).AsParallel()
+                    .WithDegreeOfParallelism(settings.ParallelDegree)
+                    .ForAll(i => FromPage(category, alpha, i));
             }
             catch (WebException ex) {
                 string logMessage = String.Format(

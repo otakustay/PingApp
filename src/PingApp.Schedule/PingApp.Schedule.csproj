@@ -95,7 +95,7 @@
     <Compile Include="Infrastructure\AppParser.cs" />
     <Compile Include="Infrastructure\CatalogParser.cs" />
     <Compile Include="Infrastructure\LuceneIndexer.cs" />
-    <Compile Include="Infrastructure\ProgramSettings.cs" />
+    <Compile Include="ProgramSettings.cs" />
     <Compile Include="Infrastructure\UpdateNotifier.cs" />
     <Compile Include="Infrastructure\WebDownload.cs" />
     <Compile Include="Program.cs" />

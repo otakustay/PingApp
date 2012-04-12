@@ -19,8 +19,8 @@ namespace PingApp.Schedule.Task {
         private readonly RepositoryEmitter repository;
 
         public CheckNewTask(CatalogParser catalogParser, AppParser appParser,
-            LuceneIndexer indexer, RepositoryEmitter repository, Logger logger)
-            : base(logger) {
+            LuceneIndexer indexer, RepositoryEmitter repository, ProgramSettings settings, Logger logger)
+            : base(settings, logger) {
             this.catalogParser = catalogParser;
             this.appParser = appParser;
             this.indexer = indexer;
@@ -41,7 +41,9 @@ namespace PingApp.Schedule.Task {
             watch.Start();
 
             ISet<int> identities = catalogParser.CollectApps();
-            int newAppCount = identities.Partition(200).AsParallel().Sum(p => FindAndSaveNewApps(p));
+            int newAppCount = identities.Partition(200).AsParallel()
+                .WithDegreeOfParallelism(settings.ParallelDegree)
+                .Sum(p => FindAndSaveNewApps(p));
             logger.Info("Saved {0} new apps", newAppCount);
 
             watch.Stop();

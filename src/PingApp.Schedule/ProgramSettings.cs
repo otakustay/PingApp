@@ -5,13 +5,15 @@ using System.Configuration;
 using System.Linq;
 using System.Text;
 
-namespace PingApp.Schedule.Infrastructure {
+namespace PingApp.Schedule {
     sealed class ProgramSettings {
         public bool Debug { get; private set; }
 
         public int BatchSize { get; private set; }
 
         public int RetryAttemptCount { get; private set; }
+
+        public int ParallelDegree { get; set; }
 
         public string LucentDirectory { get; private set; }
 
@@ -23,8 +25,8 @@ namespace PingApp.Schedule.Infrastructure {
 
         public int MailServerPort { get; private set; }
 
-        private ProgramSettings(bool debug, int batchSize, int retryAttemptCount, string luceneDirectory,
-            string mailAddress, string mailUser, string mailServerHost, int mailServerPort) {
+        private ProgramSettings(bool debug, int batchSize, int retryAttemptCount, int parallelDegree,
+            string luceneDirectory, string mailAddress, string mailUser, string mailServerHost, int mailServerPort) {
             Debug = debug;
             BatchSize = batchSize;
             RetryAttemptCount = retryAttemptCount;
@@ -44,6 +46,7 @@ namespace PingApp.Schedule.Infrastructure {
                 Convert.ToBoolean(appSettings["Debug"]),
                 Convert.ToInt32(appSettings["BatchSize"]),
                 Convert.ToInt32(appSettings["RetryAttemptCount"]),
+                Convert.ToInt32(appSettings["ParallelDegree"]),
                 Convert.ToString(appSettings["LucentDirectory"]),
 
                 Convert.ToString(appSettings["MailAddress"]),

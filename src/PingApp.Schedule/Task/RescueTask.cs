@@ -24,7 +24,7 @@ namespace PingApp.Schedule.Task {
 
         public RescueTask(AppParser appParser, LuceneIndexer indexer,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
-            : base(logger) {
+            : base(settings, logger) {
             this.appParser = appParser;
             this.indexer = indexer;
             this.repository = repository;
@@ -51,7 +51,7 @@ namespace PingApp.Schedule.Task {
             // 从数据库分批取
             TaskFactory factory = new TaskFactory();
             List<Tasks.Task> tasks = new List<Tasks.Task>();
-            for (int i = 0; i < Environment.ProcessorCount; i++) {
+            for (int i = 0; i < settings.ParallelDegree; i++) {
                 Tasks.Task task = factory.StartNew(RetrieveAndRescue);
                 tasks.Add(task);
             }

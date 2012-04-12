@@ -19,8 +19,8 @@ namespace PingApp.Schedule.Task {
         private readonly RepositoryEmitter repository;
 
         public InitializeTask(CatalogParser catalogParser, AppParser appParser,
-            LuceneIndexer indexer, RepositoryEmitter repository, Logger logger)
-            : base(logger) {
+            LuceneIndexer indexer, RepositoryEmitter repository, ProgramSettings settings, Logger logger)
+            : base(settings, logger) {
             this.catalogParser = catalogParser;
             this.appParser = appParser;
             this.indexer = indexer;
@@ -44,7 +44,9 @@ namespace PingApp.Schedule.Task {
 
             logger.Info("Start find and save apps");
             // Search API一次最多能传200个id，所以设定以200为一个区块
-            int appCount = identities.Partition(200).AsParallel().Sum(p => FindAndSaveApps(p));
+            int appCount = identities.Partition(200).AsParallel()
+                .WithDegreeOfParallelism(settings.ParallelDegree)
+                .Sum(p => FindAndSaveApps(p));
             logger.Info("Saved {0} apps", appCount);
 
             watch.Stop();
