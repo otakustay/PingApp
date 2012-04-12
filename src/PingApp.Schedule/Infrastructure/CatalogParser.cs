@@ -47,6 +47,8 @@ namespace PingApp.Schedule.Infrastructure {
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
+            logger.Info("Start parse catalogs");
+
             /*
              * 1. 一个分类有A-Z共26个字母，外加1个“其他”，用*表示
              * 2. 每个分类+字母的组合会有若干页，要取得具体的页数

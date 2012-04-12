@@ -40,9 +40,7 @@ namespace PingApp.Schedule.Task {
             logger.Info("Start initialize task");
             watch.Start();
 
-            logger.Info("Start parse catalogs");
             ISet<int> identities = catalogParser.CollectApps();
-            logger.Info("Catalogs parsed");
 
             logger.Info("Start find and save apps");
             // Search API一次最多能传200个id，所以设定以200为一个区块
