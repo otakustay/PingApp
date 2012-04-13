@@ -8,7 +8,6 @@ using NHibernate;
 using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using System.Configuration;
-using PingApp.Web.Models.Mapping;
 using PingApp.Web.Infrastructures;
 using PingApp.Entity;
 using PingApp.Web.Models;
@@ -20,8 +19,6 @@ namespace PingApp.Web {
 
     public class MvcApplication : System.Web.HttpApplication {
 
-        private static readonly ISessionFactory sessionFactory;
-
         public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
             filters.Add(new HandleErrorAttribute());
         }
@@ -31,6 +28,7 @@ namespace PingApp.Web {
             routes.IgnoreRoute("{*favicon}", new { favicon = @"(.*/)?favicon.ico(/.*)?" });
             routes.IgnoreRoute("{*robots}", new { robots = @"(.*/)?robots.txt(/.*)?" });
 
+            /*
             routes.MapLowerCaseRoute(
                 "ByDeveloper",
                 "developer/{id}/{page}",
@@ -102,6 +100,7 @@ namespace PingApp.Web {
             MapOwnedListRoute(routes);
             MapKeywordsSearchRoute(routes);
             MapIndexSearchRoute(routes);
+            */
 
             routes.MapLowerCaseRoute(
                 "Default", // Route name
@@ -119,24 +118,9 @@ namespace PingApp.Web {
         }
 
         static MvcApplication() {
-            string connectionString = ConfigurationManager.ConnectionStrings["PingApp"].ConnectionString;
-            sessionFactory = Fluently.Configure()
-                .Database(MySQLConfiguration.Standard.ConnectionString(connectionString).ShowSql())
-                .Mappings(m => m.FluentMappings.Add<AppUpdateEntityMap>())
-                .Mappings(m => m.FluentMappings.Add<AppEntityMap>())
-                .Mappings(m => m.FluentMappings.Add<AppBriefEntityMap>())
-                .Mappings(m => m.FluentMappings.Add<UserEntityMap>())
-                .Mappings(m => m.FluentMappings.Add<AppTrackEntityMap>())
-                .Mappings(m => m.FluentMappings.Add<DeveloperComponentMap>())
-                .Mappings(m => m.FluentMappings.Add<SellerComponentMap>())
-                .Mappings(m => m.FluentMappings.Add<AppUpdateComponentMap>())
-                .BuildSessionFactory();
         }
 
-        public static ISession OpenSession() {
-            return sessionFactory.OpenSession();
-        }
-
+        /*
         private static void MapWishListRoute(RouteCollection routes) {
             object route = new { controller = "Track", action = "WishList" };
 
@@ -340,5 +324,6 @@ namespace PingApp.Web {
             // 所有条件
             routes.MapLowerCaseRoute("IndexSearch15", "{deviceType}/{category}/{priceMode}/{updateType}", route);
         }
+        */
     }
 }

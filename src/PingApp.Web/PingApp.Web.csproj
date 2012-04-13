@@ -129,52 +129,21 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\AboutController.cs" />
-    <Compile Include="Controllers\ApiController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ToyController.cs" />
-    <Compile Include="Controllers\TrackController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="Controllers\ValidateController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructures\BaseController.cs" />
-    <Compile Include="Infrastructures\Default.cs" />
     <Compile Include="Infrastructures\EnumRouteConstraint.cs" />
     <Compile Include="Infrastructures\CategoryRouteConstraint.cs" />
     <Compile Include="Infrastructures\HtmlExtension.cs" />
     <Compile Include="Infrastructures\LowerCaseRoute.cs" />
     <Compile Include="Infrastructures\LowercaseRouteExtension.cs" />
     <Compile Include="Infrastructures\NewtonJsonActionResult.cs" />
-    <Compile Include="Infrastructures\NHibernateSessionModule.cs" />
     <Compile Include="Infrastructures\RegionAttribute.cs" />
-    <Compile Include="Infrastructures\TransactionAttribute.cs" />
-    <Compile Include="Infrastructures\UrlExtension.cs" />
-    <Compile Include="Models\AppApiQuery.cs" />
     <Compile Include="Models\DetailModel.cs" />
     <Compile Include="Models\ImportModel.cs" />
-    <Compile Include="Models\ListQuery.cs" />
-    <Compile Include="Models\Mapping\AppBriefEntityMap.cs" />
-    <Compile Include="Models\Mapping\AppEntityMap.cs" />
-    <Compile Include="Models\Mapping\AppTrackEntityMap.cs" />
-    <Compile Include="Models\Mapping\AppUpdateComponentMap.cs" />
-    <Compile Include="Models\Mapping\AppUpdateEntityMap.cs" />
-    <Compile Include="Models\Mapping\CategoryArrayType.cs" />
-    <Compile Include="Models\Mapping\CategoryType.cs" />
-    <Compile Include="Models\Mapping\DeveloperComponentMap.cs" />
-    <Compile Include="Models\Mapping\SellerComponentMap.cs" />
-    <Compile Include="Models\Mapping\StringArrayType.cs" />
-    <Compile Include="Models\Mapping\UserEntityMap.cs" />
-    <Compile Include="Models\PagedQuery.cs" />
-    <Compile Include="Models\PriceMode.cs" />
-    <Compile Include="Models\SearchQuery.cs" />
-    <Compile Include="Models\TitleBuilder.cs" />
-    <Compile Include="Models\TrackQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UpdateTop100.ashx.cs">
-      <DependentUpon>UpdateTop100.ashx</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\hot-decorator.png" />
@@ -249,8 +218,6 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\User\Profile.cshtml" />
-    <Content Include="Views\Home\Search.cshtml" />
     <Content Include="Dictionaries\Dict.dct">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -258,13 +225,20 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PingApp.Entity\PingApp.Entity.csproj">
       <Project>{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}</Project>
       <Name>PingApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingApp.Repository.Mongo\PingApp.Repository.Mongo.csproj">
+      <Project>{4bee7099-e9ef-4b8e-a6c4-f787949c7170}</Project>
+      <Name>PingApp.Repository.Mongo</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingApp.Repository\PingApp.Repository.csproj">
+      <Project>{65ce8a86-a790-4e23-8fc6-8d2569e86fcf}</Project>
+      <Name>PingApp.Repository</Name>
     </ProjectReference>
     <ProjectReference Include="..\PingApp.Utility\PingApp.Utility.csproj">
       <Project>{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}</Project>
@@ -278,15 +252,6 @@
     <Content Include="Views\Home\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Sidebar.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\Register.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\SignIn.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Content\Curvic.eot" />
     <Content Include="Content\Curvice.svg" />
     <Content Include="Content\Curvic.ttf" />
@@ -296,46 +261,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Home\Detail.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Shared\AppList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Track\List.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\About\Site.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\ImportGuide.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\Import.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\ConfirmImport.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\ResetPassword.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\User\PasswordResetOk.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="App_Code\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="UpdateTop100.ashx" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Home\PlainList.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\About\Usage.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Views\Toy\Space.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config">

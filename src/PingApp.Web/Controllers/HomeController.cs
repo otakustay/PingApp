@@ -15,67 +15,42 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using NHibernate.Criterion;
 using System.Text.RegularExpressions;
+using PingApp.Repository.Quries;
 
 namespace PingApp.Web.Controllers {
     public class HomeController : BaseController {
+        /*
         private static readonly Regex byApp = new Regex(@"^#\d+$", RegexOptions.Compiled);
 
         private static readonly Regex byDeveloper = new Regex(@"^\.\d+$", RegexOptions.Compiled);
+        */
 
         [HttpGet]
-        [Transaction]
         [Region("Home")]
-        public ActionResult Index(ListQuery query, int page = 1) {
-            TitleBuilder title = new TitleBuilder();
+        public ActionResult Index(AppListQuery query, int page = 1) {
+            ViewBag.Title = "首页";
 
-            IQueryOver<AppBrief, AppBrief> search = DbSession.QueryOver<AppBrief>();
-            int languagePriority = User.Identity.IsAuthenticated ?
-                CurrentUser.PreferredLanguagePriority : Default.LanguagePriority;
-            search = search.Where(a => a.LanguagePriority >= languagePriority);
-
-            if (query.DeviceType != DeviceType.NotProvided) {
-                search = search.Where(a => a.DeviceType == query.DeviceType || a.DeviceType == DeviceType.Universal);
-                title.DeviceType = query.DeviceType;
-            }
-            if (!String.IsNullOrEmpty(query.Category)) {
-                search = search.Where(a => a.PrimaryCategory == Category.Get(query.Category));
-                title.Category = Category.Get(query.Category);
-            }
-            if (query.PriceMode == PriceMode.Free) {
-                search = search.Where(a => a.Price == 0);
-                title.PriceMode = query.PriceMode;
-            }
-            else if (query.PriceMode == PriceMode.Paid) {
-                search = search.Where(a => a.Price > 0);
-                title.PriceMode = query.PriceMode;
-            }
-            if (query.UpdateType.HasValue) {
-                search = search.Where(a => a.LastValidUpdate.Type == query.UpdateType.Value);
-                title.UpdateType = query.UpdateType.Value;
-            }
-            search = search.OrderBy(a => a.LastValidUpdate.Time).Desc;
-
-            IList<AppBrief> apps = search.Skip(query.StartIndex).Take(query.TakeSize).List();
-            query.Fill(apps);
+            query = Repository.App.Search(query);
 
             if (User.Identity.IsAuthenticated) {
-                Dictionary<int, AppTrack> tracks = DbSession.QueryOver<AppTrack>()
-                    .Where(t => t.User == CurrentUser.Id)
-                    .Where(Restrictions.InG<int>("App.Id", apps.Take(query.PageSize).Select(a => a.Id)))
-                    .List()
-                    .ToDictionary(t => t.App.Id);
+                AppTrackQuery trackQuery = new AppTrackQuery(1, query.Result.Count) {
+                    User = CurrentUser.Id,
+                    RelatedApps = query.Result.Select(a => a.Id)
+                };
+                Dictionary<int, AppTrack> tracks =
+                    Repository.AppTrack.Retrieve(trackQuery).Result.ToDictionary(t => t.App.Id);
                 ViewBag.Tracks = tracks;
             }
             else {
                 ViewBag.Tracks = new Dictionary<int, AppTrack>();
             }
 
-            ViewBag.Title = title.ForList("最近更新应用");
             return View(query);
         }
 
+        /*
+
         [HttpGet]
-        [Transaction]
         [Region("Home")]
         public ActionResult Search(SearchQuery query, int page = 1) {
             // 按应用搜
@@ -231,5 +206,7 @@ namespace PingApp.Web.Controllers {
             ViewBag.Title = title.ForDetail();
             return View("Detail", model);
         }
+         
+        */
     }
 }
