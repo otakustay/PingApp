@@ -7,8 +7,5 @@ using PingApp.Entity;
 namespace PingApp.Repository.Quries {
     public class DeveloperAppsQuery : PagedQuery<AppBrief> {
         public Developer Developer { get; set; }
-
-        public DeveloperAppsQuery(int pageIndex, int pageSize) : base(pageIndex, pageSize) {
-        }
     }
 }

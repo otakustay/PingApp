@@ -5,14 +5,9 @@ using System.Text;
 
 namespace PingApp.Repository.Quries {
     public class PagedQuery<T> : ListQuery<T> {
-        public int PageIndex { get; private set; }
+        public int PageIndex { get; set; }
 
-        public int PageSize { get; private set; }
-
-        public PagedQuery(int pageIndex, int pageSize) {
-            PageIndex = Math.Max(pageIndex, 1);
-            PageSize = Math.Max(pageSize, 1);
-        }
+        public int PageSize { get; set; }
 
         public int SkipSize {
             get {

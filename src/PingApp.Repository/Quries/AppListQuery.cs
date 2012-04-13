@@ -13,9 +13,5 @@ namespace PingApp.Repository.Quries {
         public PriceMode PriceMode { get; set; }
 
         public AppUpdateType? UpdateType { get; set; }
-
-        public AppListQuery(int pageIndex, int pageSize)
-            : base(pageIndex, pageSize) {
-        }
     }
 }
