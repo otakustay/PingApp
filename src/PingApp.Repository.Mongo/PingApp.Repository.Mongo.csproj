@@ -53,7 +53,7 @@
     <Compile Include="AppRepository.cs" />
     <Compile Include="AppTrackRepository.cs" />
     <Compile Include="AppUpdateRepository.cs" />
-    <Compile Include="CategorySerializer.cs" />
+    <Compile Include="Dependency\CategorySerializer.cs" />
     <Compile Include="Dependency\MongoRepositoryModule.cs" />
     <Compile Include="UserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -9,7 +9,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using PingApp.Entity;
 
-namespace PingApp.Repository.Mongo {
+namespace PingApp.Repository.Mongo.Dependency {
     sealed class CategorySerializer : BsonBaseSerializer {
         public override void Serialize(BsonWriter bsonWriter, 
             Type nominalType, object value, IBsonSerializationOptions options) {
