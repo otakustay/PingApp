@@ -12,22 +12,22 @@ namespace PingApp.Repository.Mongo.Dependency {
     sealed class AppBriefSerializer : BsonBaseSerializer {
         public override void Serialize(BsonWriter bsonWriter,
             Type nominalType, object value, IBsonSerializationOptions options) {
-            Category category = value as Category;
-            bsonWriter.WriteInt32(category.Id);
+            AppBrief brief = value as AppBrief;
+            bsonWriter.WriteInt32(brief.Id);
         }
 
         public override object Deserialize(BsonReader bsonReader,
             Type nominalType, Type actualType, IBsonSerializationOptions options) {
-            if (nominalType != typeof(Category) || actualType != typeof(Category)) {
-                throw new BsonSerializationException("This serializer can only serialize type PingApp.Entity.Category");
+            if (nominalType != typeof(AppBrief) || actualType != typeof(AppBrief)) {
+                throw new BsonSerializationException("This serializer can only serialize type PingApp.Entity.AppBrief");
             }
 
             if (bsonReader.GetCurrentBsonType() != BsonType.Int32) {
-                throw new FormatException("Category should be serialized to Int32");
+                throw new FormatException("AppBrief should be serialized to Int32");
             }
 
             int id = bsonReader.ReadInt32();
-            return Category.Get(id);
+            return new AppBrief() { Id = id };
         }
     }
 }
