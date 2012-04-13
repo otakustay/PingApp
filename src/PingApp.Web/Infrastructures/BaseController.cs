@@ -3,14 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using NHibernate;
 using System.Web.Security;
 using PingApp.Entity;
-using NHibernate.Criterion;
-using NHibernate.Linq;
-using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
-using Microsoft.Practices.EnterpriseLibrary.Caching;
-using Microsoft.Practices.EnterpriseLibrary.Caching.Expirations;
 using PingApp.Repository;
 
 namespace PingApp.Web.Infrastructures {

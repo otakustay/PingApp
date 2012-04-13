@@ -6,14 +6,12 @@ using System.Web.Mvc;
 using PingApp.Web.Infrastructures;
 using PingApp.Entity;
 using PingApp.Web.Models;
-using NHibernate;
 using SimpleLucene;
 using System.IO;
 using PingApp.Utility.Lucene;
 using System.Configuration;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
-using NHibernate.Criterion;
 using System.Text.RegularExpressions;
 using PingApp.Repository.Quries;
 
@@ -30,22 +28,24 @@ namespace PingApp.Web.Controllers {
         public ActionResult Index(AppListQuery query, int page = 1) {
             ViewBag.Title = "首页";
 
-            query = Repository.App.Search(query);
+            //query = Repository.App.Search(query);
 
-            if (User.Identity.IsAuthenticated) {
-                AppTrackQuery trackQuery = new AppTrackQuery(1, query.Result.Count) {
-                    User = CurrentUser.Id,
-                    RelatedApps = query.Result.Select(a => a.Id)
-                };
-                Dictionary<int, AppTrack> tracks =
-                    Repository.AppTrack.Retrieve(trackQuery).Result.ToDictionary(t => t.App.Id);
-                ViewBag.Tracks = tracks;
-            }
-            else {
-                ViewBag.Tracks = new Dictionary<int, AppTrack>();
-            }
+            //if (User.Identity.IsAuthenticated) {
+            //    AppTrackQuery trackQuery = new AppTrackQuery(1, query.Result.Count) {
+            //        User = CurrentUser.Id,
+            //        RelatedApps = query.Result.Select(a => a.Id)
+            //    };
+            //    Dictionary<int, AppTrack> tracks =
+            //        Repository.AppTrack.Retrieve(trackQuery).Result.ToDictionary(t => t.App.Id);
+            //    ViewBag.Tracks = tracks;
+            //}
+            //else {
+            //    ViewBag.Tracks = new Dictionary<int, AppTrack>();
+            //}
 
-            return View(query);
+            //return View(query);
+
+            return View(new User());
         }
 
         /*
