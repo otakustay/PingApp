@@ -8,13 +8,16 @@ using System.Configuration;
 using PingApp.Web.Infrastructures;
 using PingApp.Entity;
 using PingApp.Web.Models;
+using Ninject.Web.Common;
+using Ninject;
+using PingApp.Repository.Mongo.Dependency;
 
 namespace PingApp.Web {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
 
 
-    public class MvcApplication : System.Web.HttpApplication {
+    public class MvcApplication : NinjectHttpApplication {
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters) {
             filters.Add(new HandleErrorAttribute());
@@ -107,14 +110,26 @@ namespace PingApp.Web {
 
         }
 
-        protected void Application_Start() {
+        //protected void Application_Start() {
+        //    AreaRegistration.RegisterAllAreas();
+
+        //    RegisterGlobalFilters(GlobalFilters.Filters);
+        //    RegisterRoutes(RouteTable.Routes);
+        //}
+
+        protected override IKernel CreateKernel() {
+            IKernel kernel = new StandardKernel();
+            kernel.Load(new MongoRepositoryModule());
+
+            return kernel;
+        }
+
+        protected override void OnApplicationStarted() {
+            base.OnApplicationStarted();
             AreaRegistration.RegisterAllAreas();
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-        }
-
-        static MvcApplication() {
         }
 
         /*
