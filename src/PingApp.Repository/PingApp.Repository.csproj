@@ -45,6 +45,12 @@
     <Compile Include="IAppUpdateRepository.cs" />
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quries\AppListQuery.cs" />
+    <Compile Include="Quries\AppUpdateQuery.cs" />
+    <Compile Include="Quries\DeveloperAppsQuery.cs" />
+    <Compile Include="Quries\ListQuery.cs" />
+    <Compile Include="Quries\PagedQuery.cs" />
+    <Compile Include="Quries\PriceMode.cs" />
     <Compile Include="RepositoryEmitter.cs" />
   </ItemGroup>
   <ItemGroup>

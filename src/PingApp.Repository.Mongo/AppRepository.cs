@@ -8,6 +8,7 @@ using MongoDB.Driver;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver.Linq;
 using PingApp.Entity;
+using PingApp.Repository.Quries;
 
 namespace PingApp.Repository.Mongo {
     public sealed class AppRepository : IAppRepository {
@@ -31,8 +32,84 @@ namespace PingApp.Repository.Mongo {
         }
 
         public ICollection<App> Retrieve(IEnumerable<int> required) {
-            ICollection<App> result = apps.Find(Query.In("_id", BsonArray.Create(required))).ToArray();
+            App[] result = apps.Find(Query.In("_id", BsonArray.Create(required))).ToArray();
             return result;
+        }
+
+        public ICollection<AppBrief> RetrieveBriefs(IEnumerable<int> required) {
+            AppBrief[] result = apps.Find(Query.In("_id", BsonArray.Create(required)))
+                .SetFields("brief")
+                .Select(a => a.Brief)
+                .ToArray();
+            return result;
+        }
+
+        public DeveloperAppsQuery RetrieveByDeveloper(DeveloperAppsQuery query) {
+            if (query.Developer == null) {
+                throw new ArgumentNullException("query.Developer");
+            }
+
+            IMongoQuery mongoQuery = Query.EQ("brief.developer._id", query.Developer.Id);
+            AppBrief[] result = apps.Find(mongoQuery)
+                .SetFields("brief")
+                .SetSkip(query.SkipSize)
+                .SetLimit(query.TakeSize)
+                .Select(a => a.Brief)
+                .ToArray();
+            query.Fill(result);
+
+            // 把参数补齐
+            if (result.Length > 0) {
+                query.Developer.Name = result[0].Developer.Name;
+                query.Developer.ViewUrl = result[0].Developer.ViewUrl;
+            }
+            else {
+                query.Developer.Name = String.Empty;
+                query.Developer.ViewUrl = String.Empty;
+            }
+
+            return query;
+        }
+
+        public AppListQuery Search(AppListQuery query) {
+            List<IMongoQuery> mongoQueries = new List<IMongoQuery>();
+
+            if (query.DeviceType != DeviceType.NotProvided) {
+                mongoQueries.Add(
+                    Query.Or(
+                        Query.EQ("brief.deviceType", query.DeviceType),
+                        Query.EQ("brief.deviceType", DeviceType.Universal)
+                    )
+                );
+            }
+
+            if (!String.IsNullOrEmpty(query.Category)) {
+                Category category = Category.Get(query.Category);
+                if (category != null) {
+                    mongoQueries.Add(Query.EQ("brief.primaryCategory", category.Id));
+                }
+            }
+
+            if (query.PriceMode == PriceMode.Free) {
+                mongoQueries.Add(Query.EQ("brief.price", 0));
+            }
+            else if (query.PriceMode == PriceMode.Paid) {
+                mongoQueries.Add(Query.GT("brief.price", 0));
+            }
+
+            if (query.UpdateType.HasValue) {
+                mongoQueries.Add(Query.EQ("brief.lastValidUpdate.type", query.UpdateType.Value));
+            }
+
+            AppBrief[] result = apps.Find(Query.And(mongoQueries.ToArray()))
+                .SetFields("brief")
+                .SetSkip(query.SkipSize)
+                .SetLimit(query.TakeSize)
+                .Select(a => a.Brief)
+                .ToArray();
+            query.Fill(result);
+
+            return query;
         }
 
         public void Save(App app) {
@@ -60,7 +137,7 @@ namespace PingApp.Repository.Mongo {
         }
 
         public ICollection<App> Retrieve(int offset, int limit) {
-            ICollection<App> result = apps.FindAll()
+            App[] result = apps.FindAll()
                 .SetSkip(offset)
                 .SetLimit(limit)
                 .ToArray();
@@ -88,7 +165,7 @@ namespace PingApp.Repository.Mongo {
         }
 
         public ICollection<RevokedApp> RetrieveRevoked(int offset, int limit) {
-            ICollection<RevokedApp> result = revokedApps.FindAll()
+            RevokedApp[] result = revokedApps.FindAll()
                 .SetSkip(offset)
                 .SetLimit(limit)
                 .ToArray();
