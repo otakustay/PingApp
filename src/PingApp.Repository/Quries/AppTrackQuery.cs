@@ -8,7 +8,9 @@ namespace PingApp.Repository.Quries {
     public class AppTrackQuery : PagedQuery<AppTrack> {
         public Guid User { get; set; }
 
-        public AppTrackStatus Status { get; set; }
+        public AppTrackStatus? Status { get; set; }
+
+        public IEnumerable<int> RelatedApps { get; set; }
 
         public AppTrackQuery(int pageIndex, int pageSize)
             : base(pageIndex, pageSize) {

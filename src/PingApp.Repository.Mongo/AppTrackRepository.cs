@@ -43,12 +43,19 @@ namespace PingApp.Repository.Mongo {
         }
 
         public AppTrackQuery Retrieve(AppTrackQuery query) {
-            IMongoQuery mongoQuery = Query.And(
-                Query.EQ("user", query.User),
-                Query.EQ("status", query.Status)
-            );
+            List<IMongoQuery> mongoQueries = new List<IMongoQuery>();
 
-            AppTrack[] result = appTracks.Find(mongoQuery)
+            mongoQueries.Add(Query.EQ("user", query.User));
+
+            if (query.Status.HasValue) {
+                mongoQueries.Add(Query.EQ("status", query.Status.Value));
+            }
+
+            if (query.RelatedApps != null) {
+                mongoQueries.Add(Query.In("app", BsonArray.Create(query.RelatedApps)));
+            }
+
+            AppTrack[] result = appTracks.Find(Query.And(mongoQueries.ToArray()))
                 .SetSkip(query.SkipSize)
                 .SetLimit(query.TakeSize)
                 .ToArray();
