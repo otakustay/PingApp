@@ -20,6 +20,7 @@ namespace PingApp.Repository.Mongo.Dependency {
             profile.SetElementNameConvention(new CamelCaseElementNameConvention());
             profile.SetIdMemberConvention(new NamedIdMemberConvention("Id"));
             BsonClassMap.RegisterConventions(profile, t => true);
+            BsonClassMap.RegisterClassMap<AppTrack>(MapAppTrack);
             // 作为AppBrief的LastValidUpdate时没有App字段，因此忽略
             BsonSerializer.RegisterSerializer(typeof(Category), new CategorySerializer());
             BsonSerializer.RegisterIdGenerator(typeof(AppUpdate), CombGuidGenerator.Instance);
@@ -41,6 +42,11 @@ namespace PingApp.Repository.Mongo.Dependency {
             Bind<IAppUpdateRepository>().To<AppUpdateRepository>();
             Bind<IAppTrackRepository>().To<AppTrackRepository>();
             Bind<IUserRepository>().To<UserRepository>();
+        }
+
+        private void MapAppTrack(BsonClassMap<AppTrack> map) {
+            map.AutoMap();
+            map.MapProperty(t => t.App).SetSerializer(new AppBriefSerializer());
         }
 
         private MongoCollection<T> GetCollection<T>(IContext context, string collectionName) {
