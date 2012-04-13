@@ -101,7 +101,10 @@ namespace PingApp.Repository.Mongo {
                 mongoQueries.Add(Query.EQ("brief.lastValidUpdate.type", query.UpdateType.Value));
             }
 
-            AppBrief[] result = apps.Find(Query.And(mongoQueries.ToArray()))
+            MongoCursor<App> baseCursor = mongoQueries.Count == 0 ?
+                apps.FindAll() : 
+                apps.Find(Query.And(mongoQueries.ToArray()));
+            AppBrief[] result = baseCursor
                 .SetFields("brief")
                 .SetSkip(query.SkipSize)
                 .SetLimit(query.TakeSize)
