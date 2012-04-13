@@ -46,6 +46,7 @@
     <Compile Include="IUserRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Quries\AppListQuery.cs" />
+    <Compile Include="Quries\AppTrackQuery.cs" />
     <Compile Include="Quries\AppUpdateQuery.cs" />
     <Compile Include="Quries\DeveloperAppsQuery.cs" />
     <Compile Include="Quries\ListQuery.cs" />
