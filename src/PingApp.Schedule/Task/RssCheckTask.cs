@@ -21,8 +21,6 @@ namespace PingApp.Schedule.Task {
 
         private readonly RepositoryEmitter repository;
 
-        private readonly ProgramSettings settings;
-
         public RssCheckTask(WebDownload download, AppParser appParser, LuceneIndexer indexer,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
