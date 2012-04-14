@@ -125,7 +125,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\hot-decorator.png" />
     <Content Include="Content\Images\default-icon.png" />
     <Content Include="Content\Images\Guide\import-app-1.jpg" />
     <Content Include="Content\Images\Guide\import-app-2.jpg" />
@@ -145,16 +144,7 @@
     <Content Include="Content\Images\Guide\usage-7.png" />
     <Content Include="Content\Images\Guide\usage-8.png" />
     <Content Include="Content\Images\hot-decorator.png" />
-    <Content Include="Content\Images\share.png" />
-    <Content Include="Content\Images\space-bg.jpg" />
-    <Content Include="Content\Plain.css" />
-    <Content Include="Content\Detail.css" />
     <Content Include="Content\Images\app-store.png" />
-    <Content Include="Content\Images\Partners\photon-vps.jpg" />
-    <Content Include="Content\Images\sort.png" />
-    <Content Include="Content\Images\spot.png" />
-    <Content Include="Content\List.css" />
-    <Content Include="Content\Images\btn.png" />
     <Content Include="Dictionaries\ChsDoubleName1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -174,7 +164,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="MailTemplate\PasswordReset.htm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -229,12 +218,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Home\Index.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Content\Curvic.eot" />
-    <Content Include="Content\Curvice.svg" />
-    <Content Include="Content\Curvic.ttf" />
-    <Content Include="Content\Curvic.woff" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
