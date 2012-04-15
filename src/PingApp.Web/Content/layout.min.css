@@ -25,7 +25,7 @@ input[type=submit],button{font-family:"\5FAE\8F6F\96C5\9ED1",sans-serif}
 #page{margin:0 auto;width:960px}
 #main{width:660px;float:left}
 #sidebar{overflow:hidden}
-#footer{background-color:#efefef;padding:20px 16px}
+#footer{background-color:#efefef;padding:20px 16px;margin-top:60px}
 #footer nav{zoom:1}
 #footer nav:after{content:".";display:block;width:0;height:0;font-size:0;visibility:hidden;clear:both}
 #footer nav div{width:232px;float:left}

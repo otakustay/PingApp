@@ -176,6 +176,7 @@ button {
 #footer {
   background-color: #efefef;
   padding: 20px 16px;
+  margin-top: 60px;
 }
 #footer nav {
   zoom: 1;
