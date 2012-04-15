@@ -145,6 +145,13 @@
     <Content Include="Content\Images\Guide\usage-8.png" />
     <Content Include="Content\Images\hot-decorator.png" />
     <Content Include="Content\Images\app-store.png" />
+    <Content Include="Content\Images\logo.png" />
+    <Content Include="Content\layout.css">
+      <DependentUpon>layout.less</DependentUpon>
+    </Content>
+    <Content Include="Content\layout.min.css">
+      <DependentUpon>layout.less</DependentUpon>
+    </Content>
     <Content Include="Dictionaries\ChsDoubleName1.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -224,6 +231,11 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\layout.less" />
+    <None Include="Content\variable.less">
+      <Compile>False</Compile>
+      <Minify>False</Minify>
+    </None>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

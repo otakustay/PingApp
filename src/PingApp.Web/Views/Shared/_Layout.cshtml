@@ -5,78 +5,74 @@
     <meta name="keywords" content="iphone,ipad,游戏,app,应用,限时免费,iPhone限时免费,iPad限时免费,软件,ios,免费下载,限免,每日限免,关注降价,免费,正版,应用更新,AppStore,Store" />
     <meta name="description" content="PingApp是国内第一个也是唯一一个iOS应用跟踪平台，这里收录了中国区AppStore几乎所有的应用信息，你可以方便、快捷地进行筛选和查找。同时PingApp提供限时免费、降价、近期更新等应用列表，为iOS发烧友省时省力。在PingApp上，你还可以关注应用，PingApp会自动将应用的降价、免费、更新等信息通过邮件等形式通知你。" />
     <title>@ViewBag.Title - PingApp - iOS应用追踪平台</title>
-    <link href="@Url.Content("~/content/site.css")" rel="stylesheet" />
-    <script src="@Url.Content("~/scripts/jquery-1.5.1.min.js")"></script>
-    <script src="@Url.Content("~/scripts/app.js")"></script>
+    <link href="@Url.Content("~/content/layout.css")" rel="stylesheet" />
     @RenderSection("MoreResource", false)
     <script>
-        (function () {
+        (function() {
             var elements = ['header', 'footer', 'aside', 'section', 'nav'];
             for (var i = 0; i < elements.length; i++) {
                 document.createElement(elements[i]);
             }
-        } ());
+        }());
     </script>
 </head>
 <body>
     <div id="page">
         <header id="header">
-            <h1>
-                <a href="@Url.Action("Index", "Home")">PingApp</a></h1>
-            <p style="position: absolute; top: 50px; right: 10px; color: #f00;">
-                这是测试版哦亲~有问题请多多包含亲~~
-            </p>
-            <div id="summary">
-                <p id="total">
-                    PingApp现约有<em>@ViewBag.AppCount</em>个应用</p>
-                <p id="update">
-                    昨日新增应用<em>@ViewBag.NewAppCount</em>个 更新应用<em>@ViewBag.UpdatedAppCount</em>个 下架<em>@ViewBag.OffAppCount</em>个</p>
-            </div>
-            <nav id="siteLinks">
-                <ul>
-                    @if (@ViewBag.Username != null) {
-                        <li><span id="welcome">欢迎 @ViewBag.UserName</span></li>
-                        if ((ViewBag.User.Status & UserStatus.AppImported) != UserStatus.AppImported) {
-                        <li><a href="@Url.Action("ImportGuide", "User")" class="fancy-link highlight">导入购买历史</a></li>
-                        }
-                        <li><a href="@Url.Action("Signout", "User")" class="fancy-link">退出</a></li>
-                        <li><a href="@Url.Action("Profile", "User")" class="fancy-link">个人资料</a></li>
-                        <li><a href="###" class="fancy-link">订阅</a></li>
-                    }
-                    else {
-                        <li><a href="@Url.Action("Index", "Home")" class="fancy-link">首页</a></li>
-                        <li><a href="@Url.Action("Signin", "User")" class="fancy-link">登录</a></li>
-                        <li><a href="@Url.Action("Register", "User")" class="fancy-link">注册</a></li>
-                        <li><a href="###" class="fancy-link">订阅</a></li>
-                    }
-                </ul>
-            </nav>
+            <h1><a href="@Url.Content("/")" title="返回首页">PingApp</a></h1>
         </header>
-        <div id="content">
-            <nav id="navigator">
-                <ul>
-                    <li><a href="@Url.Action("Index", "Home")" @Html.Raw(ViewBag.Region == "Home" ? "class=\"active\"" : String.Empty)>最近更新</a></li>
-                    <li><a href="@Url.Action("WishList", "Track")" @Html.Raw(ViewBag.Region == "WishList" ? "class=\"active\"" : String.Empty)>我的关注</a></li>
-                    <li><a href="@Url.Action("OwnedList", "Track")" @Html.Raw(ViewBag.Region == "Owned" ? "class=\"active\"" : String.Empty)>我的应用</a></li>
-                    <li><a href="@Url.Action("Site", "About")"@Html.Raw(ViewBag.Region == "About" ? "class=\"active\"" : String.Empty)>关于本站</a></li>
-                </ul>
-            </nav>
-            <form id="search">
-            <input id="keywords" name="search" @Html.Raw(ViewBag.Keywords == null ? String.Empty : "value=\"" + ViewBag.Keywords + "\"") />
-            <input type="submit" id="doSearch" value="搜索" />
+        <nav id="navigation">
+            <ul>
+                <li class="current"><a href="@Url.Content("/")">首页</a></li>
+                <li><a href="@Url.Content("/")">今日限时免费</a></li>
+                <li><a href="@Url.Content("/")">我的应用</a></li>
+            </ul>
+            <form id="search" action="" method="get">
+                <input type="search" placeholder="输入应用名" />
+                <button>搜索</button>
             </form>
-            @RenderBody()
+        </nav>
+        @RenderBody()
+        <div id="sidebar">
         </div>
-        <footer>
-            <p>
-                Copyright PingApp.net @@ 2011</p>
+        <footer id="footer">
+            <nav>
+                <div>
+                    <h3>直达导航</h3>
+                    <ul>
+                        <li><a href="###">今日限时免费</a></li>
+                        <li><a href="###">今日降价促销</a></li>
+                        <li><a href="###" class="important">今日限时免费</a></li>
+                        <li><a href="###" class="important">今日降价促销</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>站内资源</h3>
+                    <ul>
+                        <li><a href="###">首页RSS</a></li>
+                        <li><a href="###">最近更新RSS</a></li>
+                        <li><a href="###" class="important">近期降价RSS</a></li>
+                        <li><a href="###" class="important">近期免费RSS</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>信息与帮助</h3>
+                    <ul>
+                        <li><a href="###">PingApp介绍</a></li>
+                        <li><a href="###">使用PingApp</a></li>
+                        <li><a href="###">PingApp进化路线图</a></li>
+                        <li><a href="###">关于作者</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>友情链接</h3>
+                    <ul>
+                        <li><a href="http://www.photonvps.com/billing/aff.php?aff=1980">PhotonVPS</a></li>
+                        <li><a href="http://eggao.net/">恶搞网</a></li>
+                    </ul>
+                </div>
+            </nav>
         </footer>
     </div>
-    @if (!ViewBag.IsDebug && (ViewBag.User == null || ViewBag.User.Id != 1)) {
-    <script>
-        var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
-        document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3Ff02c7829276b400ac148d8c1f4a6c2b3' type='text/javascript'%3E%3C/script%3E"));
-    </script>
-    }
 </body>
 </html>

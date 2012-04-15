@@ -1,0 +1,156 @@
+﻿@import "variable";
+
+@sideWidth: 280px;
+@columnMargin: 20px;
+
+/* Reset */
+header, footer, aside, section, nav {
+	display: block;
+}
+html, body {
+    font-size: @fontSizeNormal;
+	font-family: @fontFamily;
+	margin: 0;
+}
+h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
+	margin: 0;
+}
+ul, ol {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+a {
+	color: @linkColor;
+	text-decoration: none;
+}
+a:hover {
+	color: @linkHoverColor;
+}
+input[type="search"] {
+	-webkit-appearance: none;
+	&:focus {
+		outline: none;
+	}
+	&::-webkit-search-decoration, &::-webkit-search-cancel-button {
+		-webkit-appearance: none;
+	}
+}
+input[type=submit], button {
+	font-family: @fontFamily;
+}
+
+/* Layout */
+#header {
+	margin: 18px 0 14px;
+	.clear-float;
+	h1 {
+		width: 210px;
+		height: 70px;
+		float: left;
+		a {
+			display: block;
+			height: 100%;
+			.replace-with-background("images/logo.png");
+		}
+	}
+	/* Ads? */
+}
+#navigation {
+	background-color: @backgroundGray;
+	padding: 0 14px;
+	margin-bottom: 26px;
+	border-top: 1px solid darken(@backgroundGray, 10%);
+	border-bottom: 1px solid darken(@backgroundGray, 5%);
+	position: relative;
+	ul {
+		.clear-float;
+		li {
+			float: left;
+			font-size: @fontSizeLarge;
+			font-weight: bold;
+			line-height: @fontSizeLarge + 24px;
+			padding: 0 18px;
+			&.current, &:hover {
+				.gradient-blue;
+				a {
+					color: #fff;
+				}
+			}
+		}
+	}
+}
+#search {
+	@darkGray: #676767;
+	@borderWidth: 4px;
+	position: absolute;
+	top: 6px;
+	bottom: 6px;
+	right: 14px;
+	box-sizing: border-box;
+	border: @borderWidth solid @darkGray;
+	border-radius: 5px;
+	input {
+		padding: 0;
+		padding-left: 6px;
+		margin: 0;
+		border: none;
+		background-color: transparent;
+		width: 220px;
+		height: 100%;
+	}
+	button {
+		margin: 0;
+		border: 0;
+		-webkit-appearance: none;
+		/* height: 100% 在IE7下方有空隙，使用绝对定位解决 */
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 100%;
+		padding: 0 8px - @borderWidth 0 8px;
+		color: #fff;
+		background-color: @darkGray;
+		font-weight: bold;
+	}
+}
+#page {
+	margin: 0 auto;
+	width: @pageWidth;
+}
+#main {
+	width: @pageWidth - @columnMargin - @sideWidth;
+	float: left;
+}
+#sidebar {
+    overflow: hidden;
+}
+#footer {
+	background-color: @backgroundGray;
+	@horizontalPadding: 16px;
+	padding: 20px @horizontalPadding;
+	nav {
+		.clear-float;
+		div {
+			width: (@pageWidth - @horizontalPadding * 2) / 4;
+			float: left;
+			h3 {
+				font-size: @fontSizeLarge;
+				text-shadow: @textShadowSlight;
+				padding-bottom: 8px;
+				border-bottom: 1px solid #999;
+				box-shadow: 0 2px 1px #fff;
+			}
+			ul {
+				margin-top: 6px;
+			}
+			li {
+				padding: 6px 0;
+				a.important {
+					font-weight: bold;
+				}
+			}
+		}
+	}
+}

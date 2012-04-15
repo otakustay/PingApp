@@ -1,0 +1,44 @@
+﻿@fontSizeNormal: 14px;
+@fontSizeLarger: 16px;
+@fontSizeLarge: 21px;
+@fontFamily: "\5FAE\8F6F\96C5\9ED1", sans-serif;
+
+@linkColor: #36c;
+@linkHoverColor: darken(#36c, 30%);
+@backgroundGray: #efefef;
+
+@pageWidth: 960px;
+
+@textShadowSlight: #999 1px 2px 3px;
+
+.clear-float() {
+	zoom: 1;
+	/* Must be ":" for IE8 */
+	&:after {
+		content: ".";
+		display: block;
+		width: 0;
+		height: 0;
+		font-size: 0;
+		visibility: hidden;
+		clear: both;
+	}
+}
+.replace-with-background(@url) {
+	text-indent: -5000em;
+	background: transparent url(@url) no-repeat;
+}
+
+
+.horizontal-linear-gradient(@from, @to) {
+	background-image: linear-gradient(top, @from 0, @to 100%);
+	background-image: -moz-linear-gradient(top, @from 0, @to 100%);
+	background-image: -o-linear-gradient(top, @from 0, @to 100%);
+	background-image: -ms-linear-gradient(top, @from 0, @to 100%);
+	background-image: -webkit-linear-gradient(top, @from 0, @to 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, from(@from), to(@to));
+	background-color: (@from + @to) / 2;
+}
+.gradient-blue() {
+	.horizontal-linear-gradient(#5e85d2, #3b6ac9);
+}
