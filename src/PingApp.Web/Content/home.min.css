@@ -1,6 +1,6 @@
 #introduction{background:transparent url(images/splash-radar.png) no-repeat right 0}
 #introduction h2{color:#36c;font-size:30px;line-height:66px;padding-left:20px}
 #introduction h2 strong{display:inline-block;width:66px;height:66px;margin-top:-20px;text-indent:-5000em;background:transparent url("images/logo-app.png") no-repeat}
-#introduction form{padding:34px 0 39px 22px;color:#676767;overflow:visible}
+#introduction form{padding:34px 0 39px 22px;zoom:1;color:#676767;overflow:visible}
 #introduction form p{font-size:16px;line-height:1.8}
 #introduction form h3{color:#36c;font-size:21px}

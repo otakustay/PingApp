@@ -164,20 +164,23 @@ input.text {
 	border: 2px solid @darkGray;
 	background-color: transparent;
 	border-radius: 3px;
-	padding-left: 6px;
+		padding: 1px 6px 1px 0;
 }
 
 .form-mini {
 	.form-field {
-		margin: 4px 0;
+		margin: 6px 0;
 		.form-label {
 			display: inline-block;
 			width: 80px;
+			line-height: 34px; // height(28) + border(1+1) + padding(1+1)
+			vertical-align: top; // XXX: Why?
 		}
 	}
 	input.text {
 		height: 28px;
 		width: 320px;
+		margin: 0;
 	}
 }
 
@@ -187,6 +190,7 @@ input[type=submit], .button {
 	border: 0;
 	.gradient-blue;
 	padding: @horizontalPadding @verticalPadding;
+	overflow: visible; // Fix IE7 padding issue
 	border-radius: 5px;
 	box-shadow: 0 2px 6px #000;
 	color: #fff;

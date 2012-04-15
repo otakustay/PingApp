@@ -216,18 +216,21 @@ input.text {
   border: 2px solid #676767;
   background-color: transparent;
   border-radius: 3px;
-  padding-left: 6px;
+  padding: 1px 6px 1px 0;
 }
 .form-mini .form-field {
-  margin: 4px 0;
+  margin: 6px 0;
 }
 .form-mini .form-field .form-label {
   display: inline-block;
   width: 80px;
+  line-height: 34px;
+  vertical-align: top;
 }
 .form-mini input.text {
   height: 28px;
   width: 320px;
+  margin: 0;
 }
 input[type=submit],
 .button {
@@ -240,6 +243,7 @@ input[type=submit],
   background-image: -webkit-gradient(linear, left top, left bottom, from(#5e85d2), to(#3b6ac9));
   background-color: #4d78ce;
   padding: 10px 26px;
+  overflow: visible;
   border-radius: 5px;
   box-shadow: 0 2px 6px #000;
   color: #fff;
