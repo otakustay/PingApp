@@ -1,3 +1,4 @@
+/* Color */
 /* Reset */
 header,
 footer,
@@ -78,7 +79,6 @@ button {
   background: transparent url("images/logo.png") no-repeat;
 }
 #navigation {
-  background-color: #efefef;
   padding: 0 14px;
   margin-bottom: 26px;
   border-top: 1px solid #d6d6d6;
