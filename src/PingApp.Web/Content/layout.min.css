@@ -33,3 +33,10 @@ input[type=submit],button{font-family:"\5FAE\8F6F\96C5\9ED1",sans-serif}
 #footer nav div ul{margin-top:6px}
 #footer nav div li{padding:6px 0}
 #footer nav div li a.important{font-weight:bold}
+input.text{border:2px solid #676767;background-color:transparent;border-radius:3px;padding-left:6px}
+.form-mini .form-field{margin:4px 0}
+.form-mini .form-field .form-label{display:inline-block;width:80px}
+.form-mini input.text{height:28px;width:320px}
+input[type=submit],.button{border:0;background-image:linear-gradient(top,#5e85d2 0,#3b6ac9 100%);background-image:-moz-linear-gradient(top,#5e85d2 0,#3b6ac9 100%);background-image:-o-linear-gradient(top,#5e85d2 0,#3b6ac9 100%);background-image:-ms-linear-gradient(top,#5e85d2 0,#3b6ac9 100%);background-image:-webkit-linear-gradient(top,#5e85d2 0,#3b6ac9 100%);background-image:-webkit-gradient(linear,left top,left bottom,from(#5e85d2),to(#3b6ac9));background-color:#4d78ce;padding:10px 26px;border-radius:5px;box-shadow:0 2px 6px #000;color:#fff;font-size:21px;font-weight:bold}
+input[type=submit]:hover,.button:hover{background-image:linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-moz-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-o-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-ms-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-webkit-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-webkit-gradient(linear,left top,left bottom,from(#3767c6),to(#2d54a4));background-color:#325eb5}
+input[type=submit]:active,.button:active{background-image:linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-moz-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-o-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-ms-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-webkit-linear-gradient(top,#3767c6 0,#2d54a4 100%);background-image:-webkit-gradient(linear,left top,left bottom,from(#3767c6),to(#2d54a4));background-color:#325eb5;color:#efefef;padding:11px 24px 9px 28px}

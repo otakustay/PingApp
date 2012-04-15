@@ -2,3 +2,25 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@section MoreResource {
+    <link rel="stylesheet" href="@Url.Content("~/content/home.css")" />
+}
+<div id="introduction">
+    <h2>别漏掉你可能爱不释手的<strong>APP</strong></h2>
+    <form class="form-mini">
+        <p>PingApp每天实时跟踪几十万iOS APP，只需搜索/选中你的最爱，<br />程序就会时刻为你扫描它们降价/免费的动态，<br />一但发现目标，立刻发出Email通知！</p>
+        <h3>还没有帐号？</h3>
+        <div class="form-field">
+            <label for="username" class="form-label">用户名：</label><input id="username" name="username" class="text" maxlength="20" />
+        </div>
+        <div class="form-field">
+            <label for="email" class="form-label">Email：</label><input id="email" name="email" class="text" maxlength="200" />
+        </div>
+        <div class="form-field">
+            <label for="password" class="form-label">密码：</label><input type="password" id="password" name="password" class="text" />
+        </div>
+        <div class="form-submit">
+            <input type="submit" value="立即注册" />
+        </div>
+    </form>
+</div>

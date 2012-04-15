@@ -125,6 +125,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\home.css">
+      <DependentUpon>home.less</DependentUpon>
+    </Content>
+    <Content Include="Content\home.min.css">
+      <DependentUpon>home.less</DependentUpon>
+    </Content>
     <Content Include="Content\Images\default-icon.png" />
     <Content Include="Content\Images\Guide\import-app-1.jpg" />
     <Content Include="Content\Images\Guide\import-app-2.jpg" />
@@ -231,6 +237,7 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\home.less" />
     <None Include="Content\layout.less" />
     <None Include="Content\variable.less">
       <Compile>False</Compile>

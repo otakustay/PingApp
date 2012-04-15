@@ -1,0 +1,32 @@
+﻿@import "variable";
+
+#introduction {
+	background: transparent url(images/splash-radar.png) no-repeat right 0;
+	h2 {
+		@headingHeight: 66px;
+		color: @crystalBlue;
+		font-size: @fontSizeXLarge;
+		line-height: @headingHeight;
+		padding-left: 20px;
+		strong {
+			display: inline-block;
+			width: @headingHeight;
+			height: @headingHeight;
+			margin-top: -20px;
+			.replace-with-background("images/logo-app.png");
+		}
+	}
+	form {
+		padding: 34px 0 39px 22px;
+		color: @darkGray;
+		overflow: visible;
+		p {
+			font-size: @fontSizeLarger;
+			line-height: 1.8;
+		}
+		h3 {
+			color: @crystalBlue;
+			font-size: @fontSizeLarge;
+		}
+	}
+}

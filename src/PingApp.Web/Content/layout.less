@@ -158,3 +158,46 @@ input[type=submit], button {
 		}
 	}
 }
+
+// Functional
+input.text {
+	border: 2px solid @darkGray;
+	background-color: transparent;
+	border-radius: 3px;
+	padding-left: 6px;
+}
+
+.form-mini {
+	.form-field {
+		margin: 4px 0;
+		.form-label {
+			display: inline-block;
+			width: 80px;
+		}
+	}
+	input.text {
+		height: 28px;
+		width: 320px;
+	}
+}
+
+input[type=submit], .button {
+	@horizontalPadding: 10px;
+	@verticalPadding: 26px;
+	border: 0;
+	.gradient-blue;
+	padding: @horizontalPadding @verticalPadding;
+	border-radius: 5px;
+	box-shadow: 0 2px 6px #000;
+	color: #fff;
+	font-size: @fontSizeLarge;
+	font-weight: bold;
+	&:hover {
+		.gradient-dark-blue;
+	}
+	&:active {
+		.gradient-dark-blue;
+		color: @silverGray;
+		padding: @horizontalPadding + 1px @verticalPadding - 2px @horizontalPadding - 1px @verticalPadding + 2px;
+	}
+}
