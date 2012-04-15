@@ -35,6 +35,8 @@ namespace PingApp.Schedule {
             kernel.Load(new CheckNewModule());
             kernel.Load(new RescueModule());
 
+            AppDomain.CurrentDomain.ProcessExit += (target, e) => LogManager.Configuration = null;
+
             Type taskType = Type.GetType("PingApp.Schedule.Task." + action + "Task");
             TaskBase task = kernel.Get(taskType) as TaskBase;
 
