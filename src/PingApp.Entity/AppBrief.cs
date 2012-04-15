@@ -158,6 +158,20 @@ namespace PingApp.Entity {
             }
         }
 
+        public long CalculatedWeights {
+            get {
+                DateTime calculatedTime = LastValidUpdate.Time.ToUniversalTime();
+                // 评分每1分算晚更新3天，倒序排列这个字段即可算综合权重
+                if (AverageUserRatingForCurrentVersion.HasValue) {
+                    calculatedTime.AddDays(AverageUserRatingForCurrentVersion.Value * 3);
+                }
+                return calculatedTime.Ticks;
+            }
+            set {
+                // 有些数据库要求属性必须可读+可写，这里留个空的setter
+            }
+        }
+
         public string PriceWithSymbol {
             get {
                 string symbol = currencySymbolMapping.ContainsKey(Currency) ? currencySymbolMapping[Currency] : "￥";
