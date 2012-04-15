@@ -68,15 +68,20 @@ input[type=submit], button {
 		.clear-float;
 		li {
 			float: left;
-			font-size: @fontSizeLarge;
-			font-weight: bold;
-			line-height: @fontSizeLarge + 24px;
-			padding: 0 18px;
-			&.current, &:hover {
+			a {
+				display: block;
+				font-size: @fontSizeLarge;
+				font-weight: bold;
+				line-height: @fontSizeLarge + 24px;
+				padding: 0 18px;
+			}
+			&:hover a {
+				.gradient-light-blue;
+				color: #fff;
+			}
+			&.current a {
 				.gradient-blue;
-				a {
-					color: #fff;
-				}
+				color: #fff;
 			}
 		}
 	}
