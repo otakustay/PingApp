@@ -113,7 +113,7 @@ namespace PingApp.Entity {
                 { 6011, new Category(6011, "音乐", "music") },
                 { 6010, new Category(6010, "导航", "navigation") },
                 { 6009, new Category(6009, "新闻", "news") },
-                { 6009, new Category(6021, "报刊杂志", "news") },
+                { 6021, new Category(6021, "报刊杂志", "newsstand") },
                 { 6008, new Category(6008, "摄影与录像", "photography") },
                 { 6007, new Category(6007, "效率", "productivity") },
                 { 6006, new Category(6006, "参考", "reference") },
