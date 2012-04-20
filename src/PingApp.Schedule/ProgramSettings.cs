@@ -23,13 +23,9 @@ namespace PingApp.Schedule {
 
         public string MailUser { get; private set; }
 
-        public string MailServerHost { get; private set; }
-
-        public int MailServerPort { get; private set; }
-
         private ProgramSettings(bool debug, int batchSize, int retryAttemptCount, 
             int parallelDegree, string proxyAddress, string luceneDirectory, 
-            string mailAddress, string mailUser, string mailServerHost, int mailServerPort) {
+            string mailAddress, string mailUser) {
             Debug = debug;
             BatchSize = batchSize;
             RetryAttemptCount = retryAttemptCount;
@@ -39,8 +35,6 @@ namespace PingApp.Schedule {
 
             MailAddress = mailAddress;
             MailUser = mailUser;
-            MailServerHost = mailServerHost;
-            MailServerPort = mailServerPort;
         }
 
         public static ProgramSettings Current { get; private set; }
@@ -56,9 +50,7 @@ namespace PingApp.Schedule {
                 Convert.ToString(appSettings["LucentDirectory"]),
 
                 Convert.ToString(appSettings["MailAddress"]),
-                Convert.ToString(appSettings["MailUser"]),
-                Convert.ToString(appSettings["MailServerHost"]),
-                Convert.ToInt32(appSettings["MailServerPort"])
+                Convert.ToString(appSettings["MailUser"])
             );
         }
     }

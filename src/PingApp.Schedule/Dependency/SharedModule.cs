@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -26,6 +27,7 @@ namespace PingApp.Schedule.Dependency {
         public override void Load() {
             Bind<ProgramSettings>().ToConstant(ProgramSettings.Current).InSingletonScope();
             Bind<Logger>().ToMethod(GetLogger).InSingletonScope();
+            Bind<SmtpClient>().ToSelf();
 
             Bind<WebDownload>().ToSelf().InSingletonScope();
 
