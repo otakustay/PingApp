@@ -108,12 +108,15 @@
     <Compile Include="Task\RssCheckTask.cs" />
     <Compile Include="Task\TestTask.cs" />
     <Compile Include="Task\UpdateTask.cs" />
-    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PingApp.Entity\PingApp.Entity.csproj">
       <Project>{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}</Project>
       <Name>PingApp.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PingApp.Infrastructure\PingApp.Infrastructure.csproj">
+      <Project>{2d8ac9ef-01da-4188-bfcd-5e28ad74e420}</Project>
+      <Name>PingApp.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\PingApp.Repository.Mongo\PingApp.Repository.Mongo.csproj">
       <Project>{4bee7099-e9ef-4b8e-a6c4-f787949c7170}</Project>
@@ -122,10 +125,6 @@
     <ProjectReference Include="..\PingApp.Repository\PingApp.Repository.csproj">
       <Project>{65ce8a86-a790-4e23-8fc6-8d2569e86fcf}</Project>
       <Name>PingApp.Repository</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PingApp.Utility\PingApp.Utility.csproj">
-      <Project>{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}</Project>
-      <Name>PingApp.Utility</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

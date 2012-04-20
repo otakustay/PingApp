@@ -1,26 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using NLog.Config;
-using NLog.Targets;
-using System.Security.Cryptography;
-using System.Configuration;
-using PingApp.Schedule.Task;
-using System.Net.Mail;
-using Ninject;
 using System.Collections;
-using PingApp.Schedule.Dependency;
-using PingApp.Repository;
-using PingApp.Schedule.Infrastructure;
-using NLog;
-using PingApp.Repository.Mongo.Dependency;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Net;
+using System.Net.Mail;
+using System.Security.Cryptography;
+using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using Ninject;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
 using PanGu.Match;
-using System.Diagnostics;
+using PingApp.Infrastructure;
+using PingApp.Repository;
+using PingApp.Repository.Mongo.Dependency;
+using PingApp.Schedule.Dependency;
+using PingApp.Schedule.Infrastructure;
+using PingApp.Schedule.Task;
 
 namespace PingApp.Schedule {
     class Program {

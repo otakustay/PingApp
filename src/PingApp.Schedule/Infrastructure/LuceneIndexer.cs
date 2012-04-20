@@ -9,7 +9,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Store;
 using NLog;
 using PingApp.Entity;
-using PingApp.Utility.Lucene;
+using PingApp.Infrastructure.Lucene;
 
 namespace PingApp.Schedule.Infrastructure {
     sealed class LuceneIndexer : IDisposable {

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using NLog;
 using PingApp.Entity;
+using PingApp.Infrastructure;
 using PingApp.Repository;
 using PingApp.Schedule.Infrastructure;
 

@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace PingApp.Schedule {
-    static class Utility {
+namespace PingApp.Infrastructure {
+    public static class Utility {
         private static readonly Regex idFromUrl = new Regex(@"\/id(\d+)", RegexOptions.Compiled);
 
         public static string Captalize(this string str, string separator = "-") {

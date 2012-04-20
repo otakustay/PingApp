@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using HtmlAgilityPack;
 using NLog;
 using PingApp.Entity;
+using PingApp.Infrastructure;
 
 namespace PingApp.Schedule.Infrastructure {
     sealed class CatalogParser {
