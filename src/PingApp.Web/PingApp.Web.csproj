@@ -223,10 +223,6 @@
       <Project>{65ce8a86-a790-4e23-8fc6-8d2569e86fcf}</Project>
       <Name>PingApp.Repository</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PingApp.Utility\PingApp.Utility.csproj">
-      <Project>{DBDC3E04-96E5-4A2A-B2B8-BFE6B96CDA62}</Project>
-      <Name>PingApp.Utility</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -248,7 +244,6 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Views\Shared\AppList.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -8,7 +8,6 @@ using PingApp.Entity;
 using PingApp.Web.Models;
 using SimpleLucene;
 using System.IO;
-using PingApp.Utility.Lucene;
 using System.Configuration;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
