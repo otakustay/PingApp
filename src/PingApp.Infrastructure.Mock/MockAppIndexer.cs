@@ -7,24 +7,58 @@ using PingApp.Entity;
 
 namespace PingApp.Infrastructure.Mock {
     public sealed class MockAppIndexer : IAppIndexer {
+        private readonly List<App> addQueue = new List<App>();
+
+        private readonly List<App> updateQueue = new List<App>();
+
+        private readonly List<App> deleteQueue = new List<App>();
+
+        public List<App> Added { get; private set; }
+
+        public List<App> Updated { get; private set; }
+
+        public List<App> Deleted { get; private set; }
+
+        public MockAppIndexer() {
+            Added = new List<App>();
+            Updated = new List<App>();
+            Deleted = new List<App>();
+        }
+
         public void AddApp(App app) {
-            throw new NotImplementedException();
+            lock (addQueue) {
+                addQueue.Add(app);
+            }
         }
 
         public void DeleteApp(App app) {
-            throw new NotImplementedException();
-        }
-
-        public void Flush() {
-            throw new NotImplementedException();
+            lock (deleteQueue) {
+                deleteQueue.Add(app);
+            }
         }
 
         public void UpdateApp(App app) {
-            throw new NotImplementedException();
+            lock (updateQueue) {
+                updateQueue.Add(app);
+            }
+        }
+
+        public void Flush() {
+            lock (addQueue) {
+                Added.AddRange(addQueue);
+                addQueue.Clear();
+            }
+            lock (updateQueue) {
+                Updated.AddRange(updateQueue);
+                updateQueue.Clear();
+            }
+            lock (deleteQueue) {
+                Deleted.AddRange(deleteQueue);
+                deleteQueue.Clear();
+            }
         }
 
         public void Dispose() {
-            throw new NotImplementedException();
         }
     }
 }

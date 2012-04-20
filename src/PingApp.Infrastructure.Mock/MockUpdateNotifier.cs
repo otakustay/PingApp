@@ -7,12 +7,22 @@ using PingApp.Entity;
 
 namespace PingApp.Infrastructure.Mock {
     public sealed class MockUpdateNotifier : IUpdateNotifier {
+        public Dictionary<App, List<AppUpdate>> UpdateData { get; private set; }
+
+        public MockUpdateNotifier() {
+            UpdateData = new Dictionary<App, List<AppUpdate>>();
+        }
+
         public void ProcessUpdate(App app, AppUpdate update) {
-            throw new NotImplementedException();
+            lock (UpdateData) {
+                if (!UpdateData.ContainsKey(app)) {
+                    UpdateData[app] = new List<AppUpdate>();
+                }
+                UpdateData[app].Add(update);
+            }
         }
 
         public void Dispose() {
-            throw new NotImplementedException();
         }
     }
 }
