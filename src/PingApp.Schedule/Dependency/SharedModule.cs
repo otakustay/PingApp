@@ -14,7 +14,7 @@ using NLog;
 using NLog.Config;
 using NLog.Targets;
 using PanGu.Match;
-using PingApp.Schedule.Infrastructure;
+using PingApp.Infrastructure;
 
 namespace PingApp.Schedule.Dependency {
     sealed class SharedModule : NinjectModule {
@@ -25,29 +25,7 @@ namespace PingApp.Schedule.Dependency {
         }
 
         public override void Load() {
-            Bind<ProgramSettings>().ToConstant(ProgramSettings.Current).InSingletonScope();
             Bind<Logger>().ToMethod(GetLogger).InSingletonScope();
-            Bind<SmtpClient>().ToSelf();
-
-            Bind<WebDownload>().ToSelf().InSingletonScope();
-
-            Bind<JsonSerializerSettings>().ToSelf()
-                .WithPropertyValue("ContractResolver", new CamelCasePropertyNamesContractResolver())
-                .WithPropertyValue("DateTimeZoneHandling", DateTimeZoneHandling.Utc);
-            // Ninject无法注入Field，只能手动生成
-            MatchOptions matchOptions = new MatchOptions();
-            matchOptions.ChineseNameIdentify = true;
-            matchOptions.EnglishMultiDimensionality = true;
-            matchOptions.TraditionalChineseEnabled = true;
-            Bind<MatchOptions>().ToConstant(matchOptions).InSingletonScope();
-
-            Bind<CatalogParser>().ToSelf();
-            Bind<AppParser>().ToSelf()
-                .WithConstructorArgument("truncateLimit", 200);
-            Bind<LuceneIndexer>().ToSelf().Named("Rebuild")
-                .WithConstructorArgument("rebuild", true);
-            Bind<LuceneIndexer>().ToSelf().Named("Update")
-                .WithConstructorArgument("rebuild", false);
         }
 
         private Logger GetLogger(IContext context) {

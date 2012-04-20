@@ -8,16 +8,15 @@ using NLog;
 using PingApp.Entity;
 using PingApp.Infrastructure;
 using PingApp.Repository;
-using PingApp.Schedule.Infrastructure;
 using Tasks = System.Threading.Tasks;
 
 namespace PingApp.Schedule.Task {
     sealed class UpdateTask : TaskBase {
-        private readonly AppParser appParser;
+        private readonly IAppParser appParser;
 
-        private readonly LuceneIndexer indexer;
+        private readonly IAppIndexer indexer;
 
-        private readonly UpdateNotifier notifier;
+        private readonly IUpdateNotifier notifier;
 
         private readonly RepositoryEmitter repository;
 
@@ -27,7 +26,7 @@ namespace PingApp.Schedule.Task {
 
         private readonly List<App> revokedApps = new List<App>();
 
-        public UpdateTask(AppParser appParser, LuceneIndexer indexer, UpdateNotifier notifier,
+        public UpdateTask(IAppParser appParser, IAppIndexer indexer, IUpdateNotifier notifier,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
             this.appParser = appParser;

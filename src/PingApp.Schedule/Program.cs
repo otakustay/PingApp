@@ -17,10 +17,10 @@ using NLog.Config;
 using NLog.Targets;
 using PanGu.Match;
 using PingApp.Infrastructure;
+using PingApp.Infrastructure.Dependency;
 using PingApp.Repository;
 using PingApp.Repository.Mongo.Dependency;
 using PingApp.Schedule.Dependency;
-using PingApp.Schedule.Infrastructure;
 using PingApp.Schedule.Task;
 
 namespace PingApp.Schedule {
@@ -29,6 +29,7 @@ namespace PingApp.Schedule {
             ActionType action = (ActionType)Enum.Parse(typeof(ActionType), args[0].Captalize());
             IKernel kernel = new StandardKernel();
             kernel.Load(new MongoRepositoryModule());
+            kernel.Load(new InfrastructureModule());
             kernel.Load(new SharedModule(action));
             kernel.Load(new InitializeModule());
             kernel.Load(new RssCheckModule());

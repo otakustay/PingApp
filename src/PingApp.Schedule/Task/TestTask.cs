@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Ninject;
 using NLog;
-using PingApp.Schedule.Infrastructure;
+using PingApp.Infrastructure;
 
 namespace PingApp.Schedule.Task {
     class TestTask : TaskBase {

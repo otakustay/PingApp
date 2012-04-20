@@ -8,21 +8,20 @@ using NLog;
 using PingApp.Entity;
 using PingApp.Infrastructure;
 using PingApp.Repository;
-using PingApp.Schedule.Infrastructure;
 
 namespace PingApp.Schedule.Task {
     sealed class RssCheckTask : TaskBase {
         private const string FEED_URL = "http://itunes.apple.com/cn/rss/newapplications/limit=300/xml";
 
-        private readonly WebDownload download;
+        private readonly IWebDownload download;
 
-        private readonly AppParser appParser;
+        private readonly IAppParser appParser;
 
-        private readonly LuceneIndexer indexer;
+        private readonly IAppIndexer indexer;
 
         private readonly RepositoryEmitter repository;
 
-        public RssCheckTask(WebDownload download, AppParser appParser, LuceneIndexer indexer,
+        public RssCheckTask(IWebDownload download, IAppParser appParser, IAppIndexer indexer,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
             this.download = download;

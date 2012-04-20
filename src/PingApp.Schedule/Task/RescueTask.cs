@@ -8,14 +8,13 @@ using NLog;
 using PingApp.Entity;
 using PingApp.Infrastructure;
 using PingApp.Repository;
-using PingApp.Schedule.Infrastructure;
 using Tasks = System.Threading.Tasks;
 
 namespace PingApp.Schedule.Task {
     sealed class RescueTask : TaskBase {
-        private readonly AppParser appParser;
+        private readonly IAppParser appParser;
 
-        private readonly LuceneIndexer indexer;
+        private readonly IAppIndexer indexer;
 
         private readonly RepositoryEmitter repository;
 
@@ -23,7 +22,7 @@ namespace PingApp.Schedule.Task {
 
         private readonly int limit;
 
-        public RescueTask(AppParser appParser, LuceneIndexer indexer,
+        public RescueTask(IAppParser appParser, IAppIndexer indexer,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
             this.appParser = appParser;

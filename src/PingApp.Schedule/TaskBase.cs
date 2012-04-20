@@ -5,7 +5,7 @@ using System.Text;
 using NLog;
 using System.IO;
 using Ninject;
-using PingApp.Schedule.Infrastructure;
+using PingApp.Infrastructure;
 
 namespace PingApp.Schedule {
     abstract class TaskBase : IDisposable {

@@ -7,20 +7,19 @@ using NLog;
 using PingApp.Entity;
 using PingApp.Infrastructure;
 using PingApp.Repository;
-using PingApp.Schedule.Infrastructure;
 
 namespace PingApp.Schedule.Task {
     sealed class CheckNewTask : TaskBase {
-        private readonly CatalogParser catalogParser;
+        private readonly ICatalogParser catalogParser;
 
-        private readonly AppParser appParser;
+        private readonly IAppParser appParser;
 
-        private readonly LuceneIndexer indexer;
+        private readonly IAppIndexer indexer;
 
         private readonly RepositoryEmitter repository;
 
-        public CheckNewTask(CatalogParser catalogParser, AppParser appParser,
-            LuceneIndexer indexer, RepositoryEmitter repository, ProgramSettings settings, Logger logger)
+        public CheckNewTask(ICatalogParser catalogParser, IAppParser appParser,
+            IAppIndexer indexer, RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
             this.catalogParser = catalogParser;
             this.appParser = appParser;
