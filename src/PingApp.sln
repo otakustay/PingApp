@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Repository", "PingA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Repository.Mongo", "PingApp.Repository.Mongo\PingApp.Repository.Mongo.csproj", "{4BEE7099-E9EF-4B8E-A6C4-F787949C7170}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Infrastructure", "PingApp.Infrastructure\PingApp.Infrastructure.csproj", "{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,16 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{2D8AC9EF-01DA-4188-BFCD-5E28AD74E420}.Release|x86.ActiveCfg = Release|Any CPU
 		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}.Debug|Mixed Platforms.Build.0 = Debug|x86
