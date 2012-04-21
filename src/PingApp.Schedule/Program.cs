@@ -67,7 +67,7 @@ namespace PingApp.Schedule {
                 DateTime.Now.ToString("yyyyMMddHHmmss") + "-" + action
             );
             ProgramSettings settings = kernel.Get<ProgramSettings>();
-            string layout = "${time}|${level}|${message}${onexception:inner=${newline}}${exception:format=tostring}";
+            string layout = "${longdate}|${level}|${logger}|${message}${onexception:inner=${newline}}${exception:format=tostring}";
 
             LoggingConfiguration config = new LoggingConfiguration();
 
@@ -82,7 +82,7 @@ namespace PingApp.Schedule {
             FileTarget error = new FileTarget();
             config.AddTarget("error", error);
 
-            console.Layout = settings.Debug ? "${time}|${level}|${message}" : layout;
+            console.Layout = settings.Debug ? "${longdate}|${level}|${logger}|${message}" : layout;
             file.FileName = logRoot + "/log.txt";
             file.Encoding = Encoding.UTF8;
             file.Layout = layout;
