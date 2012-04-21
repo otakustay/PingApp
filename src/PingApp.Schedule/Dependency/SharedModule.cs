@@ -15,6 +15,7 @@ using NLog.Config;
 using NLog.Targets;
 using PanGu.Match;
 using PingApp.Infrastructure;
+using LogLevel = NLog.LogLevel;
 
 namespace PingApp.Schedule.Dependency {
     sealed class SharedModule : NinjectModule {

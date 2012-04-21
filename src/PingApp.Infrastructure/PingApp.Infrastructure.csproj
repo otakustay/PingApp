@@ -63,9 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IAppIndexer.cs" />
+    <Compile Include="ILogger.cs" />
     <Compile Include="IUpdateNotifier.cs" />
     <Compile Include="IAppParser.cs" />
     <Compile Include="IWebDownload.cs" />
+    <Compile Include="LogLevel.cs" />
     <Compile Include="Lucene\PanGuAnalyzer.cs" />
     <Compile Include="Lucene\PanGuTokenizer.cs" />
     <Compile Include="ProgramSettings.cs" />
