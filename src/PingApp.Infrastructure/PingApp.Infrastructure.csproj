@@ -80,10 +80,6 @@
       <Project>{d1ca9a20-917d-44a6-a8d8-1cfe169fa204}</Project>
       <Name>PingApp.Entity</Name>
     </ProjectReference>
-    <ProjectReference Include="..\PingApp.Repository\PingApp.Repository.csproj">
-      <Project>{65ce8a86-a790-4e23-8fc6-8d2569e86fcf}</Project>
-      <Name>PingApp.Repository</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
