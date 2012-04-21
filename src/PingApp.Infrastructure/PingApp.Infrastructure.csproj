@@ -64,10 +64,8 @@
   <ItemGroup>
     <Compile Include="Dependency\InfrastructureModule.cs" />
     <Compile Include="IAppIndexer.cs" />
-    <Compile Include="ICatalogParser.cs" />
     <Compile Include="IUpdateNotifier.cs" />
     <Compile Include="StandardAppParser.cs" />
-    <Compile Include="StandardCatalogParser.cs" />
     <Compile Include="IAppParser.cs" />
     <Compile Include="IWebDownload.cs" />
     <Compile Include="LuceneIndexer.cs" />

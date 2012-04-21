@@ -10,18 +10,15 @@ using PingApp.Repository;
 
 namespace PingApp.Schedule.Task {
     sealed class InitializeTask : TaskBase {
-        private readonly ICatalogParser catalogParser;
-
         private readonly IAppParser appParser;
 
         private readonly IAppIndexer indexer;
 
         private readonly RepositoryEmitter repository;
 
-        public InitializeTask(ICatalogParser catalogParser, IAppParser appParser,
-            IAppIndexer indexer, RepositoryEmitter repository, ProgramSettings settings, Logger logger)
+        public InitializeTask(IAppParser appParser, IAppIndexer indexer, 
+            RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
-            this.catalogParser = catalogParser;
             this.appParser = appParser;
             this.indexer = indexer;
             this.repository = repository;
@@ -40,7 +37,7 @@ namespace PingApp.Schedule.Task {
             logger.Info("Start initialize task");
             watch.Start();
 
-            ISet<int> identities = catalogParser.CollectApps();
+            ISet<int> identities = appParser.CollectAppsFromCatalog();
 
             logger.Info("Start find and save apps");
             // Search API一次最多能传200个id，所以设定以200为一个区块

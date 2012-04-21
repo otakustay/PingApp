@@ -34,8 +34,6 @@ namespace PingApp.Infrastructure.Dependency {
             // Infrastructure接口
             Bind<IWebDownload>().To<StandardWebDownload>().InSingletonScope();
 
-            Bind<ICatalogParser>().To<StandardCatalogParser>();
-
             Bind<IAppParser>().To<StandardAppParser>()
                 .WithConstructorArgument("truncateLimit", 200);
 

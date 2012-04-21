@@ -10,18 +10,15 @@ using PingApp.Repository;
 
 namespace PingApp.Schedule.Task {
     sealed class CheckNewTask : TaskBase {
-        private readonly ICatalogParser catalogParser;
-
         private readonly IAppParser appParser;
 
         private readonly IAppIndexer indexer;
 
         private readonly RepositoryEmitter repository;
 
-        public CheckNewTask(ICatalogParser catalogParser, IAppParser appParser,
-            IAppIndexer indexer, RepositoryEmitter repository, ProgramSettings settings, Logger logger)
+        public CheckNewTask(IAppParser appParser, IAppIndexer indexer, 
+            RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
-            this.catalogParser = catalogParser;
             this.appParser = appParser;
             this.indexer = indexer;
             this.repository = repository;
@@ -40,7 +37,7 @@ namespace PingApp.Schedule.Task {
             logger.Info("Start check new apps task");
             watch.Start();
 
-            ISet<int> identities = catalogParser.CollectApps();
+            ISet<int> identities = appParser.CollectAppsFromCatalog();
             int newAppCount = identities.Partition(200).AsParallel()
                 .WithDegreeOfParallelism(settings.ParallelDegree)
                 .Sum(p => FindAndSaveNewApps(p));

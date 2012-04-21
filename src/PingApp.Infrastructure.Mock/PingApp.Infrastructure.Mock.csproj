@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="MockAppIndexer.cs" />
     <Compile Include="MockAppParser.cs" />
-    <Compile Include="MockCatalogParser.cs" />
     <Compile Include="MockUpdateNotifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

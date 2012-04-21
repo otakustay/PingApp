@@ -7,6 +7,24 @@ using PingApp.Entity;
 
 namespace PingApp.Infrastructure.Mock {
     public sealed class MockAppParser : IAppParser {
+        private readonly IEnumerable<int> data;
+
+        public MockAppParser(IEnumerable<int> identities) {
+            data = identities;
+        }
+
+        public MockAppParser(int start = 1, int count = 10) {
+            data = Enumerable.Range(start, count);
+        }
+
+        public ISet<int> CollectAppsFromCatalog() {
+            return new HashSet<int>(data);
+        }
+
+        public ISet<int> CollectAppsFromRss(string url) {
+            return new HashSet<int>(data);
+        }
+
         public ICollection<App> RetrieveApps(ICollection<int> required, int attempts = 0) {
             return required.Select(i => GetTemplatedApp(i)).ToArray();
         }

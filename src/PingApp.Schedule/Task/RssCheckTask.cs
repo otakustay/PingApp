@@ -13,18 +13,15 @@ namespace PingApp.Schedule.Task {
     sealed class RssCheckTask : TaskBase {
         private const string FEED_URL = "http://itunes.apple.com/cn/rss/newapplications/limit=300/xml";
 
-        private readonly IWebDownload download;
-
         private readonly IAppParser appParser;
 
         private readonly IAppIndexer indexer;
 
         private readonly RepositoryEmitter repository;
 
-        public RssCheckTask(IWebDownload download, IAppParser appParser, IAppIndexer indexer,
+        public RssCheckTask(IAppParser appParser, IAppIndexer indexer,
             RepositoryEmitter repository, ProgramSettings settings, Logger logger)
             : base(settings, logger) {
-            this.download = download;
             this.appParser = appParser;
             this.indexer = indexer;
             this.repository = repository;
@@ -42,7 +39,7 @@ namespace PingApp.Schedule.Task {
             logger.Info("Start rss check task");
             watch.Start();
 
-            ICollection<int> identities = RetrieveFromFeed();
+            ICollection<int> identities = appParser.CollectAppsFromRss(FEED_URL);
             ICollection<App> exists = repository.App.Retrieve(identities);
 
             if (exists == null) {
@@ -88,22 +85,6 @@ namespace PingApp.Schedule.Task {
 
             watch.Stop();
             logger.Info("Indexed {0} apps using {1}ms", apps.Count, watch.ElapsedMilliseconds);
-        }
-
-        private ICollection<int> RetrieveFromFeed() {
-            Stopwatch watch = new Stopwatch();
-            watch.Start();
-
-            XDocument document = download.AsXml(FEED_URL);
-            ICollection<int> apps = document.Root.Descendants("{http://www.w3.org/2005/Atom}entry")
-                .Select(d => d.Elements("{http://www.w3.org/2005/Atom}id").First().Value)
-                .Select(Utility.FindIdFromUrl)
-                .ToArray();
-
-            watch.Stop();
-            logger.Info("Found {0} apps from rss feed using {1}ms", apps.Count, watch.ElapsedMilliseconds);
-
-            return apps;
         }
     }
 }
