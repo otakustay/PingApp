@@ -6,7 +6,6 @@ using System.Web.Mvc;
 using PingApp.Web.Infrastructures;
 using PingApp.Entity;
 using PingApp.Web.Models;
-using SimpleLucene;
 using System.IO;
 using System.Configuration;
 using Lucene.Net.Search;
