@@ -42,6 +42,8 @@
     <Compile Include="MockAppIndexer.cs" />
     <Compile Include="MockAppParser.cs" />
     <Compile Include="MockUpdateNotifier.cs" />
+    <Compile Include="NullLogger.cs" />
+    <Compile Include="NullLoggerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
