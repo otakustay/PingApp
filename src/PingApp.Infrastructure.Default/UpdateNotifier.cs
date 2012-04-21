@@ -10,6 +10,8 @@ using PingApp.Repository;
 
 namespace PingApp.Infrastructure.Default {
     sealed class UpdateNotifier : IUpdateNotifier {
+        private static readonly ILogger logger = ProgramSettings.GetLogger<UpdateNotifier>();
+
         private static readonly Dictionary<AppUpdateType, string> templates;
 
         private static readonly Dictionary<AppUpdateType, string> subjects = new Dictionary<AppUpdateType, string>() {
@@ -24,13 +26,10 @@ namespace PingApp.Infrastructure.Default {
 
         private readonly ProgramSettings settings;
 
-        private readonly Logger logger;
-
-        public UpdateNotifier(RepositoryEmitter repository, SmtpClient smtp, ProgramSettings settings, Logger logger) {
+        public UpdateNotifier(RepositoryEmitter repository, SmtpClient smtp, ProgramSettings settings) {
             this.repository = repository;
             this.smtp = smtp;
             this.settings = settings;
-            this.logger = logger;
         }
 
         public void ProcessUpdate(App app, AppUpdate update) {
@@ -59,7 +58,7 @@ namespace PingApp.Infrastructure.Default {
                             .AppendLine("To: " + message.To[0].Address)
                             .AppendLine("Subject: " + message.Subject)
                             .AppendLine(message.Body);
-                        logger.Trace(text);
+                        logger.Trace(text.ToString());
                     }
                     else {
                         try {

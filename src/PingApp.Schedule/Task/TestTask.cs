@@ -8,10 +8,12 @@ using PingApp.Infrastructure;
 
 namespace PingApp.Schedule.Task {
     class TestTask : TaskBase {
+        private static readonly ILogger logger = ProgramSettings.GetLogger<TestTask>();
+
         private readonly IKernel kernel;
 
-        public TestTask(IKernel kernel, ProgramSettings settings, Logger logger)
-            : base(settings, logger) {
+        public TestTask(IKernel kernel, ProgramSettings settings)
+            : base(settings) {
             this.kernel = kernel;
         }
 

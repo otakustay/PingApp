@@ -24,6 +24,8 @@ namespace PingApp.Infrastructure.Default {
 
         private const string SEARCH_API_URL_TEMPLATE = "http://itunes.apple.com/lookup?country=cn&&lang=zh_cn&id={0}";
 
+        private static readonly ILogger logger = ProgramSettings.GetLogger<AppParser>();
+
         // 26个字母，外加一个表示“其它”的*
         private static readonly IEnumerable<char> CATALOG_ALPHAS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ*";
 
@@ -39,18 +41,15 @@ namespace PingApp.Infrastructure.Default {
 
         private readonly ProgramSettings settings;
 
-        private readonly Logger logger;
-
         private readonly ISet<int> output;
 
-        public AppParser(IWebDownload download, JsonSerializerSettings serializerSettings, 
-            int truncateLimit, MatchOptions segmentMatchOptions, ProgramSettings settings, Logger logger) {
+        public AppParser(IWebDownload download, JsonSerializerSettings serializerSettings,
+            int truncateLimit, MatchOptions segmentMatchOptions, ProgramSettings settings) {
             this.download = download;
             this.serializerSettings = serializerSettings;
             this.truncateLimit = truncateLimit;
             this.segmentMatchOptions = segmentMatchOptions;
             this.settings = settings;
-            this.logger = logger;
 
             // Debug下为了Fiddler的Auto Responder能稳定拦截请求，需要对id进行排序
             if (settings.Debug) {

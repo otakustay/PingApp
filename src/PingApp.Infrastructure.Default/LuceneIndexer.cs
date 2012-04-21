@@ -13,11 +13,11 @@ using PingApp.Infrastructure.Lucene;
 
 namespace PingApp.Infrastructure.Default {
     sealed class LuceneIndexer : IAppIndexer {
-        private readonly ProgramSettings settings;
-
-        private readonly Logger logger;
+        private static readonly ILogger logger = ProgramSettings.GetLogger<LuceneIndexer>();
 
         private readonly IndexWriter writer;
+
+        private readonly ProgramSettings settings;
 
         private Queue<App> addQueue = new Queue<App>();
 
@@ -25,9 +25,8 @@ namespace PingApp.Infrastructure.Default {
 
         private Queue<App> deleteQueue = new Queue<App>();
 
-        public LuceneIndexer(bool rebuild, ProgramSettings settings, Logger logger) {
+        public LuceneIndexer(bool rebuild, ProgramSettings settings) {
             this.settings = settings;
-            this.logger = logger;
 
             writer = CreateIndexWriter(rebuild);
         }

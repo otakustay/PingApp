@@ -12,6 +12,8 @@ using Tasks = System.Threading.Tasks;
 
 namespace PingApp.Schedule.Task {
     sealed class UpdateTask : TaskBase {
+        private static readonly ILogger logger = ProgramSettings.GetLogger<UpdateTask>();
+
         private readonly IAppParser appParser;
 
         private readonly IAppIndexer indexer;
@@ -27,8 +29,8 @@ namespace PingApp.Schedule.Task {
         private readonly List<App> revokedApps = new List<App>();
 
         public UpdateTask(IAppParser appParser, IAppIndexer indexer, IUpdateNotifier notifier,
-            RepositoryEmitter repository, ProgramSettings settings, Logger logger)
-            : base(settings, logger) {
+            RepositoryEmitter repository, ProgramSettings settings)
+            : base(settings) {
             this.appParser = appParser;
             this.indexer = indexer;
             this.notifier = notifier;

@@ -13,6 +13,8 @@ namespace PingApp.Schedule.Task {
     sealed class RssCheckTask : TaskBase {
         private const string FEED_URL = "http://itunes.apple.com/cn/rss/newapplications/limit=300/xml";
 
+        private static readonly ILogger logger = ProgramSettings.GetLogger<RssCheckTask>();
+
         private readonly IAppParser appParser;
 
         private readonly IAppIndexer indexer;
@@ -20,8 +22,8 @@ namespace PingApp.Schedule.Task {
         private readonly RepositoryEmitter repository;
 
         public RssCheckTask(IAppParser appParser, IAppIndexer indexer,
-            RepositoryEmitter repository, ProgramSettings settings, Logger logger)
-            : base(settings, logger) {
+            RepositoryEmitter repository, ProgramSettings settings)
+            : base(settings) {
             this.appParser = appParser;
             this.indexer = indexer;
             this.repository = repository;

@@ -10,6 +10,8 @@ using PingApp.Repository;
 
 namespace PingApp.Schedule.Task {
     sealed class CheckNewTask : TaskBase {
+        private static readonly ILogger logger = ProgramSettings.GetLogger<CheckNewTask>();
+
         private readonly IAppParser appParser;
 
         private readonly IAppIndexer indexer;
@@ -17,8 +19,8 @@ namespace PingApp.Schedule.Task {
         private readonly RepositoryEmitter repository;
 
         public CheckNewTask(IAppParser appParser, IAppIndexer indexer, 
-            RepositoryEmitter repository, ProgramSettings settings, Logger logger)
-            : base(settings, logger) {
+            RepositoryEmitter repository, ProgramSettings settings)
+            : base(settings) {
             this.appParser = appParser;
             this.indexer = indexer;
             this.repository = repository;

@@ -11,11 +11,8 @@ namespace PingApp.Schedule {
     abstract class TaskBase : IDisposable {
         protected readonly ProgramSettings settings;
 
-        protected readonly Logger logger;
-
-        protected TaskBase(ProgramSettings settings, Logger logger) {
+        protected TaskBase(ProgramSettings settings) {
             this.settings = settings;
-            this.logger = logger;
         }
 
         public abstract void Run(string[] args);

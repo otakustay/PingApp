@@ -8,20 +8,16 @@ namespace PingApp.Infrastructure.Default {
     public class NLogLoggerFactory : ILoggerFactory {
         private const string DEFAULT_LOGGER_NAME = "default";
 
-        public ILogger GetLoggerFor<T>() {
-            return GetLoggerFor<T>(DEFAULT_LOGGER_NAME);
+        public ILogger GetLogger<T>() {
+            return GetLogger(typeof(T).FullName);
         }
 
-        public ILogger GetLoggerFor<T>(string name) {
-            return GetLoggerFor(typeof(T), name);
+        public ILogger GetLogger(Type type) {
+            return GetLogger(type.FullName);
         }
 
-        public ILogger GetLoggerFor(Type type) {
-            return GetLoggerFor(type, DEFAULT_LOGGER_NAME);
-        }
-
-        public ILogger GetLoggerFor(Type type, string name) {
-            Logger logger = LogManager.GetLogger(name, type);
+        public ILogger GetLogger(string name) {
+            Logger logger = LogManager.GetLogger(name);
             return new NLogAdapter(logger);
         }
     }
