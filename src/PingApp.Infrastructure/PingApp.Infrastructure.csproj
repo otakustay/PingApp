@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="IAppIndexer.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="ILoggerFactory.cs" />
     <Compile Include="IUpdateNotifier.cs" />
     <Compile Include="IAppParser.cs" />
     <Compile Include="IWebDownload.cs" />

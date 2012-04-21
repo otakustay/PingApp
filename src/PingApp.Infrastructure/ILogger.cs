@@ -7,7 +7,7 @@ namespace PingApp.Infrastructure {
     public interface ILogger {
         void Log(LogLevel level, string message, params object[] args);
 
-        void LogException(string message, Exception exception);
+        void LogException(LogLevel level, string message, Exception exception);
 
         void Trace(string message, params object[] args);
 

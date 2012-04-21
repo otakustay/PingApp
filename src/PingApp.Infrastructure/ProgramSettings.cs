@@ -7,6 +7,8 @@ using System.Text;
 
 namespace PingApp.Infrastructure {
     public class ProgramSettings {
+        private static readonly ILoggerFactory loggerFactory;
+
         public bool Debug { get; private set; }
 
         public int BatchSize { get; private set; }
@@ -39,8 +41,35 @@ namespace PingApp.Infrastructure {
 
         public static ProgramSettings Current { get; private set; }
 
+        #region Logger Factory Methods
+
+        public ILogger GetLoggerFor<T>() {
+            return loggerFactory.GetLoggerFor<T>();
+        }
+
+        public ILogger GetLoggerFor<T>(string name) {
+            return loggerFactory.GetLoggerFor<T>(name);
+        }
+
+        public ILogger GetLoggerFor(Type type) {
+            return loggerFactory.GetLoggerFor(type);
+        }
+
+        public ILogger GetLoggerFor(Type type, string name) {
+            return loggerFactory.GetLoggerFor(type, name);
+        }
+
+        #endregion
+
         static ProgramSettings() {
             NameValueCollection appSettings = ConfigurationManager.AppSettings;
+            Type loggerFactoryType = Type.GetType(appSettings["LoggerFactory"], true);
+            loggerFactory = Activator.CreateInstance(loggerFactoryType) as ILoggerFactory;
+
+            if (loggerFactoryType == null) {
+                throw new ConfigurationErrorsException("Invalid type of LoggerFactory");
+            }
+
             Current = new ProgramSettings(
                 Convert.ToBoolean(appSettings["Debug"]),
                 Convert.ToInt32(appSettings["BatchSize"]),
