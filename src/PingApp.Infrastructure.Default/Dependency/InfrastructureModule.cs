@@ -15,7 +15,7 @@ using NLog.Config;
 using NLog.Targets;
 using PanGu.Match;
 
-namespace PingApp.Infrastructure.Dependency {
+namespace PingApp.Infrastructure.Default.Dependency {
     public sealed class InfrastructureModule : NinjectModule {
         public override void Load() {
             Bind<ProgramSettings>().ToConstant(ProgramSettings.Current).InSingletonScope();
@@ -32,9 +32,9 @@ namespace PingApp.Infrastructure.Dependency {
             Bind<MatchOptions>().ToConstant(matchOptions).InSingletonScope();
 
             // Infrastructure接口
-            Bind<IWebDownload>().To<StandardWebDownload>().InSingletonScope();
+            Bind<IWebDownload>().To<WebDownload>().InSingletonScope();
 
-            Bind<IAppParser>().To<StandardAppParser>()
+            Bind<IAppParser>().To<AppParser>()
                 .WithConstructorArgument("truncateLimit", 200);
 
             Bind<IAppIndexer>().To<LuceneIndexer>().Named("Rebuild")
@@ -42,7 +42,7 @@ namespace PingApp.Infrastructure.Dependency {
             Bind<IAppIndexer>().To<LuceneIndexer>().Named("Update")
                 .WithConstructorArgument("rebuild", false);
 
-            Bind<IUpdateNotifier>().To<StandardUpdateNotifier>();
+            Bind<IUpdateNotifier>().To<UpdateNotifier>();
         }
     }
 }

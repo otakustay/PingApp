@@ -14,8 +14,8 @@ using PanGu;
 using PanGu.Match;
 using PingApp.Entity;
 
-namespace PingApp.Infrastructure {
-    sealed class StandardAppParser : IAppParser {
+namespace PingApp.Infrastructure.Default {
+    sealed class AppParser : IAppParser {
         private const string CATEGORY_URL_TEMPLATE = "http://itunes.apple.com/cn/genre/id{0}?mt=8";
 
         private const string ALPHA_URL_TEMPLATE = CATEGORY_URL_TEMPLATE + "&letter={1}";
@@ -43,7 +43,7 @@ namespace PingApp.Infrastructure {
 
         private readonly ISet<int> output;
 
-        public StandardAppParser(IWebDownload download, JsonSerializerSettings serializerSettings, 
+        public AppParser(IWebDownload download, JsonSerializerSettings serializerSettings, 
             int truncateLimit, MatchOptions segmentMatchOptions, ProgramSettings settings, Logger logger) {
             this.download = download;
             this.serializerSettings = serializerSettings;

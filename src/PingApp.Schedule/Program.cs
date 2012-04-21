@@ -17,7 +17,7 @@ using NLog.Config;
 using NLog.Targets;
 using PanGu.Match;
 using PingApp.Infrastructure;
-using PingApp.Infrastructure.Dependency;
+using PingApp.Infrastructure.Default.Dependency;
 using PingApp.Repository;
 using PingApp.Repository.Mongo.Dependency;
 using PingApp.Schedule.Dependency;

@@ -62,20 +62,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dependency\InfrastructureModule.cs" />
     <Compile Include="IAppIndexer.cs" />
     <Compile Include="IUpdateNotifier.cs" />
-    <Compile Include="StandardAppParser.cs" />
     <Compile Include="IAppParser.cs" />
     <Compile Include="IWebDownload.cs" />
-    <Compile Include="LuceneIndexer.cs" />
     <Compile Include="Lucene\PanGuAnalyzer.cs" />
     <Compile Include="Lucene\PanGuTokenizer.cs" />
     <Compile Include="ProgramSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StandardUpdateNotifier.cs" />
     <Compile Include="Utility.cs" />
-    <Compile Include="StandardWebDownload.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

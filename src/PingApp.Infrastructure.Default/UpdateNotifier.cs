@@ -8,8 +8,8 @@ using NLog;
 using PingApp.Entity;
 using PingApp.Repository;
 
-namespace PingApp.Infrastructure {
-    sealed class StandardUpdateNotifier : IUpdateNotifier {
+namespace PingApp.Infrastructure.Default {
+    sealed class UpdateNotifier : IUpdateNotifier {
         private static readonly Dictionary<AppUpdateType, string> templates;
 
         private static readonly Dictionary<AppUpdateType, string> subjects = new Dictionary<AppUpdateType, string>() {
@@ -26,7 +26,7 @@ namespace PingApp.Infrastructure {
 
         private readonly Logger logger;
 
-        public StandardUpdateNotifier(RepositoryEmitter repository, SmtpClient smtp, ProgramSettings settings, Logger logger) {
+        public UpdateNotifier(RepositoryEmitter repository, SmtpClient smtp, ProgramSettings settings, Logger logger) {
             this.repository = repository;
             this.smtp = smtp;
             this.settings = settings;
@@ -104,7 +104,7 @@ namespace PingApp.Infrastructure {
             return message;
         }
 
-        static StandardUpdateNotifier() {
+        static UpdateNotifier() {
             // 初始化模板
             IEnumerable<AppUpdateType> values = new AppUpdateType[] { 
                 AppUpdateType.NewRelease, 

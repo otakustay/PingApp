@@ -7,13 +7,13 @@ using System.Xml.Linq;
 using HtmlAgilityPack;
 using Newtonsoft.Json.Linq;
 
-namespace PingApp.Infrastructure {
-    sealed class StandardWebDownload : IWebDownload {
+namespace PingApp.Infrastructure.Default {
+    sealed class WebDownload : IWebDownload {
         private static readonly Encoding encoding = Encoding.UTF8;
 
         private readonly WebProxy proxy;
 
-        public StandardWebDownload(ProgramSettings settings) {
+        public WebDownload(ProgramSettings settings) {
             if (!String.IsNullOrEmpty(settings.ProxyAddress)) {
                 proxy = new WebProxy(settings.ProxyAddress);
             }

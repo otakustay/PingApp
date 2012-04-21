@@ -11,7 +11,7 @@ using NLog;
 using PingApp.Entity;
 using PingApp.Infrastructure.Lucene;
 
-namespace PingApp.Infrastructure {
+namespace PingApp.Infrastructure.Default {
     sealed class LuceneIndexer : IAppIndexer {
         private readonly ProgramSettings settings;
 

@@ -108,6 +108,10 @@
       <Project>{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}</Project>
       <Name>PingApp.Entity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\PingApp.Infrastructure.Default\PingApp.Infrastructure.Default.csproj">
+      <Project>{fb3b1de3-87a6-447c-b652-d38c38488fcf}</Project>
+      <Name>PingApp.Infrastructure.Default</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PingApp.Infrastructure\PingApp.Infrastructure.csproj">
       <Project>{2d8ac9ef-01da-4188-bfcd-5e28ad74e420}</Project>
       <Name>PingApp.Infrastructure</Name>
