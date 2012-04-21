@@ -48,8 +48,6 @@ namespace PingApp.Entity {
 
         public int LanguagePriority { get; set; }
 
-        public string Hash { get; set; }
-
         public ICollection<AppUpdate> CheckForUpdate(AppBrief newOne) {
             DateTime now = DateTime.Now;
             List<AppUpdate> updates = new List<AppUpdate>();
@@ -205,7 +203,6 @@ namespace PingApp.Entity {
                 LastValidUpdate = newOne.LastValidUpdate;
             }
             LanguagePriority = newOne.LanguagePriority;
-            Hash = newOne.Hash;
         }
     }
 }

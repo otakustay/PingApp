@@ -115,7 +115,6 @@ namespace PingApp.Infrastructure {
                 token["artistName"].Value<string>() ?? String.Empty,
                 token["artistViewUrl"] == null ? String.Empty : token["artistViewUrl"].Value<string>() ?? String.Empty
             );
-            brief.Hash = App.ComputeHash(app);
 
             return app;
         }
