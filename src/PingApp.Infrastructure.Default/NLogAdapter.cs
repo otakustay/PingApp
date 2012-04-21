@@ -5,7 +5,7 @@ using System.Text;
 using NLog;
 
 namespace PingApp.Infrastructure.Default {
-    public sealed class NLogAdapter : ILogger {
+    sealed class NLogAdapter : ILogger {
         private static Dictionary<LogLevel, NLog.LogLevel> logLevelMapping = new Dictionary<LogLevel, NLog.LogLevel>() {
             { LogLevel.Trace, NLog.LogLevel.Trace },
             { LogLevel.Debug, NLog.LogLevel.Debug },

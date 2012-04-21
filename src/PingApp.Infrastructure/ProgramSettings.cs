@@ -43,20 +43,16 @@ namespace PingApp.Infrastructure {
 
         #region Logger Factory Methods
 
-        public static ILogger GetLoggerFor<T>() {
-            return loggerFactory.GetLoggerFor<T>();
+        public static ILogger GetLogger<T>() {
+            return loggerFactory.GetLogger<T>();
         }
 
-        public static ILogger GetLoggerFor<T>(string name) {
-            return loggerFactory.GetLoggerFor<T>(name);
+        public static ILogger GetLogger(Type type) {
+            return loggerFactory.GetLogger(type);
         }
 
-        public static ILogger GetLoggerFor(Type type) {
-            return loggerFactory.GetLoggerFor(type);
-        }
-
-        public static ILogger GetLoggerFor(Type type, string name) {
-            return loggerFactory.GetLoggerFor(type, name);
+        public static ILogger GetLogger(string name) {
+            return loggerFactory.GetLogger(name);
         }
 
         #endregion

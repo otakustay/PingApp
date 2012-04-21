@@ -5,12 +5,10 @@ using System.Text;
 
 namespace PingApp.Infrastructure {
     public interface ILoggerFactory {
-        ILogger GetLoggerFor<T>();
+        ILogger GetLogger<T>();
 
-        ILogger GetLoggerFor<T>(string name);
+        ILogger GetLogger(Type type);
 
-        ILogger GetLoggerFor(Type type);
-
-        ILogger GetLoggerFor(Type type, string name);
+        ILogger GetLogger(string name);
     }
 }
