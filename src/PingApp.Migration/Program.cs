@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 using MySql.Data.MySqlClient;
 using Ninject;
 using PingApp.Entity;
@@ -190,6 +191,9 @@ where b.id in ({0});";
                         }
                     };
 
+                    AppUpdate storedUpdate = GetLastValidUpdate(app);
+                    app.Brief.LastValidUpdate = storedUpdate;
+
                     if (reader.GetByte(38) == 0) {
                         revoked.Add(new RevokedApp(app));
                     }
@@ -284,21 +288,25 @@ where b.id in ({0});";
         }
 
         private static AppUpdate GetRevokeUpdate(int app) {
-            var command = connection.CreateCommand();
-            command.CommandType = CommandType.Text;
-            command.CommandText = "select Time, OldValue, NewValue from AppUpdate where App = ?app and Type = 6 order by Time desc limit 1";
-            command.Parameters.AddWithValue("?app", app);
-            using (var reader = command.ExecuteReader()) {
-                reader.Read();
-                AppUpdate update = new AppUpdate() {
-                    App = app,
-                    Time = reader.GetDateTime(0),
-                    OldValue = reader.GetString(1),
-                    NewValue = reader.GetString(2),
-                    Type = AppUpdateType.Revoke
-                };
-                return update;
-            }
+            IMongoQuery query = Query.And(
+                Query.EQ("app", app),
+                Query.EQ("type", 6)
+            );
+            AppUpdate update = appUpdates.Find(query)
+                .SetSortOrder(SortBy.Descending("time"))
+                .SetLimit(1)
+                .First();
+
+            return update;
+        }
+
+        private static AppUpdate GetLastValidUpdate(App app) {
+            IMongoQuery query = Query.EQ("app", app.Id);
+            AppUpdate update = appUpdates.Find(query)
+                .SetSortOrder(SortBy.Descending("time"))
+                .First(u => u.Time == app.Brief.LastValidUpdate.Time && u.Type == app.Brief.LastValidUpdate.Type);
+
+            return update;
         }
     }
 }
