@@ -16,7 +16,8 @@ namespace PingApp.Repository.Mongo {
 
         private readonly MongoCollection<AppTrack> appTracks;
 
-        public AppTrackRepository(MongoCollection<AppTrack> appTracks) {
+        public AppTrackRepository(MongoCollection<App> apps, MongoCollection<AppTrack> appTracks) {
+            this.apps = apps;
             this.appTracks = appTracks;
         }
 
