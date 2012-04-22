@@ -6,6 +6,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MongoDB.Driver.Builders;
@@ -118,6 +119,18 @@ where b.id in ({0});";
                 DoWork(MigrateApps);
                 Console.WriteLine("Apps migrated");
             }
+
+            //Regex regex = new Regex(@"\$\d+\.");
+            //ICollection<AppUpdate> updates = appUpdates.FindAll().ToArray();
+            //ICollection<AppUpdate> filtered = updates
+            //    .Where(u => u.Type == AppUpdateType.New || u.Type == AppUpdateType.AddToPing || u.Type == AppUpdateType.Revoke)
+            //    .Where(u => regex.IsMatch(u.OldValue) || regex.IsMatch(u.NewValue))
+            //    .ToArray();
+            //Console.WriteLine(updates.Count);
+            //Console.WriteLine(filtered.Count);
+            //foreach (var update in filtered) {
+            //    Console.WriteLine("{0} - {1} - {2} - {3}", update.App, update.Type, update.OldValue, update.NewValue);
+            //}
         }
 
         private static void DoWork(Func<int, int, int> action, int batchSize = 800) {
@@ -283,6 +296,10 @@ where b.id in ({0});";
                         }
                     }
 
+                    if (update.App == 458032961 || update.App == 460785159 || update.App == 463212084 || update.App == 471694040) {
+                        Debugger.Break();
+                    }
+
                     // 新建和加入到应用的2个更新，在新系统中使用的是NewValue，需要换过来
                     if (update.Type == AppUpdateType.New || update.Type == AppUpdateType.AddToPing) {
                         update.NewValue = update.OldValue;
@@ -312,14 +329,14 @@ where b.id in ({0});";
                         if (oldValueParts.Length > 1) {
                             float oldPrice = Single.Parse(oldValueParts.Last().Substring(1));
                             if ((int)oldPrice != oldPrice) {
-                                oldValueParts[1] = priceMapping[oldPrice].ToString();
+                                oldValueParts[oldValueParts.Length - 1] = priceMapping[oldPrice].ToString();
                                 update.OldValue = String.Join(", ", oldValueParts);
                             }
                         }
                         if (newValueParts.Length > 1) {
                             float newPrice = Single.Parse(newValueParts.Last().Substring(1));
                             if ((int)newPrice != newPrice) {
-                                newValueParts[1] = priceMapping[newPrice].ToString();
+                                newValueParts[newValueParts.Length - 1] = priceMapping[newPrice].ToString();
                                 update.NewValue = String.Join(", ", newValueParts);
                             }
                         }
