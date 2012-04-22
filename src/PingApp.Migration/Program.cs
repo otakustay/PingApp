@@ -9,7 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Driver;
 using MySql.Data.MySqlClient;
+using Ninject;
 using PingApp.Entity;
+using PingApp.Repository.Mongo.Dependency;
 
 namespace PingApp.Migration {
     class Program {
@@ -73,26 +75,39 @@ where b.id in ({0});";
             connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySql"].ConnectionString);
             connection.Open();
 
-            var server = MongoServer.Create(ConfigurationManager.ConnectionStrings["Mongo"].ConnectionString);
-            var database = server.GetDatabase("pingapp");
-            apps = database.GetCollection<App>("apps");
-            revokedApps = database.GetCollection<RevokedApp>("revokedApps");
-            appUpdates = database.GetCollection<AppUpdate>("appUpdates");
-            appTracks = database.GetCollection<AppTrack>("appTracks");
-            users = database.GetCollection<User>("users");
+            IKernel kernel = new StandardKernel();
+            kernel.Load(new MongoRepositoryModule());
+
+            apps = kernel.Get<MongoCollection<App>>();
+            revokedApps = kernel.Get<MongoCollection<RevokedApp>>();
+            appUpdates = kernel.Get<MongoCollection<AppUpdate>>();
+            appTracks = kernel.Get<MongoCollection<AppTrack>>();
+            users = kernel.Get<MongoCollection<User>>();
         }
 
         static void Main(string[] args) {
+            if (args.Contains("updates")) {
+                Console.WriteLine("Migrating updates...");
+                DoWork(MigrateAppUpdates, 4000);
+                Console.WriteLine("Updates migrated");
+            }
+
+            if (args.Contains("apps")) {
+                Console.WriteLine("Migrating apps...");
+                DoWork(MigrateApps);
+                Console.WriteLine("Apps migrated");
+            }
+        }
+
+        private static void DoWork(Func<int, int, int> action, int batchSize = 800) {
             int count;
             int offset = 0;
-            int batchSize = 800;
 
-            Console.WriteLine("Migrating apps...");
             do {
                 Stopwatch watch = new Stopwatch();
                 watch.Start();
 
-                count = MigrateApps(offset, batchSize);
+                count = action(offset, batchSize);
 
                 watch.Stop();
                 Console.WriteLine("{0} + {1} : {2}", offset, count, watch.ElapsedMilliseconds);
@@ -100,23 +115,6 @@ where b.id in ({0});";
                 offset += batchSize;
             }
             while (count >= batchSize);
-            Console.WriteLine("Apps migrated");
-
-            offset = 0;
-            Console.WriteLine("Migrating updates...");
-            do {
-                Stopwatch watch = new Stopwatch();
-                watch.Start();
-
-                count = MigrateAppUpdates(offset, batchSize);
-
-                watch.Stop();
-                Console.WriteLine("{0} + {1} : {2}", offset, count, watch.ElapsedMilliseconds);
-
-                offset += batchSize;
-            }
-            while (count >= batchSize);
-            Console.WriteLine("Updates migrated");
         }
 
         private static int MigrateApps(int offset, int batchSize) {
