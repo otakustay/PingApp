@@ -120,14 +120,14 @@ namespace PingApp.Repository.Mongo {
                 App = app.Id,
                 Time = app.Brief.ReleaseDate.Date,
                 Type = AppUpdateType.New,
-                OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
+                NewValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
             };
             appUpdates.Save(updateForNew);
             AppUpdate updateForAdd = new AppUpdate() {
                 App = app.Id,
                 Time = DateTime.Now,
                 Type = AppUpdateType.AddToPing,
-                OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
+                NewValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol
             };
             appUpdates.Save(updateForAdd);
 
