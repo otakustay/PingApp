@@ -60,6 +60,21 @@ namespace PingApp.Migration {
 from AppBrief b inner join App a on a.id = b.id
 where b.id in ({0});";
 
+        private static Dictionary<float, float> priceMapping = new Dictionary<float, float>() {
+            { 0.99f, 6f }, { 1.99f, 12f }, { 2.99f, 18f }, { 3.99f, 25f }, { 4.99f, 30f }, { 5.99f, 40f },
+            { 6.99f, 45f }, { 7.99f, 50f }, { 8.99f, 60f }, { 9.99f, 68f }, { 10.99f, 73f }, { 11.99f, 78f },
+            { 12.99f, 88f }, { 13.99f, 93f }, { 14.99f, 98f }, { 15.99f, 108f }, { 16.99f, 113f }, { 17.99f, 118f },
+            { 18.99f, 123f }, { 19.99f, 128f }, { 20.99f, 138f }, { 21.99f, 148f }, { 22.99f, 153f }, { 23.99f, 158f },
+            { 24.99f, 163f }, { 25.99f, 168f }, { 26.99f, 178f }, { 27.99f, 188f }, { 28.99f, 193f }, { 29.99f, 198f },
+            { 30.99f, 208f }, { 31.99f, 218f }, { 32.99f, 223f }, { 34.99f, 233f }, { 35.99f, 238f }, { 36.99f, 243f },
+            { 37.99f, 248f }, { 38.99f, 253f }, { 39.99f, 258f }, { 40.99f, 263f }, { 41.99f, 268f }, { 43.99f, 278f },
+            { 44.99f, 283f }, { 48.99f, 318f }, { 49.99f, 328f }, { 54.99f, 348f }, { 59.99f, 388f }, { 64.99f, 418f },
+            { 69.99f, 448f }, { 74.99f, 488f }, { 79.99f, 518f }, { 84.99f, 548f }, { 89.99f, 588f }, { 94.99f, 618f },
+            { 99.99f, 648f }, { 109.99f, 698f }, { 119.99f, 798f }, { 129.99f, 848f }, { 139.99f, 898f }, { 149.99f, 998f },
+            { 169.99f, 1098f }, { 179.99f, 1198f }, { 199.99f, 1298f }, { 239.99f, 1598f }, { 249.99f, 1648f }, { 399.99f, 2598f },
+            { 449.99f, 2998f }, { 499.99f, 3298f }, { 999.99f, 6498f }
+        };
+
         private static readonly MongoCollection<App> apps;
 
         private static readonly MongoCollection<RevokedApp> revokedApps;
@@ -253,11 +268,55 @@ where b.id in ({0});";
                         OldValue = reader.GetString(3),
                         NewValue = reader.GetString(4)
                     };
+
+                    // AppStore有一次把美元换成人民币，导致大量的“涨价”更新，特点是从浮点数变成整数，这一批要丢弃
+                    if (update.Type == AppUpdateType.PriceIncrease) {
+                        float oldPrice = Single.Parse(update.OldValue);
+                        float newPrice = Single.Parse(update.NewValue);
+                        if ((int)oldPrice != oldPrice /* 原价是浮点数 */ && (int)newPrice == oldPrice /* 现价是整数 */) {
+                            continue;
+                        }
+                    }
+
                     // 新建和加入到应用的2个更新，在新系统中使用的是NewValue，需要换过来
                     if (update.Type == AppUpdateType.New || update.Type == AppUpdateType.AddToPing) {
                         update.NewValue = update.OldValue;
                         update.OldValue = String.Empty;
                     }
+
+                    // 现有AppStore中国区全部是用人民币作为价格，因此将美元全部换回人民币
+                    if (update.Type == AppUpdateType.PriceIncrease ||
+                        update.Type == AppUpdateType.PriceDecrease ||
+                        update.Type == AppUpdateType.PriceFree) {
+                        // 价格相关的更新，OldValue和NewValue都是价格直接值
+                        float oldPrice = Single.Parse(update.OldValue);
+                        float newPrice = Single.Parse(update.NewValue);
+                        if ((int)oldPrice != oldPrice) {
+                            update.OldValue = priceMapping[oldPrice].ToString();
+                        }
+                        if ((int)newPrice != newPrice) {
+                            update.NewValue = priceMapping[newPrice].ToString();
+                        }
+                    }
+                    else if (update.Type == AppUpdateType.New ||
+                        update.Type == AppUpdateType.AddToPing ||
+                        update.Type == AppUpdateType.Revoke) {
+                        // 另外几个更新，用的是{version, $price}的形式，需要分隔开来再计算
+                        string[] oldValueParts = update.OldValue.Split(new string[] { ", " }, StringSplitOptions.None);
+                        string[] newValueParts = update.NewValue.Split(new string[] { ", " }, StringSplitOptions.None);
+                        float oldPrice = Single.Parse(oldValueParts[1]);
+                        float newPrice = Single.Parse(newValueParts[1]);
+                        if ((int)oldPrice != oldPrice) {
+                            oldValueParts[1] = priceMapping[oldPrice].ToString();
+                        }
+                        if ((int)newPrice != newPrice) {
+                            newValueParts[1] = priceMapping[newPrice].ToString();
+                        }
+                        update.OldValue = String.Join(", ", oldValueParts);
+                        update.NewValue = String.Join(", ", newValueParts);
+                    }
+                    // 版本更新不需要动
+
                     updates.Add(update);
                 }
             }
@@ -307,11 +366,19 @@ where b.id in ({0});";
 
         private static AppUpdate GetLastValidUpdate(App app) {
             IMongoQuery query = Query.EQ("app", app.Id);
-            AppUpdate update = appUpdates.Find(query)
+            AppUpdate[] updates = appUpdates.Find(query)
                 .SetSortOrder(SortBy.Descending("time"))
-                .First(u => u.Time == app.Brief.LastValidUpdate.Time && u.Type == app.Brief.LastValidUpdate.Type);
+                .ToArray();
 
-            return update;
+            // 当第一次加入应用时，App的最后更新类型为New，这是为了显示效果，但时间是AddToPing的时间，为了排序效果
+            if (app.Brief.LastValidUpdate.Type == AppUpdateType.New) {
+                AppUpdate update = updates.First(u => u.Type == AppUpdateType.AddToPing);
+                return update;
+            }
+
+            // AppStore曾经将价格从美元改为人民币，这些数据
+
+            throw new NotImplementedException();
         }
     }
 }
