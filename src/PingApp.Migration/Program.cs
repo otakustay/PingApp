@@ -296,10 +296,6 @@ where b.id in ({0});";
                         }
                     }
 
-                    if (update.App == 458032961 || update.App == 460785159 || update.App == 463212084 || update.App == 471694040) {
-                        Debugger.Break();
-                    }
-
                     // 新建和加入到应用的2个更新，在新系统中使用的是NewValue，需要换过来
                     if (update.Type == AppUpdateType.New || update.Type == AppUpdateType.AddToPing) {
                         update.NewValue = update.OldValue;
