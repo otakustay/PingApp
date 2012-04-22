@@ -66,13 +66,16 @@ where b.id in ({0});";
             { 12.99f, 88f }, { 13.99f, 93f }, { 14.99f, 98f }, { 15.99f, 108f }, { 16.99f, 113f }, { 17.99f, 118f },
             { 18.99f, 123f }, { 19.99f, 128f }, { 20.99f, 138f }, { 21.99f, 148f }, { 22.99f, 153f }, { 23.99f, 158f },
             { 24.99f, 163f }, { 25.99f, 168f }, { 26.99f, 178f }, { 27.99f, 188f }, { 28.99f, 193f }, { 29.99f, 198f },
-            { 30.99f, 208f }, { 31.99f, 218f }, { 32.99f, 223f }, { 34.99f, 233f }, { 35.99f, 238f }, { 36.99f, 243f },
-            { 37.99f, 248f }, { 38.99f, 253f }, { 39.99f, 258f }, { 40.99f, 263f }, { 41.99f, 268f }, { 43.99f, 278f },
-            { 44.99f, 283f }, { 48.99f, 318f }, { 49.99f, 328f }, { 54.99f, 348f }, { 59.99f, 388f }, { 64.99f, 418f },
-            { 69.99f, 448f }, { 74.99f, 488f }, { 79.99f, 518f }, { 84.99f, 548f }, { 89.99f, 588f }, { 94.99f, 618f },
-            { 99.99f, 648f }, { 109.99f, 698f }, { 119.99f, 798f }, { 129.99f, 848f }, { 139.99f, 898f }, { 149.99f, 998f },
-            { 169.99f, 1098f }, { 179.99f, 1198f }, { 199.99f, 1298f }, { 239.99f, 1598f }, { 249.99f, 1648f }, { 399.99f, 2598f },
-            { 449.99f, 2998f }, { 499.99f, 3298f }, { 999.99f, 6498f }
+            { 30.99f, 208f }, { 31.99f, 218f }, { 32.99f, 223f }, { 33.99f, 228f }, { 34.99f, 233f }, { 35.99f, 238f }, 
+            { 36.99f, 243f }, { 37.99f, 248f }, { 38.99f, 253f }, { 39.99f, 258f }, { 40.99f, 263f }, { 41.99f, 268f }, 
+            { 42.99f, 273f }, { 43.99f, 278f }, { 44.99f, 283f }, { 45.99f, 288f }, { 46.99f, 298f }, { 47.99f, 308f }, 
+            { 48.99f, 318f }, { 49.99f, 328f }, { 54.99f, 348f }, { 59.99f, 388f }, { 64.99f, 418f }, { 69.99f, 448f }, 
+            { 74.99f, 488f }, { 79.99f, 518f }, { 84.99f, 548f }, { 89.99f, 588f }, { 94.99f, 618f }, { 99.99f, 648f }, 
+            { 109.99f, 698f }, { 119.99f, 798f }, { 129.99f, 848f }, { 139.99f, 898f }, { 149.99f, 998f }, 
+            { 159.99f, 1048f }, { 169.99f, 1098f }, { 179.99f, 1198f }, { 189.99f, 1248f }, { 199.99f, 1298f }, 
+            { 209.99f, 1398f }, { 219.99f, 1448f }, { 229.99f, 1498f }, { 239.99f, 1598f }, { 249.99f, 1648f }, 
+            { 299.99f, 1998f }, { 349.99f, 2298f }, { 399.99f, 2598f }, { 449.99f, 2998f }, { 499.99f, 3298f }, 
+            { 599.99f, 3998f }, { 749.99f, 4998f }, { 999.99f, 6498f }
         };
 
         private static readonly MongoCollection<App> apps;
@@ -304,16 +307,20 @@ where b.id in ({0});";
                         // 另外几个更新，用的是{version, $price}的形式，需要分隔开来再计算
                         string[] oldValueParts = update.OldValue.Split(new string[] { ", " }, StringSplitOptions.None);
                         string[] newValueParts = update.NewValue.Split(new string[] { ", " }, StringSplitOptions.None);
-                        float oldPrice = Single.Parse(oldValueParts[1]);
-                        float newPrice = Single.Parse(newValueParts[1]);
-                        if ((int)oldPrice != oldPrice) {
-                            oldValueParts[1] = priceMapping[oldPrice].ToString();
+                        if (oldValueParts.Length > 1) {
+                            float oldPrice = Single.Parse(oldValueParts.Last().Substring(1));
+                            if ((int)oldPrice != oldPrice) {
+                                oldValueParts[1] = priceMapping[oldPrice].ToString();
+                                update.OldValue = String.Join(", ", oldValueParts);
+                            }
                         }
-                        if ((int)newPrice != newPrice) {
-                            newValueParts[1] = priceMapping[newPrice].ToString();
+                        if (newValueParts.Length > 1) {
+                            float newPrice = Single.Parse(newValueParts.Last().Substring(1));
+                            if ((int)newPrice != newPrice) {
+                                newValueParts[1] = priceMapping[newPrice].ToString();
+                                update.NewValue = String.Join(", ", newValueParts);
+                            }
                         }
-                        update.OldValue = String.Join(", ", oldValueParts);
-                        update.NewValue = String.Join(", ", newValueParts);
                     }
                     // 版本更新不需要动
 
