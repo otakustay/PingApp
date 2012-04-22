@@ -253,6 +253,11 @@ where b.id in ({0});";
                         OldValue = reader.GetString(3),
                         NewValue = reader.GetString(4)
                     };
+                    // 新建和加入到应用的2个更新，在新系统中使用的是NewValue，需要换过来
+                    if (update.Type == AppUpdateType.New || update.Type == AppUpdateType.AddToPing) {
+                        update.NewValue = update.OldValue;
+                        update.OldValue = String.Empty;
+                    }
                     updates.Add(update);
                 }
             }
