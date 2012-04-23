@@ -401,7 +401,7 @@ where b.id in ({0});";
                 }
             }
 
-            return updates.First(u => u.Time == app.Brief.LastValidUpdate.Time);
+            return updates.First(u => u.Time.ToUniversalTime() == app.Brief.LastValidUpdate.Time.ToUniversalTime());
         }
     }
 }
