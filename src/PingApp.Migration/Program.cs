@@ -287,15 +287,6 @@ where b.id in ({0});";
                         NewValue = reader.GetString(4)
                     };
 
-                    // AppStore有一次把美元换成人民币，导致大量的“涨价”更新，特点是从浮点数变成整数，这一批要丢弃
-                    if (update.Type == AppUpdateType.PriceIncrease) {
-                        float oldPrice = Single.Parse(update.OldValue);
-                        float newPrice = Single.Parse(update.NewValue);
-                        if ((int)oldPrice != oldPrice /* 原价是浮点数 */ && (int)newPrice == oldPrice /* 现价是整数 */) {
-                            continue;
-                        }
-                    }
-
                     // 新建和加入到应用的2个更新，在新系统中使用的是NewValue，需要换过来
                     if (update.Type == AppUpdateType.New || update.Type == AppUpdateType.AddToPing) {
                         update.NewValue = update.OldValue;
