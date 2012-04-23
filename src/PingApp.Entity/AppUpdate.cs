@@ -31,7 +31,7 @@ namespace PingApp.Entity {
         }
 
         public static bool IsValidUpdate(AppUpdateType type) {
-            return type != AppUpdateType.AddToPing &&
+            return type != AppUpdateType.New &&
                 type != AppUpdateType.Revoke;
         }
     }
