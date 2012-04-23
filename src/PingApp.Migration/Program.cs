@@ -389,9 +389,19 @@ where b.id in ({0});";
                 return update;
             }
 
-            // AppStore曾经将价格从美元改为人民币，这些数据
+            // AppStore曾经将价格从美元改为人民币，后续部分应用没有更新过直接下架了，这部分应用的最后更新在AppUpdate表中是找不到的
+            // 这种情况下，找最后一个有意义的更新（不是New也不是Revoke的）
+            if (app.Brief.LastValidUpdate.Type == AppUpdateType.PriceIncrease) {
+                float oldPrice = Single.Parse(app.Brief.LastValidUpdate.OldValue);
+                float newPrice = Single.Parse(app.Brief.LastValidUpdate.NewValue);
+                // 价格从小数变成整数是换了货币单位
+                if ((int)oldPrice != oldPrice && (int)newPrice == newPrice) {
+                    AppUpdate update = updates.First(u => u.Type != AppUpdateType.New && u.Type != AppUpdateType.Revoke);
+                    return update;
+                }
+            }
 
-            throw new NotImplementedException();
+            return updates.First(u => u.Time == app.Brief.LastValidUpdate.Time);
         }
     }
 }
