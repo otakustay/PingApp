@@ -119,18 +119,6 @@ where b.id in ({0});";
                 DoWork(MigrateApps);
                 Console.WriteLine("Apps migrated");
             }
-
-            //Regex regex = new Regex(@"\$\d+\.");
-            //ICollection<AppUpdate> updates = appUpdates.FindAll().ToArray();
-            //ICollection<AppUpdate> filtered = updates
-            //    .Where(u => u.Type == AppUpdateType.New || u.Type == AppUpdateType.AddToPing || u.Type == AppUpdateType.Revoke)
-            //    .Where(u => regex.IsMatch(u.OldValue) || regex.IsMatch(u.NewValue))
-            //    .ToArray();
-            //Console.WriteLine(updates.Count);
-            //Console.WriteLine(filtered.Count);
-            //foreach (var update in filtered) {
-            //    Console.WriteLine("{0} - {1} - {2} - {3}", update.App, update.Type, update.OldValue, update.NewValue);
-            //}
         }
 
         private static void DoWork(Func<int, int, int> action, int batchSize = 800) {
@@ -239,7 +227,7 @@ where b.id in ({0});";
             }
 
             watch.Stop();
-            Console.WriteLine("{0} active, {1} revoked, {2}", active.Count, revoked.Count, watch.Elapsed);
+            Console.WriteLine("{0} active, {1} revoked using {2}", active.Count, revoked.Count, watch.Elapsed);
 
             watch.Reset();
             watch.Start();
@@ -251,7 +239,7 @@ where b.id in ({0});";
             }
 
             watch.Stop();
-            Console.WriteLine("Retrive {0} revoke time using {1}", revoked.Count, watch.Elapsed);
+            Console.WriteLine("Retrive {0} revoke using {1}", revoked.Count, watch.Elapsed);
 
             watch.Reset();
             watch.Start();
