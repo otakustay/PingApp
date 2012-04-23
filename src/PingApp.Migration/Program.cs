@@ -401,7 +401,21 @@ where b.id in ({0});";
                 }
             }
 
-            return updates.First(u => u.Time.ToUniversalTime() == app.Brief.LastValidUpdate.Time.ToUniversalTime());
+            AppUpdate candidate = updates.FirstOrDefault(
+                u => u.Time.ToUniversalTime() == app.Brief.LastValidUpdate.Time.ToUniversalTime());
+
+            // 部分重新上架的应用有丢失最后一次更新的AppUpdate信息
+            if (candidate == null) {
+                // 找到最后一次有效的更新，如果这次更新比App自带的更早，则把App自带的那个放到AppUpdate中去沿用
+                AppUpdate lastValidUpdate = updates.First(u => AppUpdate.IsValidUpdate(u.Type));
+                if (app.Brief.LastValidUpdate.Time.ToUniversalTime() > lastValidUpdate.Time.ToUniversalTime()) {
+                    appUpdates.Save(app.Brief.LastValidUpdate, SafeMode.True);
+                    Console.WriteLine(app.Brief.LastValidUpdate.Id);
+                    candidate = app.Brief.LastValidUpdate;
+                }
+            }
+
+            return candidate;
         }
     }
 }
