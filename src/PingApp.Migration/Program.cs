@@ -17,7 +17,7 @@ using PingApp.Repository.Mongo.Dependency;
 
 namespace PingApp.Migration {
     class Program {
-        private const string SELECT_COMMAND_TEXT =
+        private const string SELECT_APP_COMMAND_TEXT =
 @"select
     a.Id,
     a.Description,
@@ -151,7 +151,7 @@ where b.id in ({0});";
 
             MySqlCommand command = connection.CreateCommand();
             command.CommandType = CommandType.Text;
-            command.CommandText = String.Format(SELECT_COMMAND_TEXT, String.Join(",", identities));
+            command.CommandText = String.Format(SELECT_APP_COMMAND_TEXT, String.Join(",", identities));
             int count = 0;
 
             List<App> active = new List<App>();
