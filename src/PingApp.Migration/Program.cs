@@ -119,6 +119,12 @@ where b.id in ({0});";
                 DoWork(MigrateApps);
                 Console.WriteLine("Apps migrated");
             }
+
+            if (args.Contains("users")) {
+                Console.WriteLine("Migrating apps...");
+                DoWork(MigrateUser);
+                Console.WriteLine("Apps migrated");
+            }
         }
 
         private static void DoWork(Func<int, int, int> action, int batchSize = 800) {
@@ -334,6 +340,54 @@ where b.id in ({0});";
             Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
 
             return updates.Count;
+        }
+
+        private static int MigrateUser(int offset, int batchSize) {
+            var command = connection.CreateCommand();
+            command.CommandType = CommandType.Text;
+            command.CommandText = "select Email, Username, Password, Description, Website, NotifyOnWishPriceDrop, NotifyOnWishFree, NotifyOnWishUpdate, NotifyOnOwnedUpdate, ReceiveSiteUpdates, PreferredLanguagePriority, Status, RegisterTime from User limit ?offset, ?batchSize;";
+            command.Parameters.AddWithValue("?offset", offset);
+            command.Parameters.AddWithValue("?batchSize", batchSize);
+
+            List<User> collectedUsers = new List<User>();
+
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
+            using (var reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    User user = new User() {
+                        Email = reader.GetString(0),
+                        Username = reader.GetString(1),
+                        Password = reader.GetString(2),
+                        Description = reader.GetString(3),
+                        Website = reader.GetString(4),
+                        NotifyOnWishPriceDrop = reader.GetBoolean(5),
+                        NotifyOnWishFree = reader.GetBoolean(6),
+                        NotifyOnWishUpdate = reader.GetBoolean(7), 
+                        NotifyOnOwnedUpdate = reader.GetBoolean(8), 
+                        ReceiveSiteUpdates = reader.GetBoolean(9),
+                        PreferredLanguagePriority = reader.GetInt32(10),
+                        Status = (UserStatus)reader.GetInt32(11),
+                        RegisterTime = reader.GetDateTime(12)
+                    };
+
+                    collectedUsers.Add(user);
+                }
+            }
+
+            watch.Stop();
+            Console.WriteLine("Retrieved {0} updates using {1}", collectedUsers.Count, watch.Elapsed);
+
+            watch.Reset();
+            watch.Start();
+
+            users.InsertBatch(collectedUsers);
+
+            watch.Stop();
+            Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
+
+            return collectedUsers.Count;
         }
 
         private static ICollection<int> RetrieveIdentities(int offset, int batchSize) {
