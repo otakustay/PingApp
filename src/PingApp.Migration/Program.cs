@@ -122,7 +122,13 @@ where b.id in ({0});";
 
             if (args.Contains("users")) {
                 Console.WriteLine("Migrating apps...");
-                DoWork(MigrateUser);
+                DoWork(MigrateUsers);
+                Console.WriteLine("Apps migrated");
+            }
+
+            if (args.Contains("tracks")) {
+                Console.WriteLine("Migrating tracksk...");
+                DoWork(MigrateAppTracks);
                 Console.WriteLine("Apps migrated");
             }
         }
@@ -342,7 +348,7 @@ where b.id in ({0});";
             return updates.Count;
         }
 
-        private static int MigrateUser(int offset, int batchSize) {
+        private static int MigrateUsers(int offset, int batchSize) {
             var command = connection.CreateCommand();
             command.CommandType = CommandType.Text;
             command.CommandText = "select Email, Username, Password, Description, Website, NotifyOnWishPriceDrop, NotifyOnWishFree, NotifyOnWishUpdate, NotifyOnOwnedUpdate, ReceiveSiteUpdates, PreferredLanguagePriority, Status, RegisterTime from User limit ?offset, ?batchSize;";
@@ -388,6 +394,55 @@ where b.id in ({0});";
             Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
 
             return collectedUsers.Count;
+        }
+
+        private static int MigrateAppTracks(int offset, int batchSize) {
+            var command = connection.CreateCommand();
+            command.CommandType = CommandType.Text;
+            // 因为User的ID都改成Guid类型了，这里用Int32类型的User是对不上的
+            // 因此要表连接把Username拿出来，利用Username的唯一性去取
+            command.CommandText = "select Username, App, t.Status, CreateTime, CreatePrice, BuyTime, BuyPrice, Rate, HasRead from AppTrack t inner join User u on u.Id = t.User limit ?offset, ?batchSize;";
+            command.Parameters.AddWithValue("?offset", offset);
+            command.Parameters.AddWithValue("?batchSize", batchSize);
+
+            List<AppTrack> tracks = new List<AppTrack>();
+
+            Stopwatch watch = new Stopwatch();
+            watch.Start();
+
+            using (var reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    string username = reader.GetString(0);
+                    User user = users.FindOne(Query.EQ("username", username));
+                    AppTrack track = new AppTrack() {
+                        User = user.Id,
+                        // App有自己的Serializer，只需要Id就行
+                        App = new AppBrief() { Id = reader.GetInt32(1) },
+                        Status = (AppTrackStatus)reader.GetInt32(2),
+                        CreateTime = reader.GetDateTime(3),
+                        CreatePrice = reader.GetFloat(4),
+                        BuyTime = reader.GetDateTime(5),
+                        BuyPrice = reader.GetFloat(6),
+                        Rate = reader.GetInt32(7),
+                        HasRead = reader.GetBoolean(8)
+                    };
+
+                    tracks.Add(track);
+                }
+            }
+
+            watch.Stop();
+            Console.WriteLine("Retrieved {0} tracks using {1}", tracks.Count, watch.Elapsed);
+
+            watch.Reset();
+            watch.Start();
+
+            appTracks.InsertBatch(tracks);
+
+            watch.Stop();
+            Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
+
+            return tracks.Count;
         }
 
         private static ICollection<int> RetrieveIdentities(int offset, int batchSize) {
