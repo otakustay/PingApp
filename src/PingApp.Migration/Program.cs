@@ -121,7 +121,7 @@ where b.id in ({0});";
             }
 
             if (args.Contains("users")) {
-                Console.WriteLine("Migrating apps...");
+                Console.WriteLine("Migrating users...");
                 DoWork(MigrateUsers);
                 Console.WriteLine("Apps migrated");
             }
@@ -383,7 +383,7 @@ where b.id in ({0});";
             }
 
             watch.Stop();
-            Console.WriteLine("Retrieved {0} updates using {1}", collectedUsers.Count, watch.Elapsed);
+            Console.WriteLine("Retrieved {0} users using {1}", collectedUsers.Count, watch.Elapsed);
 
             watch.Reset();
             watch.Start();
