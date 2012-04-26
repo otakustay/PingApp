@@ -127,7 +127,7 @@ where b.id in ({0});";
             }
 
             if (args.Contains("tracks")) {
-                Console.WriteLine("Migrating tracksk...");
+                Console.WriteLine("Migrating tracks...");
                 DoWork(MigrateAppTracks);
                 Console.WriteLine("Apps migrated");
             }
@@ -421,8 +421,8 @@ where b.id in ({0});";
                         Status = (AppTrackStatus)reader.GetInt32(2),
                         CreateTime = reader.GetDateTime(3),
                         CreatePrice = reader.GetFloat(4),
-                        BuyTime = reader.GetDateTime(5),
-                        BuyPrice = reader.GetFloat(6),
+                        BuyTime = reader.IsDBNull(5) ? (DateTime?)null : reader.GetDateTime(5),
+                        BuyPrice = reader.IsDBNull(6) ? (float?)null : reader.GetFloat(6),
                         Rate = reader.GetInt32(7),
                         HasRead = reader.GetBoolean(8)
                     };
