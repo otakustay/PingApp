@@ -1,0 +1,3 @@
+### Usage
+    
+    mongo < install.js
