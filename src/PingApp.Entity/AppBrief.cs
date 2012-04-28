@@ -142,17 +142,11 @@ namespace PingApp.Entity {
                     return DeviceType.None;
                 }
             }
-            set {
-                // 有些数据库要求属性必须可读+可写，这里留个空的setter
-            }
         }
 
         public bool IsGameCenterEnabled {
             get {
                 return Features != null && Features.Contains("gameCenter");
-            }
-            set {
-                // 有些数据库要求属性必须可读+可写，这里留个空的setter
             }
         }
 
@@ -164,9 +158,6 @@ namespace PingApp.Entity {
                     calculatedTime.AddDays(AverageUserRatingForCurrentVersion.Value * 3);
                 }
                 return calculatedTime.Ticks;
-            }
-            set {
-                // 有些数据库要求属性必须可读+可写，这里留个空的setter
             }
         }
 
