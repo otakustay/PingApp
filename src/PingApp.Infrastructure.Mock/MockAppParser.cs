@@ -76,7 +76,6 @@ namespace PingApp.Infrastructure.Mock {
                     ReleaseDate = new DateTime(2011, 03, 07),
                     ReleaseNotes = "this is a test release notes",
                     SupportedDevices = new string[] { "all" },
-                    DeviceType = DeviceType.Universal,
                     Features = new string[] {
                         "gameCenter",
                         "iosUniversal"
