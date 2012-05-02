@@ -71,7 +71,7 @@ namespace PingApp.Schedule {
 
             LoggingConfiguration config = new LoggingConfiguration();
 
-            ColoredConsoleTarget console = new ColoredConsoleTarget();
+            ConsoleTarget console = new ConsoleTarget();
             config.AddTarget("console", console);
             FileTarget file = new FileTarget();
             config.AddTarget("file", file);
