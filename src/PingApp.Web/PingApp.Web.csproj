@@ -148,7 +148,6 @@
     <Content Include="Content\Images\Guide\usage-8.png" />
     <Content Include="Content\Images\hot-decorator.png" />
     <Content Include="Content\Images\app-store.png" />
-    <Content Include="Content\Images\logo-app.png" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\splash-radar.png" />
     <Content Include="Content\layout.css">

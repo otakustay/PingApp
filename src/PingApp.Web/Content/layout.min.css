@@ -11,7 +11,7 @@ input[type=submit],button{font-family:"\5FAE\8F6F\96C5\9ED1",sans-serif}
 #header{margin:18px 0 14px;zoom:1}
 #header:after{content:".";display:block;width:0;height:0;font-size:0;visibility:hidden;clear:both}
 #header h1{width:210px;height:70px;float:left}
-#header h1 a{display:block;height:100%;text-indent:-5000em;background:transparent url("images/logo.png") no-repeat}
+#header h1 a{display:block;height:100%;text-indent:-5000em;background:transparent url("images/logo.png") no-repeat 0 0}
 #navigation{padding:0 14px;margin-bottom:26px;border-top:1px solid #d6d6d6;border-bottom:1px solid #e2e2e2;position:relative}
 #navigation ul{zoom:1}
 #navigation ul:after{content:".";display:block;width:0;height:0;font-size:0;visibility:hidden;clear:both}

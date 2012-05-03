@@ -14,7 +14,7 @@
   height: 66px;
   margin-top: -20px;
   text-indent: -5000em;
-  background: transparent url("images/logo-app.png") no-repeat;
+  background: transparent url("images/logo.png") no-repeat -144px 0;
 }
 #introduction form {
   padding: 34px 0 39px 22px;

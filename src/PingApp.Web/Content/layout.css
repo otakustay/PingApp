@@ -76,7 +76,7 @@ button {
   display: block;
   height: 100%;
   text-indent: -5000em;
-  background: transparent url("images/logo.png") no-repeat;
+  background: transparent url("images/logo.png") no-repeat 0% 0%;
 }
 #navigation {
   padding: 0 14px;

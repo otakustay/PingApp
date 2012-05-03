@@ -29,9 +29,9 @@
 		clear: both;
 	}
 }
-.replace-with-background(@url) {
+.replace-with-background(@url, @offsetX: 0%, @offsetY: 0%) {
 	text-indent: -5000em;
-	background: transparent url(@url) no-repeat;
+	background: transparent url(@url) no-repeat @offsetX @offsetY;
 }
 
 
