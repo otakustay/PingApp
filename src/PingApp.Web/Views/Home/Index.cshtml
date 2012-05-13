@@ -25,11 +25,23 @@
     </form>
 </div>
 <div id="priceDecreaseRecommendations">
-    <h3>降价超值推荐</h3>
+    <header>
+        <h3>降价超值推荐</h3>
+        <div class="toolbar">
+            <a href="###">全部</a>
+            @CategoryDropdown()
+        </div>
+    </header>
     @AppGrid(Model.PriceDecreaseRecommendations)
 </div>
 <div id="priceFreeRecommendations">
-    <h3>限时免费精选</h3>
+    <header>
+        <h3>限时免费精选</h3>
+        <div class="toolbar">
+            <a href="###">全部</a>
+            @CategoryDropdown()
+        </div>
+    </header>
     @AppGrid(Model.PriceFreeRecommendations)
 </div>
 
@@ -49,4 +61,15 @@
     </li> 
 	}
 </ul>
+}
+
+@helper CategoryDropdown() {
+<div class="dropdown">
+    <span class="selected-value">分类</span>
+    <ul>
+        @foreach (Category category in Category.All) {
+        <li><span data-category="@category.Alias">@category.Name</span></li>
+        }
+    </ul>
+</div>
 }

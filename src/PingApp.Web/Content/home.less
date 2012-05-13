@@ -33,10 +33,84 @@
 }
 
 #priceDecreaseRecommendations, #priceFreeRecommendations {
+	width: 660px;
 	margin-top: 40px;
-	h3 {
-		font-size: @fontSizeXLarge;
-		text-shadow: @textShadowSlight;
+	header {
+		.clear-float;
+		margin-bottom: 12px;
+		h3 {
+			float: left;
+			font-size: @fontSizeXLarge;
+			text-shadow: @textShadowSlight;
+		}
+		.toolbar {
+			float: right;
+			&>a, &>div {
+				float: right;
+				width: 100px;
+				padding: 10px 0 8px;
+				.gradient-gray;
+				border-radius: 5px;
+				box-shadow: 0 1px 6px @darkGray;
+				text-align: center;
+				font-size: @fontSizeLarger;
+				margin-left: 10px;
+				&:hover {
+					.gradient-dark-gray;
+				}
+			}
+			&>a {
+				color: #fff;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.dropdown {
+	overflow: hidden;
+	position: relative;
+	.selected-value {
+		color: #fff;
+		font-weight: bold;
+		&::after {
+			content: ">";
+		}
+	}
+	ul {
+		width: 200%;
+		position: absolute;
+		left: 0;
+		top: 100%;
+		border: 1px solid @lightGray;
+		border-radius: 0 5px 5px 5px;
+		background-color: @silverGray;
+		box-shadow: 0 1px 6px @darkGray;
+		opacity: 0;
+		li {
+			float: left;
+			width: 50%;
+			span {
+				display: block;
+				padding: 4px 0;
+				color: @linkColor;
+				cursor: pointer;
+				&:hover {
+					background-color: @crystalBlue;
+					color: #fff;
+				}
+			}
+		}
+	}
+	&:hover {
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		overflow: visible;
+		ul {
+			display: block;
+			opacity: 1;
+			-webkit-transition: all .2s linear;
+		}
 	}
 }
 
