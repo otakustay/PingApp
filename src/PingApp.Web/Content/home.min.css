@@ -12,5 +12,7 @@
 .app-grid li img{float:left;margin:8px 10px 0 5px;border-radius:5px;box-shadow:0 0 10px #676767}
 .app-grid li .app-name{display:block;width:130px;height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:16px;font-weight:bold;padding:6px 0 4px}
 .app-grid li .old-price{display:inline-block;width:55px;text-align:center;color:red;font-size:20px;text-decoration:line-through;display:inline-block;padding:2px 0}
-.app-grid li .new-price{display:inline-block;background-image:linear-gradient(top,#86a3dd 0,#6388d4 100%);background-image:-moz-linear-gradient(top,#86a3dd 0,#6388d4 100%);background-image:-o-linear-gradient(top,#86a3dd 0,#6388d4 100%);background-image:-ms-linear-gradient(top,#86a3dd 0,#6388d4 100%);background-image:-webkit-linear-gradient(top,#86a3dd 0,#6388d4 100%);background-image:-webkit-gradient(linear,left top,left bottom,from(#86a3dd),to(#6388d4));background-color:#7496d9;border-radius:5px;width:70px;text-align:center;color:#fff;padding:4px 0}
+.app-grid li .new-price{display:inline-block;border-radius:5px;width:70px;text-align:center;color:#fff;padding:4px 0}
+.app-grid li .price-decrease{background-color:#75d1a3}
+.app-grid li .price-free{background-color:#7497dc}
 .app-grid li:hover{background-color:#d6d6d6}

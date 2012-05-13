@@ -41,10 +41,10 @@
         <span class="app-name" title="@item.App.Name">@item.App.Name</span>
         <span class="old-price">￥@item.App.LastValidUpdate.OldValue</span>
         @if (@item.App.LastValidUpdate.Type == AppUpdateType.PriceDecrease) {
-        <span class="new-price">￥@item.App.LastValidUpdate.NewValue</span>
+        <span class="new-price price-decrease">￥@item.App.LastValidUpdate.NewValue</span>
         }
         else {
-        <span class="new-price">Free</span>
+        <span class="new-price price-free">Free</span>
         }
     </li> 
 	}
