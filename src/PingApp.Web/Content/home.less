@@ -31,3 +31,62 @@
 		}
 	}
 }
+
+#priceDecreaseRecommendations, #priceFreeRecommendations {
+	margin-top: 40px;
+	h3 {
+		font-size: @fontSizeXLarge;
+		text-shadow: @textShadowSlight;
+	}
+}
+
+.app-grid {
+	width: 660px;
+	background-color: @silverGray;
+	border-top: 1px solid @lightGray;
+	border-bottom: 1px solid @lightGray;
+	box-shadow: 0 1px 4px @lightGray;
+	.clear-float;
+	li {
+		float: left;
+		width: 210px;
+		height: 70px;
+		margin: 10px 5px;
+		cursor: default;
+		img {
+			float: left;
+			margin: 8px 10px 0 5px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px @darkGray;
+		}
+		.app-name {
+			display: block;
+			.enable-ellipsis(130px, @fontSizeLarger);
+			font-size: @fontSizeLarger;
+			font-weight: bold;
+			padding: 6px 0 4px;
+		}
+		.old-price {
+			display: inline-block;
+			width: 55px;
+			text-align: center;
+			color: red;
+			font-size: 20px;
+			text-decoration: line-through;
+			display: inline-block;
+			padding: 2px 0;
+		}
+		.new-price {
+			display: inline-block;
+			.gradient-light-blue;
+			border-radius: 5px;
+			width: 70px;
+			text-align: center;
+			color: #fff;
+			padding: 4px 0;
+		}
+		&:hover {
+			background-color: darken(@silverGray, 10%);
+		}
+	}
+}

@@ -117,6 +117,7 @@
     <Compile Include="Infrastructures\NewtonJsonActionResult.cs" />
     <Compile Include="Infrastructures\RegionAttribute.cs" />
     <Compile Include="Models\DetailModel.cs" />
+    <Compile Include="Models\Home\IndexModel.cs" />
     <Compile Include="Models\ImportModel.cs" />
     <Compile Include="Models\TrackingApp.cs" />
     <Compile Include="Models\TrackingAppQuery.cs" />

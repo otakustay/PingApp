@@ -12,6 +12,7 @@ using Lucene.Net.Search;
 using Lucene.Net.Store;
 using System.Text.RegularExpressions;
 using PingApp.Repository.Quries;
+using PingApp.Web.Models.Home;
 
 namespace PingApp.Web.Controllers {
     public class HomeController : BaseController {
@@ -23,30 +24,44 @@ namespace PingApp.Web.Controllers {
 
         [HttpGet]
         [Region("Home")]
-        public ActionResult Index(AppListQuery query, int page = 1) {
+        public ActionResult Index() {
             ViewBag.Title = "首页";
 
-            query.PageIndex = page;
-            query.PageSize = 20;
-            query = Repository.App.Search(query);
+            IndexModel model = new IndexModel() {
+                PriceDecreaseRecommendations = RetrieveTrackingApps(AppUpdateType.PriceDecrease),
+                PriceFreeRecommendations = RetrieveTrackingApps(AppUpdateType.PriceFree)
+            };
+
+            return View(model);
+        }
+
+        #region 辅助函数
+
+        private ICollection<TrackingApp> RetrieveTrackingApps(AppUpdateType updateType, int size = 9) {
+            AppListQuery appQuery = new AppListQuery() {
+                UpdateType = updateType,
+                PageIndex = 1,
+                PageSize = size
+            };
+            appQuery = Repository.App.Search(appQuery);
 
             if (User.Identity.IsAuthenticated) {
                 AppTrackQuery trackQuery = new AppTrackQuery() {
                     PageIndex = 1,
-                    PageSize = query.Result.Count,
+                    PageSize = appQuery.Result.Count,
                     User = CurrentUser.Id,
-                    RelatedApps = query.Result.Select(a => a.Id)
+                    RelatedApps = appQuery.Result.Select(a => a.Id)
                 };
-                Dictionary<int, AppTrack> tracks =
-                    Repository.AppTrack.Retrieve(trackQuery).Result.ToDictionary(t => t.App.Id);
-                ViewBag.Tracks = tracks;
+                ICollection<AppTrack> tracks = Repository.AppTrack.Retrieve(trackQuery).Result;
+
+                return new TrackingAppQuery(appQuery, tracks).Result;
             }
             else {
-                ViewBag.Tracks = new Dictionary<int, AppTrack>();
+                return appQuery.Result.Select(a => new TrackingApp(a, null)).ToArray();
             }
-
-            return View(query);
         }
+
+        #endregion
 
         /*
 

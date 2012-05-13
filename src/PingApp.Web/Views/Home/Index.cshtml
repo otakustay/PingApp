@@ -1,4 +1,4 @@
-﻿@model AppListQuery
+﻿@model PingApp.Web.Models.Home.IndexModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -24,3 +24,29 @@
         </div>
     </form>
 </div>
+<div id="priceDecreaseRecommendations">
+    <h3>降价超值推荐</h3>
+    @AppGrid(Model.PriceDecreaseRecommendations)
+</div>
+<div id="priceFreeRecommendations">
+    <h3>限时免费精选</h3>
+    @AppGrid(Model.PriceFreeRecommendations)
+</div>
+
+@helper AppGrid(ICollection<TrackingApp> apps) {
+<ul class="app-grid">
+    @foreach (TrackingApp item in apps) {
+    <li>
+        <img src="@item.App.IconUrl" width="50" height="50" alt="@item.App.Name" />
+        <span class="app-name" title="@item.App.Name">@item.App.Name</span>
+        <span class="old-price">￥@item.App.LastValidUpdate.OldValue</span>
+        @if (@item.App.LastValidUpdate.Type == AppUpdateType.PriceDecrease) {
+        <span class="new-price">￥@item.App.LastValidUpdate.NewValue</span>
+        }
+        else {
+        <span class="new-price">Free</span>
+        }
+    </li> 
+	}
+</ul>
+}

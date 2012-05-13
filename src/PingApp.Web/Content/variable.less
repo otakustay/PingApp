@@ -33,6 +33,13 @@
 	text-indent: -5000em;
 	background: transparent url(@url) no-repeat @offsetX @offsetY;
 }
+.enable-ellipsis(@width, @height) {
+	width: @width;
+	height: @height;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
 
 .horizontal-linear-gradient(@from, @to) {
