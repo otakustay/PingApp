@@ -89,10 +89,10 @@
   color: red;
   font-size: 20px;
   text-decoration: line-through;
-  display: inline-block;
   padding: 2px 0;
 }
 .app-grid li .new-price {
+  font-weight: bold;
   display: inline-block;
   border-radius: 5px;
   width: 70px;
