@@ -24,25 +24,39 @@
         </div>
     </form>
 </div>
-<div id="priceDecreaseRecommendations">
-    <header>
-        <h3>降价超值推荐</h3>
-        <div class="toolbar">
-            <a href="###">全部</a>
-            @CategoryDropdown()
-        </div>
-    </header>
-    @AppGrid(Model.PriceDecreaseRecommendations)
+<div class="content-section">
+    <div id="priceDecreaseRecommendations">
+        <header>
+            <h3>降价超值推荐</h3>
+            <div class="toolbar">
+                <a href="###">全部</a>
+                @CategoryDropdown()
+            </div>
+        </header>
+        @AppGrid(Model.PriceDecreaseRecommendations)
+    </div>
+    <aside class="ad-slots">
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+    </aside>
 </div>
-<div id="priceFreeRecommendations">
-    <header>
-        <h3>限时免费精选</h3>
-        <div class="toolbar">
-            <a href="###">全部</a>
-            @CategoryDropdown()
-        </div>
-    </header>
-    @AppGrid(Model.PriceFreeRecommendations)
+<div class="content-section">
+    <div id="priceFreeRecommendations">
+        <header>
+            <h3>限时免费精选</h3>
+            <div class="toolbar">
+                <a href="###">全部</a>
+                @CategoryDropdown()
+            </div>
+        </header>
+        @AppGrid(Model.PriceFreeRecommendations)
+    </div>
+    <aside class="ad-slots">
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+    </aside>
 </div>
 
 @helper AppGrid(ICollection<TrackingApp> apps) {

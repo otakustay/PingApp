@@ -32,9 +32,26 @@
 	}
 }
 
+.content-section {
+	margin-top: 40px;
+	.clear-float;
+	.ad-slots {
+		@width: 280px;
+		width: @width;
+		margin-left: @pageWidth - @width;
+		div {
+			height: 100px;
+			line-height: 100px;
+			outline: 1px solid @lightGray;
+			text-align: center;
+			margin: 12px 0;
+			font-size: @fontSizeXLarge;
+		}
+	}
+}
 #priceDecreaseRecommendations, #priceFreeRecommendations {
 	width: 660px;
-	margin-top: 40px;
+	float: left;
 	header {
 		.clear-float;
 		margin-bottom: 12px;

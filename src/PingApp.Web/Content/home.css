@@ -30,10 +30,37 @@
   color: #3366cc;
   font-size: 21px;
 }
+.content-section {
+  margin-top: 40px;
+  zoom: 1;
+  /* Must be ":" for IE8 */
+
+}
+.content-section:after {
+  content: ".";
+  display: block;
+  width: 0;
+  height: 0;
+  font-size: 0;
+  visibility: hidden;
+  clear: both;
+}
+.content-section .ad-slots {
+  width: 280px;
+  margin-left: 680px;
+}
+.content-section .ad-slots div {
+  height: 100px;
+  line-height: 100px;
+  outline: 1px solid #999999;
+  text-align: center;
+  margin: 12px 0;
+  font-size: 30px;
+}
 #priceDecreaseRecommendations,
 #priceFreeRecommendations {
   width: 660px;
-  margin-top: 40px;
+  float: left;
 }
 #priceDecreaseRecommendations header,
 #priceFreeRecommendations header {

@@ -4,7 +4,11 @@
 #introduction form{padding:34px 0 39px 22px;zoom:1;color:#676767;overflow:visible}
 #introduction form p{font-size:16px;line-height:1.8}
 #introduction form h3{color:#36c;font-size:21px}
-#priceDecreaseRecommendations,#priceFreeRecommendations{width:660px;margin-top:40px}
+.content-section{margin-top:40px;zoom:1}
+.content-section:after{content:".";display:block;width:0;height:0;font-size:0;visibility:hidden;clear:both}
+.content-section .ad-slots{width:280px;margin-left:680px}
+.content-section .ad-slots div{height:100px;line-height:100px;outline:1px solid #999;text-align:center;margin:12px 0;font-size:30px}
+#priceDecreaseRecommendations,#priceFreeRecommendations{width:660px;float:left}
 #priceDecreaseRecommendations header,#priceFreeRecommendations header{zoom:1;margin-bottom:12px}
 #priceDecreaseRecommendations header:after,#priceFreeRecommendations header:after{content:".";display:block;width:0;height:0;font-size:0;visibility:hidden;clear:both}
 #priceDecreaseRecommendations header h3,#priceFreeRecommendations header h3{float:left;font-size:30px;text-shadow:#999 1px 2px 3px}
