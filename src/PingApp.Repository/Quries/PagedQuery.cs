@@ -24,7 +24,7 @@ namespace PingApp.Repository.Quries {
         public bool HasNextPage { get; private set; }
 
         public override void Fill(ICollection<T> result) {
-            base.Fill(result);
+            base.Fill(result.Take(PageSize).ToArray());
             HasNextPage = result.Count > PageSize;
         }
     }
