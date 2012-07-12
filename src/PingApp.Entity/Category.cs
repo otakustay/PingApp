@@ -98,6 +98,7 @@ namespace PingApp.Entity {
                 { 6017, new Category(6017, "教育", "education") },
                 { 6016, new Category(6016, "娱乐", "entertainment") },
                 { 6015, new Category(6015, "财务", "finance") },
+                { 6023, new Category(6023, "美食与饮品", "food-drink") },
                 { 6014, new Category(6014, "游戏", "games") },
                 { 6013, new Category(6013, "健康健美", "health") },
                 { 6012, new Category(6012, "生活", "lifestyle") },
