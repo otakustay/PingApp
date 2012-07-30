@@ -117,7 +117,10 @@
     <Compile Include="Infrastructures\NewtonJsonActionResult.cs" />
     <Compile Include="Infrastructures\RegionAttribute.cs" />
     <Compile Include="Models\DetailModel.cs" />
+    <Compile Include="Models\Home\IndexModel.cs" />
     <Compile Include="Models\ImportModel.cs" />
+    <Compile Include="Models\TrackingApp.cs" />
+    <Compile Include="Models\TrackingAppQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -148,7 +151,6 @@
     <Content Include="Content\Images\Guide\usage-8.png" />
     <Content Include="Content\Images\hot-decorator.png" />
     <Content Include="Content\Images\app-store.png" />
-    <Content Include="Content\Images\logo-app.png" />
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\splash-radar.png" />
     <Content Include="Content\layout.css">

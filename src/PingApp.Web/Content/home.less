@@ -13,7 +13,7 @@
 			width: @headingHeight;
 			height: @headingHeight;
 			margin-top: -20px;
-			.replace-with-background("images/logo-app.png");
+			.replace-with-background("images/logo.png", -(210px - 66px), 0); // LOGO宽610，右边的APP字样宽66
 		}
 	}
 	form {
@@ -28,6 +28,161 @@
 		h3 {
 			color: @crystalBlue;
 			font-size: @fontSizeLarge;
+		}
+	}
+}
+
+.content-section {
+	margin-top: 40px;
+	.clear-float;
+	.ad-slots {
+		@width: 280px;
+		width: @width;
+		margin-left: @pageWidth - @width;
+		div {
+			height: 100px;
+			line-height: 100px;
+			outline: 1px solid @lightGray;
+			text-align: center;
+			margin: 12px 0;
+			font-size: @fontSizeXLarge;
+		}
+	}
+}
+#priceDecreaseRecommendations, #priceFreeRecommendations {
+	width: 660px;
+	float: left;
+	header {
+		.clear-float;
+		margin-bottom: 12px;
+		h3 {
+			float: left;
+			font-size: @fontSizeXLarge;
+			text-shadow: @textShadowSlight;
+		}
+		.toolbar {
+			float: right;
+			&>a, &>div {
+				float: right;
+				width: 100px;
+				padding: 10px 0 8px;
+				.gradient-gray;
+				border-radius: 5px;
+				box-shadow: 0 1px 6px @darkGray;
+				text-align: center;
+				font-size: @fontSizeLarger;
+				margin-left: 10px;
+				&:hover {
+					.gradient-dark-gray;
+				}
+			}
+			&>a {
+				color: #fff;
+				font-weight: bold;
+			}
+		}
+	}
+}
+
+.dropdown {
+	overflow: hidden;
+	position: relative;
+	.selected-value {
+		color: #fff;
+		font-weight: bold;
+		&::after {
+			content: ">";
+		}
+	}
+	ul {
+		width: 200%;
+		position: absolute;
+		left: 0;
+		top: 100%;
+		border: 1px solid @lightGray;
+		border-radius: 0 5px 5px 5px;
+		background-color: @silverGray;
+		box-shadow: 0 1px 6px @darkGray;
+		opacity: 0;
+		li {
+			float: left;
+			width: 50%;
+			span {
+				display: block;
+				padding: 4px 0;
+				color: @linkColor;
+				cursor: pointer;
+				&:hover {
+					background-color: @crystalBlue;
+					color: #fff;
+				}
+			}
+		}
+	}
+	&:hover {
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
+		overflow: visible;
+		ul {
+			display: block;
+			opacity: 1;
+			-webkit-transition: all .2s linear;
+		}
+	}
+}
+
+.app-grid {
+	width: 660px;
+	background-color: @silverGray;
+	border-top: 1px solid @lightGray;
+	border-bottom: 1px solid @lightGray;
+	box-shadow: 0 1px 4px @lightGray;
+	.clear-float;
+	li {
+		float: left;
+		width: 210px;
+		height: 70px;
+		margin: 10px 5px;
+		cursor: default;
+		img {
+			float: left;
+			margin: 8px 10px 0 5px;
+			border-radius: 5px;
+			box-shadow: 0 0 10px @darkGray;
+		}
+		.app-name {
+			display: block;
+			.enable-ellipsis(130px, @fontSizeLarger);
+			font-size: @fontSizeLarger;
+			font-weight: bold;
+			padding: 6px 0 4px;
+		}
+		.old-price {
+			display: inline-block;
+			width: 55px;
+			text-align: center;
+			color: red;
+			font-size: 20px;
+			text-decoration: line-through;
+			padding: 2px 0;
+		}
+		.new-price {
+			font-weight: bold;
+			display: inline-block;
+			border-radius: 5px;
+			width: 70px;
+			text-align: center;
+			color: #fff;
+			padding: 4px 0;
+		}
+		.price-decrease {
+			background-color: #75d1a3;
+		}
+		.price-free {
+			background-color: #7497dc;
+		}
+		&:hover {
+			background-color: darken(@silverGray, 10%);
 		}
 	}
 }

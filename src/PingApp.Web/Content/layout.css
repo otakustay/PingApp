@@ -76,7 +76,7 @@ button {
   display: block;
   height: 100%;
   text-indent: -5000em;
-  background: transparent url("images/logo.png") no-repeat;
+  background: transparent url("images/logo.png") no-repeat 0% 0%;
 }
 #navigation {
   padding: 0 14px;
@@ -217,6 +217,10 @@ input.text {
   background-color: transparent;
   border-radius: 3px;
   padding: 1px 6px 1px 0;
+}
+input.text:focus {
+  outline: none;
+  box-shadow: 0 0 4px #676767;
 }
 .form-mini .form-field {
   margin: 6px 0;

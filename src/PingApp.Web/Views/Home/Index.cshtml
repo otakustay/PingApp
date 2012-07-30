@@ -1,4 +1,4 @@
-﻿@model AppListQuery
+﻿@model PingApp.Web.Models.Home.IndexModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -24,3 +24,66 @@
         </div>
     </form>
 </div>
+<div class="content-section">
+    <div id="priceDecreaseRecommendations">
+        <header>
+            <h3>降价超值推荐</h3>
+            <div class="toolbar">
+                <a href="###">全部</a>
+                @CategoryDropdown()
+            </div>
+        </header>
+        @AppGrid(Model.PriceDecreaseRecommendations)
+    </div>
+    <aside class="ad-slots">
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+    </aside>
+</div>
+<div class="content-section">
+    <div id="priceFreeRecommendations">
+        <header>
+            <h3>限时免费精选</h3>
+            <div class="toolbar">
+                <a href="###">全部</a>
+                @CategoryDropdown()
+            </div>
+        </header>
+        @AppGrid(Model.PriceFreeRecommendations)
+    </div>
+    <aside class="ad-slots">
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+        <div>广告 280x100</div>
+    </aside>
+</div>
+
+@helper AppGrid(ICollection<TrackingApp> apps) {
+<ul class="app-grid">
+    @foreach (TrackingApp item in apps) {
+    <li>
+        <img src="@item.App.IconUrl" width="50" height="50" alt="@item.App.Name" />
+        <span class="app-name" title="@item.App.Name">@item.App.Name</span>
+        <span class="old-price">￥@item.App.LastValidUpdate.OldValue</span>
+        @if (@item.App.LastValidUpdate.Type == AppUpdateType.PriceDecrease) {
+        <span class="new-price price-decrease">￥@item.App.LastValidUpdate.NewValue</span>
+        }
+        else {
+        <span class="new-price price-free">FREE</span>
+        }
+    </li> 
+	}
+</ul>
+}
+
+@helper CategoryDropdown() {
+<div class="dropdown">
+    <span class="selected-value">分类</span>
+    <ul>
+        @foreach (Category category in Category.All) {
+        <li><span data-category="@category.Alias">@category.Name</span></li>
+        }
+    </ul>
+</div>
+}
