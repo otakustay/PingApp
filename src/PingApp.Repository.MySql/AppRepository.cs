@@ -26,11 +26,11 @@ namespace PingApp.Repository.MySql {
             throw new NotImplementedException();
         }
 
-        public Quries.DeveloperAppsQuery RetrieveByDeveloper(DeveloperAppsQuery query) {
+        public DeveloperAppsQuery RetrieveByDeveloper(DeveloperAppsQuery query) {
             throw new NotImplementedException();
         }
 
-        public Quries.AppListQuery Search(Quries.AppListQuery query) {
+        public AppListQuery Search(Quries.AppListQuery query) {
             throw new NotImplementedException();
         }
 
