@@ -13,4 +13,7 @@ source create-table-appupdate.sql;
 source create-table-user.sql;
 source create-table-apptrack.sql;
 
+source create-view-app-with-brief.sql;
+source create-view-apptrack-with-app.sql;
+
 show tables;
