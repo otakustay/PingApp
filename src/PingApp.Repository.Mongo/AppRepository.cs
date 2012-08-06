@@ -162,6 +162,7 @@ namespace PingApp.Repository.Mongo {
 
             // 添加到下架应用中
             RevokedApp revoked = new RevokedApp(app);
+            revoked.RevokeTime = DateTime.Now;
             revokedApps.Save(revoked);
 
             return revoked;
