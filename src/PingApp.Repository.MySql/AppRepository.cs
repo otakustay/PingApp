@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -15,11 +16,31 @@ namespace PingApp.Repository.MySql {
         }
 
         public App Retrieve(int app) {
-            throw new NotImplementedException();
+            string sql = "select * from AppWithBrief where Id = ?Id;";
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("?Id", app);
+            using (IDataReader reader = command.ExecuteReader()) {
+                if (reader.Read()) {
+                    App result = reader.ToApp();
+                    return result;
+                }
+            }
+            return null;
         }
 
         public ICollection<App> Retrieve(IEnumerable<int> required) {
-            throw new NotImplementedException();
+            string sql = String.Format("select * from AppWithBrief where Id in ({0});", String.Join(",", required));
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = sql;
+            List<App> result = new List<App>();
+            using (IDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    App app = reader.ToApp();
+                    result.Add(app);
+                }
+            }
+            return result;
         }
 
         public ICollection<AppBrief> RetrieveBriefs(IEnumerable<int> required) {
@@ -52,32 +73,7 @@ values (
 );";
             MySqlCommand commandForAppBrief = connection.CreateCommand();
             commandForAppBrief.CommandText = inserAppBrief;
-            commandForAppBrief.Parameters.AddWithValue("?Id", app.Brief.Id);
-            commandForAppBrief.Parameters.AddWithValue("?DeveloperId", app.Brief.Developer.Id);
-            commandForAppBrief.Parameters.AddWithValue("?DeveloperName", app.Brief.Developer.Name);
-            commandForAppBrief.Parameters.AddWithValue("?DeveloperViewUrl", app.Brief.Developer.ViewUrl);
-            commandForAppBrief.Parameters.AddWithValue("?Price", app.Brief.Price);
-            commandForAppBrief.Parameters.AddWithValue("?Currency", app.Brief.Currency);
-            commandForAppBrief.Parameters.AddWithValue("?Version", app.Brief.Version);
-            commandForAppBrief.Parameters.AddWithValue("?ReleaseDate", app.Brief.ReleaseDate);
-            commandForAppBrief.Parameters.AddWithValue("?Name", app.Brief.Name);
-            commandForAppBrief.Parameters.AddWithValue("?Introduction", app.Brief.Introduction);
-            commandForAppBrief.Parameters.AddWithValue("?ReleaseNotes", app.Brief.ReleaseNotes);
-            commandForAppBrief.Parameters.AddWithValue("?PrimaryCategory", app.Brief.PrimaryCategory.Id);
-            commandForAppBrief.Parameters.AddWithValue("?ViewUrl", app.Brief.ViewUrl);
-            commandForAppBrief.Parameters.AddWithValue("?IconUrl", app.Brief.IconUrl);
-            commandForAppBrief.Parameters.AddWithValue("?FileSize", app.Brief.FileSize);
-            commandForAppBrief.Parameters.AddWithValue("?AverageUserRatingForCurrentVersion", app.Brief.AverageUserRatingForCurrentVersion);
-            commandForAppBrief.Parameters.AddWithValue("?UserRatingCountForCurrentVersion", app.Brief.UserRatingCountForCurrentVersion);
-            commandForAppBrief.Parameters.AddWithValue("?SupportedDevices", app.Brief.SupportedDevices);
-            commandForAppBrief.Parameters.AddWithValue("?Features", app.Brief.Features);
-            commandForAppBrief.Parameters.AddWithValue("?IsGameCenterEnabled", app.Brief.IsGameCenterEnabled);
-            commandForAppBrief.Parameters.AddWithValue("?DeviceType", app.Brief.DeviceType);
-            commandForAppBrief.Parameters.AddWithValue("?LastValidUpdateTime", app.Brief.LastValidUpdate.Time);
-            commandForAppBrief.Parameters.AddWithValue("?LastValidUpdateType", app.Brief.LastValidUpdate.Type);
-            commandForAppBrief.Parameters.AddWithValue("?LastValidUpdateOldValue", app.Brief.LastValidUpdate.OldValue);
-            commandForAppBrief.Parameters.AddWithValue("?LastValidUpdateNewValue", app.Brief.LastValidUpdate.NewValue);
-            commandForAppBrief.Parameters.AddWithValue("?LanguagePriority", app.Brief.LanguagePriority);
+            AddParametersForApp(app, commandForAppBrief);
             commandForAppBrief.ExecuteNonQuery();
 
             string insertApp =
@@ -93,21 +89,7 @@ values (
 );";
             MySqlCommand commandForApp = connection.CreateCommand();
             commandForApp.CommandText = insertApp;
-            commandForApp.Parameters.AddWithValue("?Id", app.Id);
-            commandForApp.Parameters.AddWithValue("?CensoredName", app.CensoredName);
-            commandForApp.Parameters.AddWithValue("?Description", app.Description);
-            commandForApp.Parameters.AddWithValue("?LargeIconUrl", app.LargeIconUrl);
-            commandForApp.Parameters.AddWithValue("?SellerName", app.Seller.Name);
-            commandForApp.Parameters.AddWithValue("?SellerViewUrl", app.Seller.ViewUrl);
-            commandForApp.Parameters.AddWithValue("?ReleaseNotes", app.ReleaseNotes);
-            commandForApp.Parameters.AddWithValue("?ContentAdvisoryRating", app.ContentAdvisoryRating);
-            commandForApp.Parameters.AddWithValue("?ContentRating", app.ContentRating);
-            commandForApp.Parameters.AddWithValue("?AverageUserRating", app.AverageUserRating);
-            commandForApp.Parameters.AddWithValue("?UserRatingCount", app.UserRatingCount);
-            commandForApp.Parameters.AddWithValue("?Languages", String.Join(",", app.Languages));
-            commandForApp.Parameters.AddWithValue("?Categories", String.Join(",", app.Categories.Select(c => c.Id)));
-            commandForApp.Parameters.AddWithValue("?ScreenshotUrls", String.Join(",", app.ScreenshotUrls));
-            commandForApp.Parameters.AddWithValue("?IPadScreenshotUrl", String.Join(",", app.IPadScreenshotUrls));
+            AddParametersForAppBrief(app, commandForApp);
             commandForApp.ExecuteNonQuery();
         }
 
@@ -116,7 +98,19 @@ values (
         }
 
         public ICollection<App> Retrieve(int offset, int limit) {
-            throw new NotImplementedException();
+            string sql = "select Id from AppBrief limit ?offset, ?limit";
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("?offset", offset);
+            command.Parameters.AddWithValue("?limit", limit);
+            List<int> page = new List<int>();
+            using (IDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    page.Add(reader.GetInt32(0));
+                }
+            }
+
+            return Retrieve(page);
         }
 
         public RevokedApp Revoke(App app) {
@@ -133,6 +127,53 @@ values (
 
         public void Dispose() {
             connection.Dispose();
+        }
+
+        private static void AddParametersForAppBrief(App app, MySqlCommand command) {
+            command.Parameters.AddWithValue("?Id", app.Id);
+            command.Parameters.AddWithValue("?CensoredName", app.CensoredName);
+            command.Parameters.AddWithValue("?Description", app.Description);
+            command.Parameters.AddWithValue("?LargeIconUrl", app.LargeIconUrl);
+            command.Parameters.AddWithValue("?SellerName", app.Seller.Name);
+            command.Parameters.AddWithValue("?SellerViewUrl", app.Seller.ViewUrl);
+            command.Parameters.AddWithValue("?ReleaseNotes", app.ReleaseNotes);
+            command.Parameters.AddWithValue("?ContentAdvisoryRating", app.ContentAdvisoryRating);
+            command.Parameters.AddWithValue("?ContentRating", app.ContentRating);
+            command.Parameters.AddWithValue("?AverageUserRating", app.AverageUserRating);
+            command.Parameters.AddWithValue("?UserRatingCount", app.UserRatingCount);
+            command.Parameters.AddWithValue("?Languages", String.Join(",", app.Languages));
+            command.Parameters.AddWithValue("?Categories", String.Join(",", app.Categories.Select(c => c.Id)));
+            command.Parameters.AddWithValue("?ScreenshotUrls", String.Join(",", app.ScreenshotUrls));
+            command.Parameters.AddWithValue("?IPadScreenshotUrl", String.Join(",", app.IPadScreenshotUrls));
+        }
+
+        private static void AddParametersForApp(App app, MySqlCommand command) {
+            command.Parameters.AddWithValue("?Id", app.Brief.Id);
+            command.Parameters.AddWithValue("?DeveloperId", app.Brief.Developer.Id);
+            command.Parameters.AddWithValue("?DeveloperName", app.Brief.Developer.Name);
+            command.Parameters.AddWithValue("?DeveloperViewUrl", app.Brief.Developer.ViewUrl);
+            command.Parameters.AddWithValue("?Price", app.Brief.Price);
+            command.Parameters.AddWithValue("?Currency", app.Brief.Currency);
+            command.Parameters.AddWithValue("?Version", app.Brief.Version);
+            command.Parameters.AddWithValue("?ReleaseDate", app.Brief.ReleaseDate);
+            command.Parameters.AddWithValue("?Name", app.Brief.Name);
+            command.Parameters.AddWithValue("?Introduction", app.Brief.Introduction);
+            command.Parameters.AddWithValue("?ReleaseNotes", app.Brief.ReleaseNotes);
+            command.Parameters.AddWithValue("?PrimaryCategory", app.Brief.PrimaryCategory.Id);
+            command.Parameters.AddWithValue("?ViewUrl", app.Brief.ViewUrl);
+            command.Parameters.AddWithValue("?IconUrl", app.Brief.IconUrl);
+            command.Parameters.AddWithValue("?FileSize", app.Brief.FileSize);
+            command.Parameters.AddWithValue("?AverageUserRatingForCurrentVersion", app.Brief.AverageUserRatingForCurrentVersion);
+            command.Parameters.AddWithValue("?UserRatingCountForCurrentVersion", app.Brief.UserRatingCountForCurrentVersion);
+            command.Parameters.AddWithValue("?SupportedDevices", app.Brief.SupportedDevices);
+            command.Parameters.AddWithValue("?Features", app.Brief.Features);
+            command.Parameters.AddWithValue("?IsGameCenterEnabled", app.Brief.IsGameCenterEnabled);
+            command.Parameters.AddWithValue("?DeviceType", app.Brief.DeviceType);
+            command.Parameters.AddWithValue("?LastValidUpdateTime", app.Brief.LastValidUpdate.Time);
+            command.Parameters.AddWithValue("?LastValidUpdateType", app.Brief.LastValidUpdate.Type);
+            command.Parameters.AddWithValue("?LastValidUpdateOldValue", app.Brief.LastValidUpdate.OldValue);
+            command.Parameters.AddWithValue("?LastValidUpdateNewValue", app.Brief.LastValidUpdate.NewValue);
+            command.Parameters.AddWithValue("?LanguagePriority", app.Brief.LanguagePriority);
         }
     }
 }
