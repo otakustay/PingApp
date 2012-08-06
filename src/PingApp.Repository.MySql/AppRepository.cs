@@ -2,11 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MySql.Data.MySqlClient;
 using PingApp.Entity;
 using PingApp.Repository.Quries;
 
 namespace PingApp.Repository.MySql {
-    public class AppRepository : IAppRepository {
+    public class AppRepository : IAppRepository, IDisposable {
+        private readonly MySqlConnection connection;
+
+        public AppRepository(MySqlConnection connection) {
+            this.connection = connection;
+        }
+
         public App Retrieve(int app) {
             throw new NotImplementedException();
         }
@@ -49,6 +56,10 @@ namespace PingApp.Repository.MySql {
 
         public void Resurrect(App resurrected) {
             throw new NotImplementedException();
+        }
+
+        public void Dispose() {
+            connection.Dispose();
         }
     }
 }
