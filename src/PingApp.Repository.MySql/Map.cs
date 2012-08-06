@@ -84,7 +84,7 @@ namespace PingApp.Repository.MySql {
                     Name = record.GetString(columnPrefix + "SellerName"),
                     ViewUrl = record.GetString(columnPrefix + "SellerViewUrl")
                 },
-                Brief = record.ToAppBrief(columnPrefix)
+                Brief = record.ToAppBrief(columnPrefix + "Brief.")
             };
             return app;
         }
