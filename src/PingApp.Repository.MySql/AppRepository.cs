@@ -171,7 +171,32 @@ values (
         }
 
         public ICollection<RevokedApp> RetrieveRevoked(int offset, int limit) {
-            throw new NotImplementedException();
+            string sql = "select Id from RevokedAppBrief limit ?offset, ?limit";
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("?offset", offset);
+            command.Parameters.AddWithValue("?limit", limit);
+            List<int> page = new List<int>();
+            using (IDataReader reader = command.ExecuteReader()) {
+                while (reader.Read()) {
+                    page.Add(reader.GetInt32(0));
+                }
+            }
+
+            string selectAll = String.Format(
+                "select * from RevokedAppWithBrief where Id in ({0})", 
+                String.Join(",", page)
+            );
+            MySqlCommand commandForSelect = connection.CreateCommand();
+            commandForSelect.CommandText = selectAll;
+            List<RevokedApp> result = new List<RevokedApp>();
+            using (IDataReader reader = commandForSelect.ExecuteReader()) {
+                while (reader.Read()) {
+                    RevokedApp revokedApp = reader.ToRevokedApp();
+                    result.Add(revokedApp);
+                }
+            }
+            return result;
         }
 
         public void Resurrect(App resurrected) {
