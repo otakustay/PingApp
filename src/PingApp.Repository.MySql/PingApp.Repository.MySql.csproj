@@ -48,6 +48,7 @@
   <ItemGroup>
     <Compile Include="AppRepository.cs" />
     <Compile Include="AppTrackRepository.cs" />
+    <Compile Include="AppUpdateRepository.cs" />
     <Compile Include="Dependency\MySqlRepositoryModule.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
