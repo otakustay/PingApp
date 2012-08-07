@@ -167,7 +167,17 @@ values (
         }
 
         public void DeleteRevoked(int id) {
-            throw new NotImplementedException();
+            string deleteApp = "delete from RevokedApp where Id = ?Id";
+            MySqlCommand commandForDeleteApp = connection.CreateCommand();
+            commandForDeleteApp.CommandText = deleteApp;
+            commandForDeleteApp.Parameters.AddWithValue("?Id", id);
+            commandForDeleteApp.ExecuteNonQuery();
+
+            string deleteAppBrief = "delete from RevokedAppBrief where Id = ?Id";
+            MySqlCommand commandForDeleteAppBrief = connection.CreateCommand();
+            commandForDeleteAppBrief.CommandText = deleteAppBrief;
+            commandForDeleteAppBrief.Parameters.AddWithValue("?Id", id);
+            commandForDeleteAppBrief.ExecuteNonQuery();
         }
 
         public ICollection<RevokedApp> RetrieveRevoked(int offset, int limit) {
