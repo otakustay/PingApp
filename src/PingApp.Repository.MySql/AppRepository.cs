@@ -114,7 +114,60 @@ values (
         }
 
         public RevokedApp Revoke(App app) {
-            throw new NotImplementedException();
+            // 从在售应用中移除
+            string deleteApp = "delete from App where Id = ?Id";
+            MySqlCommand commandForDeleteApp = connection.CreateCommand();
+            commandForDeleteApp.CommandText = deleteApp;
+            commandForDeleteApp.Parameters.AddWithValue("?Id", app.Id);
+            commandForDeleteApp.ExecuteNonQuery();
+
+            string deleteAppBrief = "delete from AppBrief where Id = ?Id";
+            MySqlCommand commandForDeleteAppBrief = connection.CreateCommand();
+            commandForDeleteAppBrief.CommandText = deleteAppBrief;
+            commandForDeleteAppBrief.Parameters.AddWithValue("?Id", app.Id);
+            commandForDeleteAppBrief.ExecuteNonQuery();
+
+            // 添加到下架应用中
+            RevokedApp revoked = new RevokedApp(app);
+            revoked.RevokeTime = DateTime.Now;
+            string inserRevokedAppBrief =
+@"insert into `RevokedAppBrief` (
+    `Id`, `DeveloperId`, `DeveloperName`, `DeveloperViewUrl`, `Price`, `Currency`, `Version`, `ReleaseDate`, 
+    `Name`, `Introduction`, `ReleaseNotes`, `PrimaryCategory`, `ViewUrl`, `IconUrl`, `FileSize`, 
+    `AverageUserRatingForCurrentVersion`, `UserRatingCountForCurrentVersion`, `SupportedDevices`, `Features`,
+    `IsGameCenterEnabled`, `DeviceType`, `LastValidUpdateTime`, `LastValidUpdateType`, `LastValidUpdateOldValue`,
+    `LastValidUpdateNewValue`, `LanguagePriority`, `RevokedTime`
+)
+values (
+    ?Id, ?DeveloperId, ?DeveloperName, ?DeveloperViewUrl, ?Price, ?Currency, ?Version, ?ReleaseDate,
+    ?Name, ?Introduction, ?ReleaseNotes, ?PrimaryCategory, ?ViewUrl, ?IconUrl, ?FileSize,
+    ?AverageUserRatingForCurrentVersion, ?UserRatingCountForCurrentVersion, ?SupportedDevices, ?Features,
+    ?IsGameCenterEnabled, ?DeviceType, ?LastValidUpdateTime, ?LastValidUpdateType, ?LastValidUpdateOldValue,
+    ?LastValidUpdateNewValue, ?LanguagePriority, ?RevokeTime
+);";
+            MySqlCommand commandForRevokedAppBrief = connection.CreateCommand();
+            commandForRevokedAppBrief.CommandText = inserRevokedAppBrief;
+            AddParametersForApp(app, commandForRevokedAppBrief);
+            commandForRevokedAppBrief.Parameters.AddWithValue("?RevokeTime", revoked.RevokeTime);
+            commandForRevokedAppBrief.ExecuteNonQuery();
+
+            string insertApp =
+@"insert into `RevokedApp` (
+    `Id`, `CensoredName`, `Description`, `LargeIconUrl`, `SellerName`, `SellerViewUrl`, 
+    `ReleaseNotes`, `ContentAdvisoryRating`, `ContentRating`, `AverageUserRating`, 
+    `UserRatingCount`, `Languages`, `Categories`, `ScreenshotUrls`, `IPadScreenshotUrls`
+)
+values (
+    ?Id, ?CensoredName, ?Description, ?LargeIconUrl, ?SellerName, ?SellerViewUrl,
+    ?ReleaseNotes, ?ContentAdvisoryRating, ?ContentRating, ?AverageUserRating, 
+    ?UserRatingCount, ?Languages, ?Categories, ?ScreenshotUrls, ?IPadScreenshotUrl,
+);";
+            MySqlCommand commandForRevokedApp = connection.CreateCommand();
+            commandForRevokedApp.CommandText = insertApp;
+            AddParametersForAppBrief(app, commandForRevokedApp);
+            commandForRevokedApp.ExecuteNonQuery();
+
+            return revoked;
         }
 
         public ICollection<RevokedApp> RetrieveRevoked(int offset, int limit) {
