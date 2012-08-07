@@ -94,7 +94,39 @@ values (
         }
 
         public void Update(App app) {
-            throw new NotImplementedException();
+            string updateAppBrief =
+@"update `AppBrief`
+set
+    `DeveloperId` = ?DeveloperId, `DeveloperName` = ?DeveloperName, `DeveloperViewUrl` = ?DeveloperViewUrl,
+    `Price` = ?Price, `Currency` = ?Currency, `Version` = ?Version, `ReleaseDate` = ?ReleaseDate, `Name` = ?Name,
+    `Introduction` = ?Introduction, `ReleaseNotes` = ?ReleaseNotes, `PrimaryCategory` = ?PrimaryCategory,
+    `ViewUrl` = ?ViewUrl, `IconUrl` = ?IconUrl, `FileSize` = ?FileSize,
+    `AverageUserRatingForCurrentVersion` = ?AverageUserRatingForCurrentVersion,
+    `UserRatingCountForCurrentVersion` = ?UserRatingCountForCurrentVersion,
+    `SupportedDevices` = ?SupportedDevices, `Features` = ?Features, `IsGameCenterEnabled` = ?IsGameCenterEnabled,
+    `DeviceType` = ?DeviceType, `LastValidUpdateTime` = ?LastValidUpdateTime, `LastValidUpdateType` = ?LastValidUpdateType,
+    `LastValidUpdateOldValue` = ?LastValidUpdateOldValue, `LastValidUpdateNewValue` = ?LastValidUpdateNewValue,
+    `LanguagePriority` = ?LanguagePriority
+where `Id` = ?Id;";
+            MySqlCommand commandForAppBrief = connection.CreateCommand();
+            commandForAppBrief.CommandText = updateAppBrief;
+            AddParametersForApp(app, commandForAppBrief);
+            commandForAppBrief.ExecuteNonQuery();
+
+            string updateApp =
+@"update `App`
+set
+    `CensoredName` = ?CensoredName, `Description` = ?Description, `LargeIconUrl` = ?LargeIconUrl,
+    `SellerName` = ?SellerName, `SellerViewUrl` = ?SellerViewUrl, `ReleaseNotes` = ?ReleaseNotes,
+    `ContentAdvisoryRating` = ?ContentAdvisoryRating, `ContentRating` = ?ContentRating, 
+    `AverageUserRating` = ?AverageUserRating, `UserRatingCount` = ?UserRatingCount,
+    `Languages` = ?Languages, `Categories` = ?Categories, `ScreenshotUrls` = ?ScreenshotUrls,
+    `IPadScreenshotUrls` = ?IPadScreenshotUrls
+where `Id` = ?Id;";
+            MySqlCommand commandForUpdateApp = connection.CreateCommand();
+            commandForUpdateApp.CommandText = updateApp;
+            AddParametersForApp(app, commandForUpdateApp);
+            commandForUpdateApp.ExecuteNonQuery();
         }
 
         public void Delete(int id) {
