@@ -13,7 +13,11 @@ using MongoDB.Driver.Builders;
 using MySql.Data.MySqlClient;
 using Ninject;
 using PingApp.Entity;
+using PingApp.Repository;
 using PingApp.Repository.Mongo.Dependency;
+using PingApp.Repository.MySql;
+using PingApp.Repository.MySql.Dependency;
+using PingApp.Repository.Quries;
 
 namespace PingApp.Migration {
     class Program {
@@ -81,30 +85,22 @@ where b.id in ({0});";
             { 899.99f, 5898f }, { 999.99f, 6498f }
         };
 
-        private static readonly MongoCollection<App> apps;
-
-        private static readonly MongoCollection<RevokedApp> revokedApps;
-
-        private static readonly MongoCollection<AppUpdate> appUpdates;
-
-        private static readonly MongoCollection<AppTrack> appTracks;
-
-        private static readonly MongoCollection<User> users;
+        private static readonly RepositoryEmitter repository;
 
         private static readonly MySqlConnection connection;
 
         static Program() {
-            connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["MySql"].ConnectionString);
+            connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["Source"].ConnectionString);
             connection.Open();
 
-            IKernel kernel = new StandardKernel();
-            kernel.Load(new MongoRepositoryModule());
-
-            apps = kernel.Get<MongoCollection<App>>();
-            revokedApps = kernel.Get<MongoCollection<RevokedApp>>();
-            appUpdates = kernel.Get<MongoCollection<AppUpdate>>();
-            appTracks = kernel.Get<MongoCollection<AppTrack>>();
-            users = kernel.Get<MongoCollection<User>>();
+            MySqlConnection destination = new MySqlConnection(
+                ConfigurationManager.ConnectionStrings["Destination"].ConnectionString);
+            repository = new RepositoryEmitter(
+                new AppRepository(destination),
+                null,
+                null,
+                null
+            );
         }
 
         static void Main(string[] args) {
@@ -256,8 +252,12 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            apps.InsertBatch(active);
-            revokedApps.InsertBatch(revoked);
+            foreach (App app in active) {
+                repository.App.Save(app);
+            }
+            foreach (RevokedApp app in revoked) {
+                repository.App.SaveRevoked(app);
+            }
 
             watch.Stop();
             Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
@@ -340,7 +340,9 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            appUpdates.InsertBatch(updates);
+            foreach (AppUpdate update in updates) {
+                repository.AppUpdate.Save(update);
+            }
 
             watch.Stop();
             Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
@@ -388,7 +390,9 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            users.InsertBatch(collectedUsers);
+            foreach (User user in collectedUsers) {
+                repository.User.Save(user);
+            }
 
             watch.Stop();
             Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
@@ -413,7 +417,7 @@ where b.id in ({0});";
             using (var reader = command.ExecuteReader()) {
                 while (reader.Read()) {
                     string username = reader.GetString(0);
-                    User user = users.FindOne(Query.EQ("username", username));
+                    User user = repository.User.RetrieveByUsername(username);
                     AppTrack track = new AppTrack() {
                         User = user.Id,
                         // App有自己的Serializer，只需要Id就行
@@ -437,7 +441,9 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            appTracks.InsertBatch(tracks);
+            foreach (AppTrack track in tracks) {
+                repository.AppTrack.Save(track);
+            }
 
             watch.Stop();
             Console.WriteLine("Saved to mongo using {0}", watch.Elapsed);
@@ -462,23 +468,23 @@ where b.id in ({0});";
         }
 
         private static AppUpdate GetRevokeUpdate(int app) {
-            IMongoQuery query = Query.And(
-                Query.EQ("app", app),
-                Query.EQ("type", 6)
-            );
-            AppUpdate update = appUpdates.Find(query)
-                .SetSortOrder(SortBy.Descending("time"))
-                .SetLimit(1)
-                .First();
+            AppUpdateQuery query = new AppUpdateQuery() {
+                App = app, 
+                LatestTime = DateTime.Now
+            };
+            query = repository.AppUpdate.RetrieveByApp(query);
+            AppUpdate update = query.Result.First(u => u.Type == AppUpdateType.Revoke);
 
             return update;
         }
 
         private static AppUpdate GetLastValidUpdate(App app) {
-            IMongoQuery query = Query.EQ("app", app.Id);
-            AppUpdate[] updates = appUpdates.Find(query)
-                .SetSortOrder(SortBy.Descending("time"))
-                .ToArray();
+            AppUpdateQuery query = new AppUpdateQuery() {
+                App = app.Id,
+                LatestTime = DateTime.Now
+            };
+            query = repository.AppUpdate.RetrieveByApp(query);
+            ICollection<AppUpdate> updates = query.Result;
 
             // 当第一次加入应用时，App的最后更新类型为New，这是为了显示效果，但时间是AddToPing的时间，为了排序效果
             if (app.Brief.LastValidUpdate.Type == AppUpdateType.New) {
@@ -506,7 +512,7 @@ where b.id in ({0});";
                 // 找到最后一次有效的更新，如果这次更新比App自带的更早，则把App自带的那个放到AppUpdate中去沿用
                 AppUpdate lastValidUpdate = updates.First(u => AppUpdate.IsValidUpdate(u.Type));
                 if (app.Brief.LastValidUpdate.Time.ToUniversalTime() > lastValidUpdate.Time.ToUniversalTime()) {
-                    appUpdates.Save(app.Brief.LastValidUpdate, SafeMode.True);
+                    repository.AppUpdate.Save((app.Brief.LastValidUpdate));
                     Console.WriteLine(app.Brief.LastValidUpdate.Id);
                     candidate = app.Brief.LastValidUpdate;
                 }
