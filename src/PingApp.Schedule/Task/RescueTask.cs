@@ -109,8 +109,23 @@ namespace PingApp.Schedule.Task {
             }
 
             foreach (App resurrected in retrievedApps) {
-                repository.App.Resurrect(resurrected);
+                // 添加重新上架信息
+                AppUpdate update = new AppUpdate() {
+                    App = resurrected.Id,
+                    NewValue = resurrected.Brief.Version + ", " + resurrected.Brief.PriceWithSymbol,
+                    Time = DateTime.Now,
+                    Type = AppUpdateType.Resurrect
+                };
+                repository.AppUpdate.Save(update);
 
+                // 从下架应用中移除
+                repository.App.DeleteRevoked(resurrected.Id);
+
+                // 重新加入到应用集合中，并标记最后更新
+                resurrected.Brief.LastValidUpdate = update;
+                repository.App.Save(resurrected);
+
+                // 添加到全文索引
                 indexer.AddApp(resurrected);
 
                 logger.Trace("Resurrected app {0}-{1}", resurrected.Id, resurrected.Brief.Name);

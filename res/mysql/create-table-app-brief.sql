@@ -25,8 +25,6 @@ create table `AppBrief` (
   `LastValidUpdateOldValue` varchar(100) CHARACTER SET utf8 not null,
   `LastValidUpdateNewValue` varchar(100) CHARACTER SET utf8 not null,
   `LanguagePriority` int(11) not null,
-  `Hash` varchar(35) CHARACTER SET utf8 not null,
-  `IsValid` tinyint(1) not null,
   PRIMARY KEY (`Id`),
   KEY `AppBrief_PrimaryCategory` (`PrimaryCategory`),
   KEY `AppBrief_Price` (`Price`),

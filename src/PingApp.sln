@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 11
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Entity", "PingApp.Entity\PingApp.Entity.csproj", "{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Schedule", "PingApp.Schedule\PingApp.Schedule.csproj", "{3DB456A4-EBCC-48AC-B4EE-C229BAACCC94}"
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Schedule.Test", "PingApp.Schedule.Test\PingApp.Schedule.Test.csproj", "{2E7B2FFF-69ED-4B4B-92C6-7F2DE565AB54}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Migration", "PingApp.Migration\PingApp.Migration.csproj", "{9A713C4B-A41E-430B-96DE-EF5562436D11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PingApp.Repository.MySql", "PingApp.Repository.MySql\PingApp.Repository.MySql.csproj", "{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,16 @@ Global
 		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{D1CA9A20-917D-44A6-A8D8-1CFE169FA204}.Release|x86.ActiveCfg = Release|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{E05C38F1-2B9F-4F28-8106-4CA9EF3AAAB2}.Release|x86.ActiveCfg = Release|Any CPU
 		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB328387-9EC4-4E5F-AB16-33F652D32DEE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
