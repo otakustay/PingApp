@@ -39,9 +39,7 @@ create view AppWithBrief as
         `AppBrief`.`LastValidUpdateType` `Brief.LastValidUpdateType`,
         `AppBrief`.`LastValidUpdateOldValue` `Brief.LastValidUpdateOldValue`,
         `AppBrief`.`LastValidUpdateNewValue` `Brief.LastValidUpdateNewValue`,
-        `AppBrief`.`LanguagePriority` `Brief.LanguagePriority`,
-        `AppBrief`.`Hash` `Brief.Hash`,
-        `AppBrief`.`IsValid` `Brief.IsValid`
+        `AppBrief`.`LanguagePriority` `Brief.LanguagePriority`
     from `App` 
     inner join `AppBrief` 
         on `AppBrief`.`Id` = `App`.`Id`;

@@ -1,4 +1,4 @@
-create table `AppBrief` (
+create table `RevokedAppBrief` (
   `Id` int(11) not null,
   `DeveloperId` int(11) not null,
   `DeveloperName` varchar(300) CHARACTER SET utf8 not null,
@@ -25,12 +25,6 @@ create table `AppBrief` (
   `LastValidUpdateOldValue` varchar(100) CHARACTER SET utf8 not null,
   `LastValidUpdateNewValue` varchar(100) CHARACTER SET utf8 not null,
   `LanguagePriority` int(11) not null,
-  PRIMARY KEY (`Id`),
-  KEY `AppBrief_PrimaryCategory` (`PrimaryCategory`),
-  KEY `AppBrief_Price` (`Price`),
-  KEY `AppBrief_DeveloperIid` (`DeveloperId`),
-  KEY `AppBrief_LastValidUpdateTime` (`LastValidUpdateTime`),
-  KEY `AppBrief_LastValieUpdateType` (`LastValidUpdateType`),
-  KEY `AppBrief_LanguagePriority` (`LanguagePriority`),
-  KEY `AppBrief_RatingCount` (`UserRatingCountForCurrentVersion`)
+  `RevokedTime` datetime not null,
+  PRIMARY KEY (`Id`)
 ) engine=InnoDB default charset=utf8mb4;

@@ -35,7 +35,9 @@ create view AppTrackWithApp as
         `AppBrief`.`LastValidUpdateType` `App.LastValidUpdateType`,
         `AppBrief`.`LastValidUpdateOldValue` `App.LastValidUpdateOldValue`,
         `AppBrief`.`LastValidUpdateNewValue` `App.LastValidUpdateNewValue`,
-        `AppBrief`.`LanguagePriority` `App.LanguagePriority`
+        `AppBrief`.`LanguagePriority` `App.LanguagePriority`,
+        `AppBrief`.`Hash` `App.Hash`,
+        `AppBrief`.`IsValid` `App.IsValid`
     from `AppTrack`
     inner join `AppBrief`
         on `AppBrief`.`Id` = `AppTrack`.`App`;
