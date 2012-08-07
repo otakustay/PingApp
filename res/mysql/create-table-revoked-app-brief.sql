@@ -25,6 +25,6 @@ create table `RevokedAppBrief` (
   `LastValidUpdateOldValue` varchar(100) CHARACTER SET utf8 not null,
   `LastValidUpdateNewValue` varchar(100) CHARACTER SET utf8 not null,
   `LanguagePriority` int(11) not null,
-  `RevokedTime` datetime not null,
+  `RevokeTime` datetime not null,
   PRIMARY KEY (`Id`)
 ) engine=InnoDB default charset=utf8mb4;

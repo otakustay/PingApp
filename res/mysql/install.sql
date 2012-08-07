@@ -16,6 +16,7 @@ source create-table-app-track.sql;
 source create-table-user.sql;
 
 source create-view-app-with-brief.sql;
+source create-view-revoked-app-with-brief.sql;
 source create-view-app-track-with-app.sql;
 
 show tables;
