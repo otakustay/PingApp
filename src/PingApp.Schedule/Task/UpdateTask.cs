@@ -225,7 +225,24 @@ namespace PingApp.Schedule.Task {
             watch.Start();
 
             foreach (App app in revokedApps) {
-                repository.App.Revoke(app);
+                // 添加下架信息
+                AppUpdate update = new AppUpdate() {
+                    App = app.Id,
+                    Type = AppUpdateType.Revoke,
+                    OldValue = app.Brief.Version + ", " + app.Brief.PriceWithSymbol,
+                    Time = DateTime.Now
+                };
+                repository.AppUpdate.Save(update);
+
+                // 从在售应用中移除
+                repository.App.Delete(app.Id);
+
+                // 添加到下架应用中
+                RevokedApp revoked = new RevokedApp(app);
+                revoked.RevokeTime = DateTime.Now;
+                repository.App.SaveRevoked(revoked);
+
+                // 移除全文索引
                 indexer.DeleteApp(app);
 
                 logger.Trace("Set app {0}-{1} to be revoked", app.Id, app.Brief.Name);

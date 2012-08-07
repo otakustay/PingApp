@@ -97,6 +97,20 @@ values (
             throw new NotImplementedException();
         }
 
+        public void Delete(int id) {
+            string deleteApp = "delete from App where Id = ?Id";
+            MySqlCommand commandForDeleteApp = connection.CreateCommand();
+            commandForDeleteApp.CommandText = deleteApp;
+            commandForDeleteApp.Parameters.AddWithValue("?Id", id);
+            commandForDeleteApp.ExecuteNonQuery();
+
+            string deleteAppBrief = "delete from AppBrief where Id = ?Id";
+            MySqlCommand commandForDeleteAppBrief = connection.CreateCommand();
+            commandForDeleteAppBrief.CommandText = deleteAppBrief;
+            commandForDeleteAppBrief.Parameters.AddWithValue("?Id", id);
+            commandForDeleteAppBrief.ExecuteNonQuery();
+        }
+
         public ICollection<App> Retrieve(int offset, int limit) {
             string sql = "select Id from AppBrief limit ?offset, ?limit";
             MySqlCommand command = connection.CreateCommand();
@@ -113,23 +127,7 @@ values (
             return Retrieve(page);
         }
 
-        public RevokedApp Revoke(App app) {
-            // 从在售应用中移除
-            string deleteApp = "delete from App where Id = ?Id";
-            MySqlCommand commandForDeleteApp = connection.CreateCommand();
-            commandForDeleteApp.CommandText = deleteApp;
-            commandForDeleteApp.Parameters.AddWithValue("?Id", app.Id);
-            commandForDeleteApp.ExecuteNonQuery();
-
-            string deleteAppBrief = "delete from AppBrief where Id = ?Id";
-            MySqlCommand commandForDeleteAppBrief = connection.CreateCommand();
-            commandForDeleteAppBrief.CommandText = deleteAppBrief;
-            commandForDeleteAppBrief.Parameters.AddWithValue("?Id", app.Id);
-            commandForDeleteAppBrief.ExecuteNonQuery();
-
-            // 添加到下架应用中
-            RevokedApp revoked = new RevokedApp(app);
-            revoked.RevokeTime = DateTime.Now;
+        public void SaveRevoked(RevokedApp revokedApp) {
             string inserRevokedAppBrief =
 @"insert into `RevokedAppBrief` (
     `Id`, `DeveloperId`, `DeveloperName`, `DeveloperViewUrl`, `Price`, `Currency`, `Version`, `ReleaseDate`, 
@@ -147,8 +145,8 @@ values (
 );";
             MySqlCommand commandForRevokedAppBrief = connection.CreateCommand();
             commandForRevokedAppBrief.CommandText = inserRevokedAppBrief;
-            AddParametersForApp(app, commandForRevokedAppBrief);
-            commandForRevokedAppBrief.Parameters.AddWithValue("?RevokeTime", revoked.RevokeTime);
+            AddParametersForApp(revokedApp, commandForRevokedAppBrief);
+            commandForRevokedAppBrief.Parameters.AddWithValue("?RevokeTime", revokedApp.RevokeTime);
             commandForRevokedAppBrief.ExecuteNonQuery();
 
             string insertApp =
@@ -164,10 +162,12 @@ values (
 );";
             MySqlCommand commandForRevokedApp = connection.CreateCommand();
             commandForRevokedApp.CommandText = insertApp;
-            AddParametersForAppBrief(app, commandForRevokedApp);
+            AddParametersForAppBrief(revokedApp, commandForRevokedApp);
             commandForRevokedApp.ExecuteNonQuery();
+        }
 
-            return revoked;
+        public void DeleteRevoked(int id) {
+            throw new NotImplementedException();
         }
 
         public ICollection<RevokedApp> RetrieveRevoked(int offset, int limit) {
@@ -197,10 +197,6 @@ values (
                 }
             }
             return result;
-        }
-
-        public void Resurrect(App resurrected) {
-            throw new NotImplementedException();
         }
 
         public void Dispose() {

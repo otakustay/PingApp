@@ -23,12 +23,14 @@ namespace PingApp.Repository {
 
         void Update(App app);
 
+        void Delete(int id);
+
         ICollection<App> Retrieve(int offset, int limit);
 
-        RevokedApp Revoke(App app);
+        void SaveRevoked(RevokedApp revokedApp);
+
+        void DeleteRevoked(int id);
 
         ICollection<RevokedApp> RetrieveRevoked(int offset, int limit);
-
-        void Resurrect(App resurrected);
     }
 }
