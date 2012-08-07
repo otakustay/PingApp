@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ninject;
 using NLog;
 using PingApp.Entity;
 using PingApp.Infrastructure;
@@ -20,7 +21,7 @@ namespace PingApp.Schedule.Task {
 
         private readonly IUpdateNotifier notifier;
 
-        private readonly RepositoryEmitter repository;
+        private readonly IKernel kernel;
 
         private int offset = 0;
 
@@ -29,12 +30,12 @@ namespace PingApp.Schedule.Task {
         private readonly List<App> revokedApps = new List<App>();
 
         public UpdateTask(IAppParser appParser, IAppIndexer indexer, IUpdateNotifier notifier,
-            RepositoryEmitter repository, ProgramSettings settings)
+            IKernel kernel, ProgramSettings settings)
             : base(settings) {
             this.appParser = appParser;
             this.indexer = indexer;
             this.notifier = notifier;
-            this.repository = repository;
+            this.kernel = kernel;
 
             limit = settings.BatchSize / 200 * 200; // 因为Search API是200一批，找个最接近的200的倍数，以免浪费
         }
@@ -63,6 +64,7 @@ namespace PingApp.Schedule.Task {
             List<Tasks.Task<int>> tasks = new List<Tasks.Task<int>>();
 
             if (args.Length > 0) {
+                RepositoryEmitter repository = kernel.Get<RepositoryEmitter>();
                 // 按200一组取数据库的数据判定更新
                 foreach (IEnumerable<int> identities in args.Partition(200)) {
                     Stopwatch stepWatch = new Stopwatch();
@@ -73,14 +75,15 @@ namespace PingApp.Schedule.Task {
                     stepWatch.Stop();
                     logger.Trace("Retrieved {0} apps from database using {1}ms", apps.Count, stepWatch.ElapsedMilliseconds);
 
-                    Tasks.Task<int> task = factory.StartNew<int>(CheckUpdates, apps);
+                    Tasks.Task<int> task = factory.StartNew<int>(() => CheckUpdates(apps, repository));
                     tasks.Add(task);
                 }
             }
             else {
                 // 从数据库分批取
                 for (int i = 0; i < settings.ParallelDegree; i++) {
-                    Tasks.Task<int> task = factory.StartNew<int>(RetrieveAndUpdate);
+                    RepositoryEmitter repository = kernel.Get<RepositoryEmitter>();
+                    Tasks.Task<int> task = factory.StartNew<int>(() => RetrieveAndUpdate(repository));
                     tasks.Add(task);
                 }
             }
@@ -93,7 +96,8 @@ namespace PingApp.Schedule.Task {
              * 此时是单线程环境，不需要处理并发
              * （理论上）也没有其他的进程在读取库，因此可以任意删除数据
              */
-            RevokeApps();
+            RepositoryEmitter repositoryForRevoke = kernel.Get<RepositoryEmitter>();
+            RevokeApps(repositoryForRevoke);
 
             watch.Stop();
             logger.Info("Finished task using {0}", watch.Elapsed);
@@ -109,7 +113,7 @@ namespace PingApp.Schedule.Task {
             }
         }
 
-        private int RetrieveAndUpdate() {
+        private int RetrieveAndUpdate(RepositoryEmitter repository) {
             while (true) {
                 ICollection<App> apps;
 
@@ -136,13 +140,12 @@ namespace PingApp.Schedule.Task {
                 }
 
                 foreach (IEnumerable<App> partition in apps.Partition(200)) {
-                    CheckUpdates(partition);
+                    CheckUpdates(partition, repository);
                 }
             }
         }
 
-        private int CheckUpdates(object input) {
-            IEnumerable<App> apps = input as IEnumerable<App>;
+        private int CheckUpdates(IEnumerable<App> apps, RepositoryEmitter repository) {
             int[] identities = apps.Select(a => a.Id).ToArray();
             ICollection<App> retrievedApps = appParser.RetrieveApps(identities);
 
@@ -156,7 +159,7 @@ namespace PingApp.Schedule.Task {
             foreach (App app in apps) {
                 if (updated.ContainsKey(app.Id)) {
                     // 检查是否有更新
-                    bool changed = CheckUpdateForApp(app, updated[app.Id]);
+                    bool changed = CheckUpdateForApp(app, updated[app.Id], repository);
                     if (changed) {
                         count++;
                     }
@@ -185,7 +188,7 @@ namespace PingApp.Schedule.Task {
             return count;
         }
 
-        private bool CheckUpdateForApp(App original, App updated) {
+        private bool CheckUpdateForApp(App original, App updated, RepositoryEmitter repository) {
             if (original.Equals(updated)) {
                 return false;
             }
@@ -220,7 +223,7 @@ namespace PingApp.Schedule.Task {
             return true;
         }
 
-        private void RevokeApps() {
+        private void RevokeApps(RepositoryEmitter repository) {
             Stopwatch watch = new Stopwatch();
             watch.Start();
 
