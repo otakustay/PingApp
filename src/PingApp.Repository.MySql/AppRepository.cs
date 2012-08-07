@@ -62,14 +62,14 @@ namespace PingApp.Repository.MySql {
     `Name`, `Introduction`, `ReleaseNotes`, `PrimaryCategory`, `ViewUrl`, `IconUrl`, `FileSize`, 
     `AverageUserRatingForCurrentVersion`, `UserRatingCountForCurrentVersion`, `SupportedDevices`, `Features`,
     `IsGameCenterEnabled`, `DeviceType`, `LastValidUpdateTime`, `LastValidUpdateType`, `LastValidUpdateOldValue`,
-    `LastValidUpdateNewValue`, `LanguagePriority`, `Hash`, `IsValid`
+    `LastValidUpdateNewValue`, `LanguagePriority`
 )
 values (
     ?Id, ?DeveloperId, ?DeveloperName, ?DeveloperViewUrl, ?Price, ?Currency, ?Version, ?ReleaseDate,
     ?Name, ?Introduction, ?ReleaseNotes, ?PrimaryCategory, ?ViewUrl, ?IconUrl, ?FileSize,
     ?AverageUserRatingForCurrentVersion, ?UserRatingCountForCurrentVersion, ?SupportedDevices, ?Features,
     ?IsGameCenterEnabled, ?DeviceType, ?LastValidUpdateTime, ?LastValidUpdateType, ?LastValidUpdateOldValue,
-    ?LastValidUpdateNewValue, ?LanguagePriority, ?Hash, ?IsValid,
+    ?LastValidUpdateNewValue, ?LanguagePriority
 );";
             MySqlCommand commandForAppBrief = connection.CreateCommand();
             commandForAppBrief.CommandText = inserAppBrief;
