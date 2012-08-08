@@ -85,7 +85,7 @@ values (
 values (
     ?Id, ?CensoredName, ?Description, ?LargeIconUrl, ?SellerName, ?SellerViewUrl,
     ?ReleaseNotes, ?ContentAdvisoryRating, ?ContentRating, ?AverageUserRating, 
-    ?UserRatingCount, ?Languages, ?Categories, ?ScreenshotUrls, ?IPadScreenshotUrl,
+    ?UserRatingCount, ?Languages, ?Categories, ?ScreenshotUrls, ?IPadScreenshotUrl
 );";
             MySqlCommand commandForApp = connection.CreateCommand();
             commandForApp.CommandText = insertApp;
@@ -166,7 +166,7 @@ where `Id` = ?Id;";
     `Name`, `Introduction`, `ReleaseNotes`, `PrimaryCategory`, `ViewUrl`, `IconUrl`, `FileSize`, 
     `AverageUserRatingForCurrentVersion`, `UserRatingCountForCurrentVersion`, `SupportedDevices`, `Features`,
     `IsGameCenterEnabled`, `DeviceType`, `LastValidUpdateTime`, `LastValidUpdateType`, `LastValidUpdateOldValue`,
-    `LastValidUpdateNewValue`, `LanguagePriority`, `RevokedTime`
+    `LastValidUpdateNewValue`, `LanguagePriority`, `RevokeTime`
 )
 values (
     ?Id, ?DeveloperId, ?DeveloperName, ?DeveloperViewUrl, ?Price, ?Currency, ?Version, ?ReleaseDate,
@@ -190,7 +190,7 @@ values (
 values (
     ?Id, ?CensoredName, ?Description, ?LargeIconUrl, ?SellerName, ?SellerViewUrl,
     ?ReleaseNotes, ?ContentAdvisoryRating, ?ContentRating, ?AverageUserRating, 
-    ?UserRatingCount, ?Languages, ?Categories, ?ScreenshotUrls, ?IPadScreenshotUrl,
+    ?UserRatingCount, ?Languages, ?Categories, ?ScreenshotUrls, ?IPadScreenshotUrl
 );";
             MySqlCommand commandForRevokedApp = connection.CreateCommand();
             commandForRevokedApp.CommandText = insertApp;
