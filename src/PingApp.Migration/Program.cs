@@ -95,11 +95,12 @@ where b.id in ({0});";
 
             MySqlConnection destination = new MySqlConnection(
                 ConfigurationManager.ConnectionStrings["Destination"].ConnectionString);
+            destination.Open();
             repository = new RepositoryEmitter(
                 new AppRepository(destination),
-                null,
-                null,
-                null
+                new AppUpdateRepository(destination),
+                new AppTrackRepository(destination),
+                new UserRepository(destination)
             );
         }
 
