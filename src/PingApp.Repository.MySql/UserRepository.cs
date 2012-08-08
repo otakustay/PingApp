@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
@@ -60,7 +61,19 @@ namespace PingApp.Repository.MySql {
         }
 
         public User RetrieveByUsername(string username) {
-            throw new NotImplementedException();
+            string sql = "select * from `User` where `Username` = ?Username";
+            MySqlCommand command = connection.CreateCommand();
+            command.CommandText = sql;
+            command.Parameters.AddWithValue("?Username", username);
+            using (IDataReader reader = command.ExecuteReader()) {
+                if (reader.Read()) {
+                    User user = reader.ToUser();
+                    return user;
+                }
+                else {
+                    return null;
+                }
+            }
         }
 
         public bool Exists(string email, string username) {
