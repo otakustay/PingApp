@@ -42,10 +42,10 @@ namespace PingApp.Repository.MySql {
             update.Id = Guid.NewGuid();
 
             string sql =
-@"insert into `AppUpdate`(
+@"insert into `AppUpdate` (
     `Id`, `App`, `Time`, `Type`, `OldValue`, `NewValue`
 ) values (
-    ?Id, ?App, ?Time, ?Type, ?OldValue, ?NewValue, 
+    ?Id, ?App, ?Time, ?Type, ?OldValue, ?NewValue
 );";
             MySqlCommand command = connection.CreateCommand();
             command.CommandText = sql;
