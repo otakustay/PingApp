@@ -1,5 +1,5 @@
 create table `User` (
-  `Id` char(36) not null,
+  `Id` char(32) not null,
   `Email` varchar(200) not null,
   `Username` varchar(50) not null,
   `Password` varchar(40) not null,

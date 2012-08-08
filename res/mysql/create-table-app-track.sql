@@ -1,6 +1,6 @@
 create table `AppTrack` (
-  `Id` char(36) not null,
-  `User` int(11) not null,
+  `Id` char(32) not null,
+  `User` char(32) not null,
   `App` int(11) not null,
   `Status` int(11) not null,
   `CreateTime` datetime not null,

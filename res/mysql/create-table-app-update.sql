@@ -1,5 +1,5 @@
 create table `AppUpdate` (
-  `Id` char(36) not null,
+  `Id` char(32) not null,
   `App` int(11) not null,
   `Time` datetime not null,
   `Type` int(11) not null,
