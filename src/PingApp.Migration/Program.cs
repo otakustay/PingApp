@@ -87,13 +87,15 @@ where b.id in ({0});";
 
         private static readonly RepositoryEmitter repository;
 
-        private static readonly MySqlConnection connection;
+        private static readonly MySqlConnection souce;
+
+        private static readonly MySqlConnection destination;
 
         static Program() {
-            connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["Source"].ConnectionString);
-            connection.Open();
+            souce = new MySqlConnection(ConfigurationManager.ConnectionStrings["Source"].ConnectionString);
+            souce.Open();
 
-            MySqlConnection destination = new MySqlConnection(
+            destination = new MySqlConnection(
                 ConfigurationManager.ConnectionStrings["Destination"].ConnectionString);
             destination.Open();
             repository = new RepositoryEmitter(
@@ -158,7 +160,7 @@ where b.id in ({0});";
              */
             ICollection<int> identities = RetrieveIdentities(offset, batchSize);
 
-            MySqlCommand command = connection.CreateCommand();
+            MySqlCommand command = souce.CreateCommand();
             command.CommandType = CommandType.Text;
             command.CommandText = String.Format(SELECT_APP_COMMAND_TEXT, String.Join(",", identities));
             int count = 0;
@@ -253,11 +255,14 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            foreach (App app in active) {
-                repository.App.Save(app);
-            }
-            foreach (RevokedApp app in revoked) {
-                repository.App.SaveRevoked(app);
+            using (MySqlTransaction transaction = destination.BeginTransaction()) {
+                foreach (App app in active) {
+                    repository.App.Save(app);
+                }
+                foreach (RevokedApp app in revoked) {
+                    repository.App.SaveRevoked(app);
+                }
+                transaction.Commit();
             }
 
             watch.Stop();
@@ -267,7 +272,7 @@ where b.id in ({0});";
         }
 
         private static int MigrateAppUpdates(int offset, int batchSize) {
-            var command = connection.CreateCommand();
+            var command = souce.CreateCommand();
             command.CommandType = CommandType.Text;
             command.CommandText = "select App, Time, Type, OldValue, NewValue from AppUpdate limit ?offset, ?batchSize";
             command.Parameters.AddWithValue("?offset", offset);
@@ -341,8 +346,11 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            foreach (AppUpdate update in updates) {
-                repository.AppUpdate.Save(update);
+            using (MySqlTransaction transaction = destination.BeginTransaction()) {
+                foreach (AppUpdate update in updates) {
+                    repository.AppUpdate.Save(update);
+                }
+                transaction.Commit();
             }
 
             watch.Stop();
@@ -352,7 +360,7 @@ where b.id in ({0});";
         }
 
         private static int MigrateUsers(int offset, int batchSize) {
-            var command = connection.CreateCommand();
+            var command = souce.CreateCommand();
             command.CommandType = CommandType.Text;
             command.CommandText = "select Email, Username, Password, Description, Website, NotifyOnWishPriceDrop, NotifyOnWishFree, NotifyOnWishUpdate, NotifyOnOwnedUpdate, ReceiveSiteUpdates, PreferredLanguagePriority, Status, RegisterTime from User limit ?offset, ?batchSize;";
             command.Parameters.AddWithValue("?offset", offset);
@@ -373,8 +381,8 @@ where b.id in ({0});";
                         Website = reader.GetString(4),
                         NotifyOnWishPriceDrop = reader.GetBoolean(5),
                         NotifyOnWishFree = reader.GetBoolean(6),
-                        NotifyOnWishUpdate = reader.GetBoolean(7), 
-                        NotifyOnOwnedUpdate = reader.GetBoolean(8), 
+                        NotifyOnWishUpdate = reader.GetBoolean(7),
+                        NotifyOnOwnedUpdate = reader.GetBoolean(8),
                         ReceiveSiteUpdates = reader.GetBoolean(9),
                         PreferredLanguagePriority = reader.GetInt32(10),
                         Status = (UserStatus)reader.GetInt32(11),
@@ -391,8 +399,11 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            foreach (User user in collectedUsers) {
-                repository.User.Save(user);
+            using (MySqlTransaction transaction = destination.BeginTransaction()) {
+                foreach (User user in collectedUsers) {
+                    repository.User.Save(user);
+                }
+                transaction.Commit();
             }
 
             watch.Stop();
@@ -402,7 +413,7 @@ where b.id in ({0});";
         }
 
         private static int MigrateAppTracks(int offset, int batchSize) {
-            var command = connection.CreateCommand();
+            var command = souce.CreateCommand();
             command.CommandType = CommandType.Text;
             // 因为User的ID都改成Guid类型了，这里用Int32类型的User是对不上的
             // 因此要表连接把Username拿出来，利用Username的唯一性去取
@@ -442,8 +453,11 @@ where b.id in ({0});";
             watch.Reset();
             watch.Start();
 
-            foreach (AppTrack track in tracks) {
-                repository.AppTrack.Save(track);
+            using (MySqlTransaction transaction = destination.BeginTransaction()) {
+                foreach (AppTrack track in tracks) {
+                    repository.AppTrack.Save(track);
+                }
+                transaction.Commit();
             }
 
             watch.Stop();
@@ -453,7 +467,7 @@ where b.id in ({0});";
         }
 
         private static ICollection<int> RetrieveIdentities(int offset, int batchSize) {
-            MySqlCommand command = connection.CreateCommand();
+            MySqlCommand command = souce.CreateCommand();
             command.CommandType = CommandType.Text;
             command.CommandText = "select Id from AppBrief limit ?offset, ?batchSize";
             command.Parameters.AddWithValue("?offset", offset);
@@ -470,7 +484,7 @@ where b.id in ({0});";
 
         private static AppUpdate GetRevokeUpdate(int app) {
             AppUpdateQuery query = new AppUpdateQuery() {
-                App = app, 
+                App = app,
                 LatestTime = DateTime.Now
             };
             query = repository.AppUpdate.RetrieveByApp(query);
