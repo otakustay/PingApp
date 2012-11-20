@@ -34,7 +34,7 @@ namespace PingApp.Schedule.Task {
                 else {
                     MySqlCommand cmd = connection.CreateCommand();
                     cmd.CommandText = String.Format(
-                        "select Id, Hash from AppBrief where Id in ({0})", 
+                        "select Id, Hash from AppHash where Id in ({0})", 
                         String.Join(",", input.Get<IEnumerable<int>>())
                     );
                     using (IDataReader reader = cmd.ExecuteReader()) {
@@ -60,7 +60,7 @@ namespace PingApp.Schedule.Task {
             watch.Start();
             try {
                 MySqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = String.Format("select Id, Hash from AppBrief limit {0}, {1}", offset, size);
+                cmd.CommandText = String.Format("select Id, Hash from AppHash limit {0}, {1}", offset, size);
                 using (IDataReader reader = cmd.ExecuteReader()) {
                     while (reader.Read()) {
                         list[reader.GetInt32(0)] = reader.GetString(1);
