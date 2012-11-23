@@ -143,6 +143,15 @@ namespace PingApp.Schedule {
                     }
                 }
             }
+
+            // 清理空间
+            foreach (string directory in Directory.GetDirectories(logRoot)) {
+                foreach (string subDirectory in Directory.GetDirectories(directory)) {
+                    if (subDirectory.Contains("Output")) {
+                        Directory.Delete(subDirectory, true);
+                    }
+                }
+            }
         }
 
         static Program() {
