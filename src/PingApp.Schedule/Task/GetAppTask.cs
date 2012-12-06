@@ -58,7 +58,7 @@ namespace PingApp.Schedule.Task {
             watch.Start();
             try {
                 MySqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = String.Format("select Id from AppBrief limit {0}, {1}", offset, size);
+                cmd.CommandText = String.Format("select Id from AppHash limit {0}, {1}", offset, size);
                 using (IDataReader reader = cmd.ExecuteReader()) {
                     while (reader.Read()) {
                         list.Add(reader.GetInt32(0));

@@ -124,7 +124,7 @@ namespace PingApp.Schedule {
                 using (SmtpClient client = new SmtpClient("localhost", 25)) {
                     MailMessage message = new MailMessage(
                         new MailAddress("administrator@pingapp.net", "PingApp.net Administrator"),
-                        new MailAddress("pingapp.net@gmail.com")
+                        new MailAddress("pingapp@live.com")
                     );
                     message.SubjectEncoding = Encoding.UTF8;
                     message.Subject = String.Format("Schedule task failed {0:yyyy-MM-dd HH:mm}", DateTime.Now);
@@ -140,6 +140,15 @@ namespace PingApp.Schedule {
                             writer.WriteLine();
                             writer.Write(ex.ToString());
                         }
+                    }
+                }
+            }
+
+            // 清理空间
+            foreach (string directory in Directory.GetDirectories(logRoot)) {
+                foreach (string subDirectory in Directory.GetDirectories(directory)) {
+                    if (subDirectory.Contains("Output")) {
+                        Directory.Delete(subDirectory, true);
                     }
                 }
             }

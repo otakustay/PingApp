@@ -301,7 +301,18 @@ values (
             cmdForBrief.Parameters.AddWithValue("?LastValidUpdateNewValue", app.Brief.LastValidUpdate.NewValue);
             cmdForBrief.Parameters.AddWithValue("?Hash", "00" + Utility.ComputeAppHash(app, 0));
             cmdForBrief.ExecuteNonQuery();
-
+            
+            MySqlCommand cmdForHash = CreateCommand();
+            cmdForHash.CommandText =
+@"insert into PingApp.AppHash (
+    Id, Hash
+)
+values (
+    ?Id, ?Hash
+)";
+            cmdForHash.Parameters.AddWithValue("?Id", app.Id);
+            cmdForHash.Parameters.AddWithValue("?Hash", "00" + Utility.ComputeAppHash(app, 0));
+            cmdForHash.ExecuteNonQuery();
         }
 
         private void AddAppUpdate(AppUpdate update) {
@@ -405,6 +416,17 @@ where
             cmdForBrief.Parameters.AddWithValue("?Id", app.Id);
             cmdForBrief.ExecuteNonQuery();
 
+            MySqlCommand cmdForHash = CreateCommand();
+            cmdForHash.CommandText =
+@"update PingApp.AppHash
+set 
+    `Hash` = ?Hash
+where
+    `Id` = ?Id";
+            cmdForHash.Parameters.AddWithValue("?Hash", origin.Hash.Substring(0, 2) + Utility.ComputeAppHash(app, origin.Changeset));
+            cmdForHash.Parameters.AddWithValue("?Id", app.Id);
+            cmdForHash.ExecuteNonQuery();
+
             // 更新Track数据
             MySqlCommand cmdForTrack = CreateCommand();
             cmdForTrack.CommandText = "update AppTrack set HasRead = 0 where App = ?App";
@@ -507,7 +529,7 @@ where b.Id in ({0})";
         private HashSet<int> CheckApps(int[] list) {
             HashSet<int> apps = new HashSet<int>();
             MySqlCommand cmd = CreateCommand();
-            cmd.CommandText = String.Format("select Id from AppBrief where Id in ({0})", String.Join(",", list));
+            cmd.CommandText = String.Format("select Id from AppHash where Id in ({0})", String.Join(",", list));
             using (IDataReader reader = cmd.ExecuteReader()) {
                 cmd.CommandTimeout = 0;
                 while (reader.Read()) {

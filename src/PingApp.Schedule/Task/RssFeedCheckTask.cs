@@ -32,7 +32,7 @@ namespace PingApp.Schedule.Task {
             try {
                 using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["PingApp"].ConnectionString)) {
                     MySqlCommand cmd = connection.CreateCommand();
-                    cmd.CommandText = String.Format("select Id from AppBrief where Id in ({0})", String.Join(",", products));
+                    cmd.CommandText = String.Format("select Id from AppHash where Id in ({0})", String.Join(",", products));
                     connection.Open();
                     using (IDataReader reader = cmd.ExecuteReader()) {
                         cmd.CommandTimeout = 0;
