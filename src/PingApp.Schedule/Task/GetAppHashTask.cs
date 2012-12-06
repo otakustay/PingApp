@@ -17,7 +17,7 @@ namespace PingApp.Schedule.Task {
 
             Dictionary<int, string> list = new Dictionary<int, string>(500000);
             int offset = 0;
-            int size = Program.BatchSize * 8;
+            int size = Program.BatchSize * 4;
             using (MySqlConnection connection = new MySqlConnection(ConfigurationManager.ConnectionStrings["PingApp"].ConnectionString)) {
                 connection.Open();
                 if (input == null) {
